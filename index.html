@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DOGUI Awareness</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#overview" aria-label="DOGUI Awareness">
+          <span class="brand-mark">D</span>
+          <span class="brand-copy">
+            <strong>DOGUI</strong>
+            <small>Awareness</small>
+          </span>
+        </a>
+
+        <nav class="main-nav" aria-label="Navegacion principal">
+          <a href="#planes">Planes</a>
+          <a href="#cursos">Cursos</a>
+          <a href="#operacion">Operacion</a>
+          <a href="#reportes">Reportes</a>
+        </nav>
+
+        <label class="plan-switcher" for="planSelect">
+          <span>Plan</span>
+          <select id="planSelect"></select>
+        </label>
+      </header>
+
+      <main>
+        <section class="overview-band" id="overview">
+          <div class="overview-copy">
+            <p class="eyebrow">Concientizacion en ciberseguridad</p>
+            <h1>DOGUI Awareness</h1>
+            <p class="lead">
+              Capacitacion, simulaciones y reportes para reducir el riesgo humano en empresas.
+            </p>
+
+            <div class="action-row">
+              <a class="button primary" href="#operacion">
+                <i data-lucide="play-circle" aria-hidden="true"></i>
+                Operar demo
+              </a>
+              <button class="button ghost" id="downloadReportBtn" type="button">
+                <i data-lucide="file-down" aria-hidden="true"></i>
+                Reporte PDF
+              </button>
+            </div>
+
+            <div class="metric-strip" aria-label="Metricas principales">
+              <article>
+                <span id="metricEmployees">0</span>
+                <small>empleados</small>
+              </article>
+              <article>
+                <span id="metricTrained">0%</span>
+                <small>capacitados</small>
+              </article>
+              <article>
+                <span id="metricApproval">0%</span>
+                <small>aprobacion</small>
+              </article>
+            </div>
+          </div>
+
+          <div class="overview-visual">
+            <img src="assets/awareness-dashboard.png" alt="Dashboard visual de DOGUI Awareness" />
+          </div>
+        </section>
+
+        <section class="section-block" id="planes">
+          <div class="section-heading">
+            <p class="eyebrow">Oferta comercial</p>
+            <h2>3 opciones de DOGUI Awareness</h2>
+          </div>
+          <div class="plan-grid" id="planCards"></div>
+        </section>
+
+        <section class="section-block curriculum-band" id="cursos">
+          <div class="section-heading">
+            <p class="eyebrow">Contenido incluido</p>
+            <h2>Catalogo de cursos</h2>
+          </div>
+
+          <div class="tabs" id="audienceTabs" role="tablist" aria-label="Filtros de cursos">
+            <button class="active" type="button" data-audience="all">
+              <i data-lucide="layout-grid" aria-hidden="true"></i>
+              Todos
+            </button>
+            <button type="button" data-audience="finance">
+              <i data-lucide="landmark" aria-hidden="true"></i>
+              Finanzas
+            </button>
+            <button type="button" data-audience="hr">
+              <i data-lucide="users" aria-hidden="true"></i>
+              RH
+            </button>
+            <button type="button" data-audience="direction">
+              <i data-lucide="briefcase" aria-hidden="true"></i>
+              Direccion
+            </button>
+            <button type="button" data-audience="it">
+              <i data-lucide="server-cog" aria-hidden="true"></i>
+              TI
+            </button>
+          </div>
+
+          <div class="course-grid" id="courseGrid"></div>
+        </section>
+
+        <section class="section-block operation-band" id="operacion">
+          <div class="section-heading">
+            <p class="eyebrow">Operacion</p>
+            <h2>Capacitacion y evaluacion</h2>
+          </div>
+
+          <div class="workspace-grid">
+            <form class="tool-panel" id="enrollmentForm">
+              <div class="panel-title">
+                <i data-lucide="clipboard-check" aria-hidden="true"></i>
+                <h3>Asignacion</h3>
+              </div>
+
+              <label>
+                Empresa
+                <input id="companyInput" name="company" type="text" autocomplete="organization" />
+              </label>
+
+              <label>
+                Empleado
+                <input id="employeeInput" name="employee" type="text" autocomplete="name" />
+              </label>
+
+              <label>
+                Area
+                <select id="areaSelect" name="area"></select>
+              </label>
+
+              <label>
+                Curso
+                <select id="courseSelect" name="course"></select>
+              </label>
+
+              <label>
+                Total de empleados
+                <input id="employeesInput" name="employees" type="number" min="1" max="5000" step="1" />
+              </label>
+
+              <button class="button primary full" id="completeCourseBtn" type="button">
+                <i data-lucide="check-circle" aria-hidden="true"></i>
+                Marcar curso completado
+              </button>
+            </form>
+
+            <div class="tool-panel quiz-panel">
+              <div class="panel-title">
+                <i data-lucide="list-checks" aria-hidden="true"></i>
+                <h3>Evaluacion rapida</h3>
+              </div>
+
+              <div class="status-line" id="courseStatus">Curso pendiente</div>
+              <div class="question-list" id="questionList"></div>
+
+              <div class="quiz-actions">
+                <button class="button primary" id="gradeQuizBtn" type="button">
+                  <i data-lucide="badge-check" aria-hidden="true"></i>
+                  Calificar
+                </button>
+                <button class="button ghost" id="resetDemoBtn" type="button">
+                  <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+                  Reiniciar demo
+                </button>
+              </div>
+
+              <div class="score-box" id="scoreBox">
+                <strong>Sin calificacion</strong>
+                <span>Completa la evaluacion para liberar el reconocimiento.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-block certificate-band" id="constancia">
+          <div class="section-heading">
+            <p class="eyebrow">Reconocimiento</p>
+            <h2>PDF de curso completado</h2>
+          </div>
+
+          <div class="certificate-layout">
+            <div class="certificate-preview" id="certificatePreview">
+              <span class="cert-kicker">DOGUI Awareness</span>
+              <h3>Reconocimiento de participacion</h3>
+              <p>Se otorga a</p>
+              <strong id="certEmployee">Empleado</strong>
+              <p>por completar satisfactoriamente</p>
+              <span id="certCourse">Curso DOGUI Awareness</span>
+              <div class="cert-meta">
+                <span id="certCompany">Empresa</span>
+                <span id="certScore">Calificacion pendiente</span>
+                <span id="certFolio">Folio DOGUI-0000</span>
+              </div>
+            </div>
+
+            <div class="tool-panel certificate-actions">
+              <div class="panel-title">
+                <i data-lucide="award" aria-hidden="true"></i>
+                <h3>Emision</h3>
+              </div>
+              <p id="certificateMessage">El reconocimiento se activa con 80% o mas en la evaluacion.</p>
+              <button class="button primary full" id="downloadCertificateBtn" type="button" disabled>
+                <i data-lucide="download" aria-hidden="true"></i>
+                Descargar reconocimiento PDF
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-block report-band" id="reportes">
+          <div class="section-heading">
+            <p class="eyebrow">Medicion</p>
+            <h2>Simulacion y reporte ejecutivo</h2>
+          </div>
+
+          <div class="report-grid">
+            <div class="tool-panel simulation-panel">
+              <div class="panel-title">
+                <i data-lucide="mail-warning" aria-hidden="true"></i>
+                <h3>Phishing simulado</h3>
+              </div>
+
+              <label>
+                Campana
+                <select id="campaignSelect"></select>
+              </label>
+
+              <button class="button primary full" id="runSimulationBtn" type="button">
+                <i data-lucide="send" aria-hidden="true"></i>
+                Ejecutar simulacion
+              </button>
+
+              <div class="simulation-metrics">
+                <article>
+                  <strong id="openedMetric">0%</strong>
+                  <span>apertura</span>
+                </article>
+                <article>
+                  <strong id="clickedMetric">0%</strong>
+                  <span>clic</span>
+                </article>
+                <article>
+                  <strong id="reportedMetric">0%</strong>
+                  <span>reporto</span>
+                </article>
+                <article>
+                  <strong id="submittedMetric">0%</strong>
+                  <span>datos</span>
+                </article>
+              </div>
+            </div>
+
+            <div class="tool-panel executive-panel">
+              <div class="panel-title">
+                <i data-lucide="bar-chart-3" aria-hidden="true"></i>
+                <h3>Reporte mensual</h3>
+              </div>
+
+              <div class="report-summary" id="reportSummary"></div>
+
+              <div class="recommendation-list" id="recommendationList"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
