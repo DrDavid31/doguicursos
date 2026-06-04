@@ -421,6 +421,8 @@ const defaultState = {
   courseId: "finance-course",
   activeLessonIndex: 0,
   courseProgress: {},
+  customCourses: [],
+  courseDraft: { lessons: [], quiz: [] },
   employees: 50,
   trained: 43,
   approved: 37,
@@ -498,6 +500,27 @@ function bindElements() {
     "copyIntegrationUrlsBtn",
     "integrationCopyStatus",
     "integrationUrlBox",
+    "customCourseForm",
+    "customCourseTitle",
+    "customCourseArea",
+    "customCoursePlan",
+    "customCourseDuration",
+    "customCourseOverview",
+    "customLessonTitle",
+    "customLessonBody",
+    "addLessonBtn",
+    "customLessonList",
+    "customQuestionText",
+    "customOptionA",
+    "customOptionB",
+    "customOptionC",
+    "customCorrectAnswer",
+    "addQuestionBtn",
+    "customQuestionList",
+    "saveCustomCourseBtn",
+    "clearCourseDraftBtn",
+    "customCourseStatus",
+    "customCoursesList",
     "metricEmployees",
     "metricTrained",
     "metricApproval",
@@ -584,6 +607,22 @@ function bindEvents() {
   elements.downloadCertificateBtn.addEventListener("click", downloadCertificatePdf);
   elements.downloadReportBtn.addEventListener("click", downloadReportPdf);
   elements.copyIntegrationUrlsBtn.addEventListener("click", copyIntegrationUrls);
+  elements.addLessonBtn.addEventListener("click", addDraftLesson);
+  elements.addQuestionBtn.addEventListener("click", addDraftQuestion);
+  elements.saveCustomCourseBtn.addEventListener("click", saveCustomCourse);
+  elements.clearCourseDraftBtn.addEventListener("click", clearCourseDraft);
+  elements.customCoursesList.addEventListener("click", (event) => {
+    const startButton = event.target.closest("[data-start-course]");
+    if (startButton) {
+      startCourse(startButton.dataset.startCourse, true);
+      return;
+    }
+
+    const deleteButton = event.target.closest("[data-delete-course]");
+    if (deleteButton) {
+      deleteCustomCourse(deleteButton.dataset.deleteCourse);
+    }
+  });
 
   elements.campaignSelect.addEventListener("change", (event) => {
     state.campaignId = event.target.value;
@@ -602,6 +641,7 @@ function renderAll() {
   renderPlans();
   renderTabs();
   renderForm();
+  renderCourseBuilder();
   renderCourses();
   renderLearning();
   renderTraining();
@@ -652,8 +692,10 @@ function renderTabs() {
 }
 
 function renderCourses() {
-  const filtered = courses.filter((course) => {
-    return state.activeAudience === "all" || course.audience === state.activeAudience;
+  const filtered = getAllCourses().filter((course) => {
+    if (state.activeAudience === "all") return true;
+    if (state.activeAudience === "custom") return Boolean(course.custom);
+    return course.audience === state.activeAudience;
   });
 
   elements.courseGrid.innerHTML = filtered
@@ -683,6 +725,7 @@ function renderCourses() {
               <span class="pill">${escapeHtml(course.type)}</span>
               <span class="pill">${escapeHtml(course.duration)}</span>
               <span class="pill">${lessons.length} lecciones</span>
+              ${course.custom ? '<span class="pill warn">Propio</span>' : ""}
               <span class="pill ${included ? "" : "lock"}">${included ? "Incluido" : "No incluido"}</span>
             </div>
           </div>
@@ -758,6 +801,9 @@ function renderForm() {
     .map(([id, area]) => `<option value="${id}">${escapeHtml(area)}</option>`)
     .join("");
   elements.areaSelect.value = state.area;
+  elements.customCourseArea.innerHTML = Object.entries(areas)
+    .map(([id, area]) => `<option value="${id}">${escapeHtml(area)}</option>`)
+    .join("");
 
   renderCourseSelect();
 }
@@ -1075,13 +1121,219 @@ function runSimulation() {
 }
 
 function resetDemo() {
+  const customCourses = structuredClone(state.customCourses || []);
+  const courseDraft = structuredClone(ensureCourseDraft());
   state = structuredClone(defaultState);
-  localStorage.removeItem("doguiAwarenessState");
+  state.customCourses = customCourses;
+  state.courseDraft = courseDraft;
+  saveState();
   renderAll();
 }
 
+function renderCourseBuilder() {
+  const draft = ensureCourseDraft();
+  elements.customLessonList.innerHTML = draft.lessons.length
+    ? draft.lessons
+        .map(
+          (lesson, index) => `
+            <article class="draft-item">
+              <span>${index + 1}</span>
+              <div>
+                <strong>${escapeHtml(lesson.title)}</strong>
+                <p>${escapeHtml(lesson.body.slice(0, 120))}${lesson.body.length > 120 ? "..." : ""}</p>
+              </div>
+            </article>
+          `
+        )
+        .join("")
+    : '<p class="empty-state">Aun no agregas lecciones.</p>';
+
+  elements.customQuestionList.innerHTML = draft.quiz.length
+    ? draft.quiz
+        .map(
+          (question, index) => `
+            <article class="draft-item">
+              <span>${index + 1}</span>
+              <div>
+                <strong>${escapeHtml(question.text)}</strong>
+                <p>Correcta: ${escapeHtml(question.options[question.correct])}</p>
+              </div>
+            </article>
+          `
+        )
+        .join("")
+    : '<p class="empty-state">Aun no agregas preguntas.</p>';
+
+  elements.customCoursesList.innerHTML = state.customCourses.length
+    ? state.customCourses
+        .map(
+          (course) => `
+            <article class="custom-course-item">
+              <div>
+                <strong>${escapeHtml(course.title)}</strong>
+                <span>${escapeHtml(areas[course.audience] || "General")} | ${course.lessons.length} lecciones | ${course.quiz.length} preguntas</span>
+              </div>
+              <div class="custom-course-actions">
+                <button class="button primary" type="button" data-start-course="${course.id}">
+                  <i data-lucide="play" aria-hidden="true"></i>
+                  Iniciar
+                </button>
+                <button class="button ghost" type="button" data-delete-course="${course.id}">
+                  <i data-lucide="trash-2" aria-hidden="true"></i>
+                  Eliminar
+                </button>
+              </div>
+            </article>
+          `
+        )
+        .join("")
+    : '<p class="empty-state">Cuando guardes cursos propios apareceran aqui y en el catalogo.</p>';
+
+  renderIcons();
+}
+
+function addDraftLesson() {
+  const title = elements.customLessonTitle.value.trim();
+  const body = elements.customLessonBody.value.trim();
+  if (!title || !body) {
+    setCustomCourseStatus("Escribe titulo y contenido para la leccion.");
+    return;
+  }
+
+  ensureCourseDraft().lessons.push({
+    title,
+    duration: "8 min",
+    body,
+    scenario: "Caso creado por DOGUI para practicar este tema dentro de la empresa.",
+    actions: ["Analiza el riesgo", "Aplica el proceso interno", "Reporta dudas o incidentes"],
+    takeaways: ["La practica reduce errores", "El criterio del empleado es parte del control"]
+  });
+
+  elements.customLessonTitle.value = "";
+  elements.customLessonBody.value = "";
+  setCustomCourseStatus("Leccion agregada.");
+  saveState();
+  renderCourseBuilder();
+}
+
+function addDraftQuestion() {
+  const text = elements.customQuestionText.value.trim();
+  const options = [
+    elements.customOptionA.value.trim(),
+    elements.customOptionB.value.trim(),
+    elements.customOptionC.value.trim()
+  ];
+  const correct = Number(elements.customCorrectAnswer.value);
+
+  if (!text || options.some((option) => !option)) {
+    setCustomCourseStatus("Escribe la pregunta y sus 3 opciones.");
+    return;
+  }
+
+  ensureCourseDraft().quiz.push({ text, options, correct });
+  elements.customQuestionText.value = "";
+  elements.customOptionA.value = "";
+  elements.customOptionB.value = "";
+  elements.customOptionC.value = "";
+  elements.customCorrectAnswer.value = "0";
+  setCustomCourseStatus("Pregunta agregada.");
+  saveState();
+  renderCourseBuilder();
+}
+
+function saveCustomCourse() {
+  const title = elements.customCourseTitle.value.trim();
+  const audience = elements.customCourseArea.value;
+  const planId = elements.customCoursePlan.value;
+  const duration = elements.customCourseDuration.value.trim() || "30 min";
+  const overview =
+    elements.customCourseOverview.value.trim() ||
+    "Curso propio creado en DOGUI Awareness para capacitar al personal de la empresa.";
+  const draft = ensureCourseDraft();
+
+  if (!title) {
+    setCustomCourseStatus("Escribe el nombre del curso.");
+    return;
+  }
+
+  if (!draft.lessons.length || !draft.quiz.length) {
+    setCustomCourseStatus("Agrega al menos una leccion y una pregunta.");
+    return;
+  }
+
+  const course = {
+    id: `custom-${Date.now()}`,
+    custom: true,
+    title,
+    audience,
+    duration,
+    type: "Propio",
+    plans: getPlanAccess(planId),
+    topics: draft.lessons.map((lesson) => lesson.title),
+    overview,
+    lessons: structuredClone(draft.lessons),
+    quiz: structuredClone(draft.quiz)
+  };
+
+  state.customCourses.push(course);
+  state.courseDraft = { lessons: [], quiz: [] };
+  state.courseId = course.id;
+  state.activeLessonIndex = 0;
+  state.answers = {};
+  state.score = null;
+  state.passed = false;
+  state.completed = false;
+  if (!course.plans.includes(state.selectedPlan)) {
+    state.selectedPlan = planId;
+  }
+
+  elements.customCourseTitle.value = "";
+  elements.customCourseDuration.value = "";
+  elements.customCourseOverview.value = "";
+  setCustomCourseStatus("Curso guardado. Ya aparece en Mis cursos y en el aula.");
+  saveState();
+  renderAll();
+  document.getElementById("aula")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function clearCourseDraft() {
+  state.courseDraft = { lessons: [], quiz: [] };
+  elements.customCourseTitle.value = "";
+  elements.customCourseDuration.value = "";
+  elements.customCourseOverview.value = "";
+  elements.customLessonTitle.value = "";
+  elements.customLessonBody.value = "";
+  elements.customQuestionText.value = "";
+  elements.customOptionA.value = "";
+  elements.customOptionB.value = "";
+  elements.customOptionC.value = "";
+  setCustomCourseStatus("Borrador limpio.");
+  saveState();
+  renderCourseBuilder();
+}
+
+function deleteCustomCourse(courseId) {
+  state.customCourses = state.customCourses.filter((course) => course.id !== courseId);
+  delete state.courseProgress[courseId];
+  if (state.courseId === courseId) {
+    state.courseId = getAvailableCourses()[0]?.id || "basic-course";
+    state.activeLessonIndex = 0;
+    state.answers = {};
+    state.score = null;
+    state.passed = false;
+    state.completed = false;
+  }
+  setCustomCourseStatus("Curso eliminado.");
+  saveState();
+  renderAll();
+}
+
+function setCustomCourseStatus(message) {
+  elements.customCourseStatus.textContent = message;
+}
+
 function startCourse(courseId, shouldScroll = false) {
-  const course = courses.find((item) => item.id === courseId);
+  const course = getAllCourses().find((item) => item.id === courseId);
   if (!course || !course.plans.includes(state.selectedPlan)) return;
   state.courseId = courseId;
   state.activeLessonIndex = getNextLessonIndex(courseId);
@@ -1126,15 +1378,39 @@ function completeCurrentLesson() {
 }
 
 function getAvailableCourses() {
-  return courses.filter((course) => course.plans.includes(state.selectedPlan));
+  return getAllCourses().filter((course) => course.plans.includes(state.selectedPlan));
+}
+
+function getAllCourses() {
+  return [...courses, ...(state.customCourses || [])];
 }
 
 function getSelectedCourse() {
-  return courses.find((course) => course.id === state.courseId) || getAvailableCourses()[0];
+  return getAllCourses().find((course) => course.id === state.courseId) || getAvailableCourses()[0];
+}
+
+function ensureCourseDraft() {
+  if (!state.courseDraft || !Array.isArray(state.courseDraft.lessons) || !Array.isArray(state.courseDraft.quiz)) {
+    state.courseDraft = { lessons: [], quiz: [] };
+  }
+  return state.courseDraft;
+}
+
+function getPlanAccess(planId) {
+  if (planId === "basic") return ["basic", "professional", "enterprise"];
+  if (planId === "professional") return ["professional", "enterprise"];
+  return ["enterprise"];
 }
 
 function getCourseContent(courseId) {
-  const course = courses.find((item) => item.id === courseId);
+  const course = getAllCourses().find((item) => item.id === courseId);
+  if (course?.custom) {
+    return {
+      overview: course.overview,
+      lessons: course.lessons,
+      quiz: course.quiz
+    };
+  }
   const content = courseContent[courseId];
   if (content) return content;
 
@@ -1368,14 +1644,27 @@ function downloadPdf(filename, pdfTextValue) {
 function loadState() {
   try {
     const stored = localStorage.getItem("doguiAwarenessState");
-    return stored ? { ...structuredClone(defaultState), ...JSON.parse(stored) } : structuredClone(defaultState);
+    return normalizeState(stored ? { ...structuredClone(defaultState), ...JSON.parse(stored) } : structuredClone(defaultState));
   } catch {
-    return structuredClone(defaultState);
+    return normalizeState(structuredClone(defaultState));
   }
 }
 
 function saveState() {
   localStorage.setItem("doguiAwarenessState", JSON.stringify(state));
+}
+
+function normalizeState(nextState) {
+  if (!Array.isArray(nextState.customCourses)) {
+    nextState.customCourses = [];
+  }
+  if (!nextState.courseDraft || !Array.isArray(nextState.courseDraft.lessons) || !Array.isArray(nextState.courseDraft.quiz)) {
+    nextState.courseDraft = { lessons: [], quiz: [] };
+  }
+  if (!nextState.courseProgress || Array.isArray(nextState.courseProgress)) {
+    nextState.courseProgress = {};
+  }
+  return nextState;
 }
 
 function percentage(value, total) {

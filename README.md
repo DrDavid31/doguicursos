@@ -8,6 +8,8 @@ Plataforma estatica de concientizacion en ciberseguridad para empresas.
 - Catalogo de cursos de ciberseguridad.
 - Aula funcional con lecciones navegables.
 - Avance guardado por curso en el navegador.
+- Creador de cursos propios desde la interfaz.
+- Constructor de lecciones y preguntas para cursos internos DOGUI.
 - Cursos por area: Finanzas, Recursos Humanos, Direccion y TI.
 - Microcursos mensuales.
 - Evaluacion rapida por curso.
@@ -34,6 +36,19 @@ La demo estatica ya muestra la ruta de integracion para convertir DOGUI en una p
 - Gophish como modulo de phishing simulado y awareness.
 - OWASP Security Shepherd y Juice Shop como laboratorios premium para TI y desarrollo.
 - Juice Shop CTF Extension para eventos CTF empresariales.
+
+## Cursos propios
+
+La plataforma incluye una seccion `Crear` para que puedas armar tus propios cursos sin tocar codigo:
+
+- Nombre del curso.
+- Area a la que pertenece.
+- Plan donde estara disponible.
+- Descripcion.
+- Lecciones propias.
+- Preguntas de evaluacion.
+
+En esta version estatica los cursos se guardan en el navegador con `localStorage`. Para que varios empleados compartan los mismos cursos, usuarios, calificaciones y reportes centrales, el siguiente paso es conectarlo a un backend o a un LMS como Moodle.
 
 ## Como abrirlo
 

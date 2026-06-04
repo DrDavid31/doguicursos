@@ -40,14 +40,16 @@ body {
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
 button,
 a,
 select,
-input {
+input,
+textarea {
   min-width: 0;
 }
 
@@ -138,7 +140,8 @@ a {
 }
 
 select,
-input {
+input,
+textarea {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -149,9 +152,15 @@ input {
 }
 
 select:focus,
-input:focus {
+input:focus,
+textarea:focus {
   border-color: var(--teal);
   box-shadow: 0 0 0 3px rgba(8, 127, 117, 0.14);
+}
+
+textarea {
+  resize: vertical;
+  line-height: 1.5;
 }
 
 main {
@@ -546,6 +555,103 @@ h3 {
 .pill.lock {
   background: rgba(213, 82, 74, 0.12);
   color: #91352f;
+}
+
+.builder-band {
+  background: #f8faf9;
+}
+
+.builder-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: 16px;
+  align-items: start;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.course-builder,
+.custom-course-panel {
+  align-content: start;
+}
+
+.builder-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.builder-box {
+  display: grid;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 14px;
+}
+
+.panel-title.compact h3 {
+  font-size: 0.98rem;
+}
+
+.builder-actions,
+.custom-course-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.draft-list,
+.custom-course-list {
+  display: grid;
+  gap: 10px;
+}
+
+.draft-item,
+.custom-course-item {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf9;
+  padding: 12px;
+}
+
+.draft-item {
+  grid-template-columns: 34px minmax(0, 1fr);
+}
+
+.draft-item > span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--teal);
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.draft-item strong,
+.custom-course-item strong {
+  display: block;
+}
+
+.draft-item p,
+.custom-course-item span,
+.empty-state {
+  margin: 4px 0 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.custom-course-item {
+  background: #ffffff;
+}
+
+.custom-course-actions .button {
+  min-height: 38px;
+  padding: 9px 11px;
 }
 
 .mini-progress,
@@ -1126,6 +1232,7 @@ label {
   .overview-band,
   .plan-grid,
   .course-grid,
+  .builder-layout,
   .learning-layout,
   .workspace-grid,
   .certificate-layout,
@@ -1172,7 +1279,8 @@ label {
   .metric-strip,
   .simulation-metrics,
   .integration-summary,
-  .starter-course-list {
+  .starter-course-list,
+  .builder-fields {
     grid-template-columns: 1fr;
   }
 

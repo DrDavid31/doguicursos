@@ -22,6 +22,7 @@
         <nav class="main-nav" aria-label="Navegacion principal">
           <a href="#planes">Planes</a>
           <a href="#cursos">Cursos</a>
+          <a href="#crear">Crear</a>
           <a href="#aula">Aula</a>
           <a href="#operacion">Operacion</a>
           <a href="#reportes">Reportes</a>
@@ -110,9 +111,148 @@
               <i data-lucide="server-cog" aria-hidden="true"></i>
               TI
             </button>
+            <button type="button" data-audience="custom">
+              <i data-lucide="sparkles" aria-hidden="true"></i>
+              Mis cursos
+            </button>
           </div>
 
           <div class="course-grid" id="courseGrid"></div>
+        </section>
+
+        <section class="section-block builder-band" id="crear">
+          <div class="section-heading">
+            <p class="eyebrow">Contenido propio</p>
+            <h2>Crear mis cursos DOGUI</h2>
+          </div>
+
+          <div class="builder-layout">
+            <form class="tool-panel course-builder" id="customCourseForm">
+              <div class="panel-title">
+                <i data-lucide="file-plus-2" aria-hidden="true"></i>
+                <h3>Nuevo curso</h3>
+              </div>
+
+              <label>
+                Nombre del curso
+                <input id="customCourseTitle" type="text" placeholder="Ej. Seguridad para nuevos ingresos" />
+              </label>
+
+              <div class="builder-fields">
+                <label>
+                  Area
+                  <select id="customCourseArea"></select>
+                </label>
+
+                <label>
+                  Plan
+                  <select id="customCoursePlan">
+                    <option value="basic">Basico</option>
+                    <option value="professional" selected>Profesional</option>
+                    <option value="enterprise">Enterprise</option>
+                  </select>
+                </label>
+
+                <label>
+                  Duracion
+                  <input id="customCourseDuration" type="text" placeholder="30 min" />
+                </label>
+              </div>
+
+              <label>
+                Descripcion
+                <textarea id="customCourseOverview" rows="3" placeholder="Describe que aprendera el empleado en este curso."></textarea>
+              </label>
+
+              <div class="builder-box">
+                <div class="panel-title compact">
+                  <i data-lucide="book-open" aria-hidden="true"></i>
+                  <h3>Lecciones</h3>
+                </div>
+
+                <label>
+                  Titulo de la leccion
+                  <input id="customLessonTitle" type="text" placeholder="Ej. Detectar correos falsos" />
+                </label>
+
+                <label>
+                  Contenido
+                  <textarea id="customLessonBody" rows="4" placeholder="Escribe la explicacion, escenario o buenas practicas de la leccion."></textarea>
+                </label>
+
+                <button class="button ghost full" id="addLessonBtn" type="button">
+                  <i data-lucide="plus" aria-hidden="true"></i>
+                  Agregar leccion
+                </button>
+
+                <div class="draft-list" id="customLessonList"></div>
+              </div>
+
+              <div class="builder-box">
+                <div class="panel-title compact">
+                  <i data-lucide="circle-help" aria-hidden="true"></i>
+                  <h3>Preguntas</h3>
+                </div>
+
+                <label>
+                  Pregunta
+                  <input id="customQuestionText" type="text" placeholder="Ej. Que debes hacer si recibes un link sospechoso?" />
+                </label>
+
+                <div class="builder-fields">
+                  <label>
+                    Opcion A
+                    <input id="customOptionA" type="text" />
+                  </label>
+                  <label>
+                    Opcion B
+                    <input id="customOptionB" type="text" />
+                  </label>
+                  <label>
+                    Opcion C
+                    <input id="customOptionC" type="text" />
+                  </label>
+                </div>
+
+                <label>
+                  Respuesta correcta
+                  <select id="customCorrectAnswer">
+                    <option value="0">Opcion A</option>
+                    <option value="1">Opcion B</option>
+                    <option value="2">Opcion C</option>
+                  </select>
+                </label>
+
+                <button class="button ghost full" id="addQuestionBtn" type="button">
+                  <i data-lucide="plus" aria-hidden="true"></i>
+                  Agregar pregunta
+                </button>
+
+                <div class="draft-list" id="customQuestionList"></div>
+              </div>
+
+              <div class="builder-actions">
+                <button class="button primary" id="saveCustomCourseBtn" type="button">
+                  <i data-lucide="save" aria-hidden="true"></i>
+                  Guardar curso
+                </button>
+                <button class="button ghost" id="clearCourseDraftBtn" type="button">
+                  <i data-lucide="eraser" aria-hidden="true"></i>
+                  Limpiar
+                </button>
+              </div>
+
+              <div class="status-line" id="customCourseStatus">Agrega al menos una leccion y una pregunta.</div>
+            </form>
+
+            <aside class="tool-panel custom-course-panel">
+              <div class="panel-title">
+                <i data-lucide="library" aria-hidden="true"></i>
+                <h3>Mis cursos creados</h3>
+              </div>
+              <div class="custom-course-list" id="customCoursesList"></div>
+            </aside>
+          </div>
         </section>
 
         <section class="section-block learning-band" id="aula">
