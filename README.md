@@ -14,6 +14,26 @@ Plataforma estatica de concientizacion en ciberseguridad para empresas.
 - Simulaciones de phishing para Enterprise.
 - Reporte ejecutivo mensual.
 - Reconocimiento PDF al completar el curso y aprobar la evaluacion.
+- Seccion de integraciones open source para evolucionar la plataforma.
+
+## Integraciones recomendadas
+
+La demo estatica ya muestra la ruta de integracion para convertir DOGUI en una plataforma completa:
+
+| Producto DOGUI | Base recomendada | URLs |
+| --- | --- | --- |
+| Dogui Cyber Academy | Moodle | https://github.com/moodle/moodle / https://moodle.org/ |
+| Dogui Phishing Awareness | Gophish | https://github.com/gophish/gophish / https://getgophish.com/ |
+| Dogui Cyber Labs | OWASP Security Shepherd | https://github.com/OWASP/SecurityShepherd / https://owasp.org/www-project-security-shepherd/ |
+| Dogui Cyber Labs | OWASP Juice Shop | https://github.com/juice-shop/juice-shop / https://owasp-juice.shop/ |
+| Dogui CTF Empresarial | Juice Shop CTF Extension | https://github.com/juice-shop/juice-shop-ctf |
+
+## Ruta de producto
+
+- Moodle como LMS principal para usuarios, cursos, examenes, certificados y reportes.
+- Gophish como modulo de phishing simulado y awareness.
+- OWASP Security Shepherd y Juice Shop como laboratorios premium para TI y desarrollo.
+- Juice Shop CTF Extension para eventos CTF empresariales.
 
 ## Como abrirlo
 

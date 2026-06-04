@@ -25,6 +25,7 @@
           <a href="#aula">Aula</a>
           <a href="#operacion">Operacion</a>
           <a href="#reportes">Reportes</a>
+          <a href="#integraciones">Integraciones</a>
         </nav>
 
         <label class="plan-switcher" for="planSelect">
@@ -341,6 +342,49 @@
               <div class="report-summary" id="reportSummary"></div>
 
               <div class="recommendation-list" id="recommendationList"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-block integrations-band" id="integraciones">
+          <div class="section-heading">
+            <p class="eyebrow">Arquitectura open source</p>
+            <h2>Integraciones recomendadas para DOGUI</h2>
+          </div>
+
+          <div class="integration-summary">
+            <div>
+              <h3>Dogui Cyber Academy</h3>
+              <p>
+                La plataforma puede crecer como un ecosistema: LMS para cursos, modulo de phishing,
+                laboratorios tecnicos y retos CTF para equipos de TI o desarrollo.
+              </p>
+            </div>
+            <button class="button primary" id="copyIntegrationUrlsBtn" type="button">
+              <i data-lucide="copy" aria-hidden="true"></i>
+              Copiar URLs
+            </button>
+            <span id="integrationCopyStatus" role="status"></span>
+            <textarea class="url-copy-box" id="integrationUrlBox" readonly hidden></textarea>
+          </div>
+
+          <div class="integration-grid" id="integrationGrid"></div>
+
+          <div class="integration-roadmap">
+            <div class="tool-panel">
+              <div class="panel-title">
+                <i data-lucide="route" aria-hidden="true"></i>
+                <h3>Ruta DOGUI</h3>
+              </div>
+              <div class="route-list" id="productRoute"></div>
+            </div>
+
+            <div class="tool-panel">
+              <div class="panel-title">
+                <i data-lucide="graduation-cap" aria-hidden="true"></i>
+                <h3>Cursos iniciales</h3>
+              </div>
+              <div class="starter-course-list" id="starterCourses"></div>
             </div>
           </div>
         </section>

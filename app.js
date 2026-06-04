@@ -273,6 +273,145 @@ const campaigns = [
   }
 ];
 
+const integrationTools = [
+  {
+    id: "moodle",
+    name: "Moodle",
+    product: "Dogui Cyber Academy",
+    role: "Base principal LMS",
+    status: "Base recomendada",
+    icon: "school",
+    repo: "https://github.com/moodle/moodle",
+    site: "https://moodle.org/",
+    summary:
+      "Motor para cursos por empresa, usuarios por cliente, evaluaciones, certificados, avance por empleado y reportes para RH o TI.",
+    features: [
+      "Cursos y modulos por empresa",
+      "Usuarios por cliente y area",
+      "Cuestionarios, avance y certificados",
+      "Reportes para administradores"
+    ],
+    doguiUse:
+      "Usarlo como backend LMS cuando DOGUI deje de ser una demo estatica y necesite usuarios reales, roles, grupos y calificaciones centralizadas."
+  },
+  {
+    id: "gophish",
+    name: "Gophish",
+    product: "Dogui Phishing Awareness",
+    role: "Phishing simulado",
+    status: "Modulo adicional",
+    icon: "mail-warning",
+    repo: "https://github.com/gophish/gophish",
+    site: "https://getgophish.com/",
+    summary:
+      "Toolkit open source para ejecutar campanas de phishing educativo, plantillas, landing pages y resultados en tiempo real.",
+    features: [
+      "Plantillas de correo",
+      "Landing pages educativas",
+      "Metricas de apertura, clic y datos de prueba",
+      "Reportes ejecutivos por campana"
+    ],
+    doguiUse:
+      "Conectarlo al panel Enterprise para lanzar campanas autorizadas y traer metricas al reporte mensual de DOGUI."
+  },
+  {
+    id: "security-shepherd",
+    name: "OWASP Security Shepherd",
+    product: "Dogui Cyber Labs",
+    role: "Laboratorios tecnicos",
+    status: "Premium tecnico",
+    icon: "shield-check",
+    repo: "https://github.com/OWASP/SecurityShepherd",
+    site: "https://owasp.org/www-project-security-shepherd/",
+    summary:
+      "Plataforma de entrenamiento para seguridad web y movil, util para awareness tecnico, AppSec y practicas de pentesting.",
+    features: [
+      "OWASP Top 10",
+      "SQL Injection y XSS",
+      "Autenticacion y control de acceso",
+      "Retos practicos para TI y desarrollo"
+    ],
+    doguiUse:
+      "Ofrecerlo como paquete premium para clientes con areas de TI, desarrollo, soporte tecnico o seguridad interna."
+  },
+  {
+    id: "juice-shop",
+    name: "OWASP Juice Shop",
+    product: "Dogui Cyber Labs",
+    role: "Laboratorio OWASP Top 10",
+    status: "Practica guiada",
+    icon: "flask-conical",
+    repo: "https://github.com/juice-shop/juice-shop",
+    site: "https://owasp-juice.shop/",
+    summary:
+      "Aplicacion vulnerable controlada para entrenamientos, demostraciones, CTFs y practicas sobre vulnerabilidades reales.",
+    features: [
+      "Cursos practicos de OWASP Top 10",
+      "Demos de vulnerabilidades",
+      "Retos de seguridad aplicativa",
+      "Practica segura en entorno controlado"
+    ],
+    doguiUse:
+      "Integrarlo como laboratorio guiado para desarrolladores y equipos tecnicos que necesitan aprender con ejercicios reales."
+  },
+  {
+    id: "juice-shop-ctf",
+    name: "Juice Shop CTF Extension",
+    product: "Dogui CTF Empresarial",
+    role: "Eventos CTF",
+    status: "Competencias tecnicas",
+    icon: "flag",
+    repo: "https://github.com/juice-shop/juice-shop-ctf",
+    site: "https://owasp-juice.shop/",
+    summary:
+      "Herramienta para exportar retos de Juice Shop a frameworks CTF como CTFd, RootTheBox o FBCTF.",
+    features: [
+      "Eventos CTF empresariales",
+      "Retos importables",
+      "Marcadores y competencia por equipos",
+      "Extension para programas avanzados"
+    ],
+    doguiUse:
+      "Usarlo para vender torneos internos de ciberseguridad, semanas de awareness o capacitacion avanzada para desarrollo."
+  }
+];
+
+const productRoute = [
+  {
+    name: "Dogui Cyber Academy",
+    base: "Moodle",
+    description: "Cursos, usuarios, evaluaciones, certificados, avance y reportes."
+  },
+  {
+    name: "Dogui Phishing Awareness",
+    base: "Gophish",
+    description: "Campanas simuladas, plantillas, landing pages educativas y metricas."
+  },
+  {
+    name: "Dogui Cyber Labs",
+    base: "OWASP Security Shepherd + Juice Shop",
+    description: "Laboratorios para OWASP Top 10, AppSec, pentesting y desarrollo seguro."
+  },
+  {
+    name: "Dogui CTF Empresarial",
+    base: "Juice Shop CTF Extension",
+    description: "Eventos tipo CTF para equipos tecnicos con retos y tableros."
+  }
+];
+
+const starterCourses = [
+  "Fundamentos de ciberseguridad para empleados",
+  "Phishing y correos sospechosos",
+  "Contrasenas y MFA",
+  "Uso seguro de WhatsApp, correo y nube",
+  "Ingenieria social",
+  "Proteccion de informacion confidencial",
+  "Seguridad en home office",
+  "Manejo de incidentes: que hacer si das clic",
+  "Buenas practicas para directivos",
+  "Curso express para nuevos ingresos"
+];
+
 const defaultState = {
   selectedPlan: "professional",
   activeAudience: "all",
@@ -353,6 +492,12 @@ function bindElements() {
     "submittedMetric",
     "reportSummary",
     "recommendationList",
+    "integrationGrid",
+    "productRoute",
+    "starterCourses",
+    "copyIntegrationUrlsBtn",
+    "integrationCopyStatus",
+    "integrationUrlBox",
     "metricEmployees",
     "metricTrained",
     "metricApproval",
@@ -438,6 +583,7 @@ function bindEvents() {
   elements.resetDemoBtn.addEventListener("click", resetDemo);
   elements.downloadCertificateBtn.addEventListener("click", downloadCertificatePdf);
   elements.downloadReportBtn.addEventListener("click", downloadReportPdf);
+  elements.copyIntegrationUrlsBtn.addEventListener("click", copyIntegrationUrls);
 
   elements.campaignSelect.addEventListener("change", (event) => {
     state.campaignId = event.target.value;
@@ -463,6 +609,7 @@ function renderAll() {
   renderCampaignSelect();
   renderSimulation();
   renderReport();
+  renderIntegrations();
   renderOverview();
   renderIcons();
 }
@@ -761,6 +908,67 @@ function renderReport() {
     .join("");
 }
 
+function renderIntegrations() {
+  elements.integrationGrid.innerHTML = integrationTools
+    .map((tool) => {
+      const features = tool.features.map((feature) => `<li>${escapeHtml(feature)}</li>`).join("");
+      return `
+        <article class="integration-card">
+          <div class="integration-card-top">
+            <span class="integration-icon"><i data-lucide="${tool.icon}" aria-hidden="true"></i></span>
+            <div>
+              <span class="plan-tag">${escapeHtml(tool.status)}</span>
+              <h3>${escapeHtml(tool.name)}</h3>
+              <p>${escapeHtml(tool.role)} para ${escapeHtml(tool.product)}</p>
+            </div>
+          </div>
+
+          <p class="integration-summary-text">${escapeHtml(tool.summary)}</p>
+
+          <ul class="topic-list">${features}</ul>
+
+          <div class="dogui-use">
+            <strong>Uso en DOGUI</strong>
+            <span>${escapeHtml(tool.doguiUse)}</span>
+          </div>
+
+          <div class="integration-actions">
+            <a class="button ghost" href="${tool.repo}" target="_blank" rel="noopener noreferrer">
+              <i data-lucide="github" aria-hidden="true"></i>
+              GitHub
+            </a>
+            <a class="button primary" href="${tool.site}" target="_blank" rel="noopener noreferrer">
+              <i data-lucide="external-link" aria-hidden="true"></i>
+              Sitio
+            </a>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
+
+  elements.productRoute.innerHTML = productRoute
+    .map(
+      (item, index) => `
+        <article class="route-item">
+          <span>${index + 1}</span>
+          <div>
+            <strong>${escapeHtml(item.name)}</strong>
+            <small>Base: ${escapeHtml(item.base)}</small>
+            <p>${escapeHtml(item.description)}</p>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+
+  elements.starterCourses.innerHTML = starterCourses
+    .map((course) => `<article>${escapeHtml(course)}</article>`)
+    .join("");
+
+  renderIcons();
+}
+
 function renderOverview() {
   elements.metricEmployees.textContent = Number(state.employees).toLocaleString("es-MX");
   elements.metricTrained.textContent = `${percentage(state.trained, state.employees)}%`;
@@ -1049,6 +1257,46 @@ function downloadReportPdf() {
     }))
   ];
   downloadPdf("dogui-awareness-reporte-mensual.pdf", buildPdf(lines, "report"));
+}
+
+async function copyIntegrationUrls() {
+  const urls = integrationTools
+    .flatMap((tool) => [
+      `${tool.name} GitHub: ${tool.repo}`,
+      `${tool.name} sitio oficial: ${tool.site}`
+    ])
+    .join("\n");
+
+  elements.integrationUrlBox.hidden = true;
+  elements.integrationUrlBox.value = urls;
+
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(urls);
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = urls;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      textarea.remove();
+    }
+    elements.integrationCopyStatus.textContent = "URLs copiadas";
+  } catch {
+    elements.integrationUrlBox.hidden = false;
+    elements.integrationUrlBox.focus();
+    elements.integrationUrlBox.select();
+    elements.integrationCopyStatus.textContent = "URLs listas para copiar";
+  }
+
+  setTimeout(() => {
+    if (elements.integrationUrlBox.hidden) {
+      elements.integrationCopyStatus.textContent = "";
+    }
+  }, 2800);
 }
 
 function buildPdf(lines, variant) {
