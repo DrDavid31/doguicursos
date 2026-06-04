@@ -280,6 +280,8 @@ const defaultState = {
   employee: "Nombre del empleado",
   area: "finance",
   courseId: "finance-course",
+  activeLessonIndex: 0,
+  courseProgress: {},
   employees: 50,
   trained: 43,
   approved: 37,
@@ -290,6 +292,8 @@ const defaultState = {
   campaignId: "invoice",
   simulation: { opened: 46, clicked: 22, reported: 18, submitted: 5, riskArea: "Finanzas y Administracion" }
 };
+
+const courseContent = window.DOGUI_COURSE_CONTENT || {};
 
 let state = loadState();
 
@@ -307,6 +311,22 @@ function bindElements() {
     "planCards",
     "courseGrid",
     "audienceTabs",
+    "learningCourseTitle",
+    "learningCourseOverview",
+    "courseProgressBar",
+    "courseProgressText",
+    "lessonList",
+    "lessonCounter",
+    "lessonDuration",
+    "lessonStatus",
+    "lessonTitle",
+    "lessonBody",
+    "lessonScenario",
+    "lessonActions",
+    "lessonTakeaways",
+    "prevLessonBtn",
+    "completeLessonBtn",
+    "nextLessonBtn",
     "companyInput",
     "employeeInput",
     "areaSelect",
@@ -362,19 +382,49 @@ function bindEvents() {
     renderTabs();
   });
 
+  elements.courseGrid.addEventListener("click", (event) => {
+    const startButton = event.target.closest("[data-start-course]");
+    if (startButton) {
+      startCourse(startButton.dataset.startCourse, true);
+      return;
+    }
+
+    const planButton = event.target.closest("[data-required-plan]");
+    if (planButton) {
+      selectPlan(planButton.dataset.requiredPlan);
+    }
+  });
+
   ["companyInput", "employeeInput", "areaSelect", "courseSelect", "employeesInput"].forEach((id) => {
     elements[id].addEventListener("input", syncFormState);
     elements[id].addEventListener("change", syncFormState);
   });
 
   elements.completeCourseBtn.addEventListener("click", () => {
-    state.completed = true;
-    state.trained = clamp(Math.max(state.trained, Math.round(state.employees * 0.86)), 1, state.employees);
-    saveState();
-    renderTraining();
-    renderOverview();
-    renderReport();
+    startCourse(state.courseId, true);
   });
+
+  elements.lessonList.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-lesson-index]");
+    if (!button) return;
+    state.activeLessonIndex = Number(button.dataset.lessonIndex);
+    saveState();
+    renderLearning();
+  });
+
+  elements.prevLessonBtn.addEventListener("click", () => {
+    state.activeLessonIndex = clamp(state.activeLessonIndex - 1, 0, getSelectedLessons().length - 1);
+    saveState();
+    renderLearning();
+  });
+
+  elements.nextLessonBtn.addEventListener("click", () => {
+    state.activeLessonIndex = clamp(state.activeLessonIndex + 1, 0, getSelectedLessons().length - 1);
+    saveState();
+    renderLearning();
+  });
+
+  elements.completeLessonBtn.addEventListener("click", completeCurrentLesson);
 
   elements.questionList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-question]");
@@ -405,8 +455,9 @@ function renderAll() {
   renderPlanSelect();
   renderPlans();
   renderTabs();
-  renderCourses();
   renderForm();
+  renderCourses();
+  renderLearning();
   renderTraining();
   renderCertificate();
   renderCampaignSelect();
@@ -461,22 +512,93 @@ function renderCourses() {
   elements.courseGrid.innerHTML = filtered
     .map((course) => {
       const included = course.plans.includes(state.selectedPlan);
+      const progress = getCourseProgressPercent(course.id);
+      const lessons = getCourseLessons(course.id);
       const topics = course.topics.slice(0, 6).map((topic) => `<li>${escapeHtml(topic)}</li>`).join("");
+      const requiredPlan = course.plans.includes("professional") ? "professional" : "enterprise";
+      const action = included
+        ? `
+          <button class="button primary full" type="button" data-start-course="${course.id}">
+            <i data-lucide="${progress > 0 ? "play" : "book-open"}" aria-hidden="true"></i>
+            ${progress > 0 ? "Continuar curso" : "Iniciar curso"}
+          </button>
+        `
+        : `
+          <button class="button ghost full" type="button" data-required-plan="${requiredPlan}">
+            <i data-lucide="lock" aria-hidden="true"></i>
+            Activar ${plans[requiredPlan].shortName}
+          </button>
+        `;
       return `
         <article class="course-card${included ? "" : " locked"}">
           <div>
             <div class="course-meta">
               <span class="pill">${escapeHtml(course.type)}</span>
               <span class="pill">${escapeHtml(course.duration)}</span>
+              <span class="pill">${lessons.length} lecciones</span>
               <span class="pill ${included ? "" : "lock"}">${included ? "Incluido" : "No incluido"}</span>
             </div>
           </div>
           <h3>${escapeHtml(course.title)}</h3>
           <ul class="topic-list">${topics}</ul>
+          <div class="mini-progress" aria-label="Avance del curso">
+            <span style="width: ${progress}%"></span>
+          </div>
+          <strong class="course-progress-label">${progress}% completado</strong>
+          ${action}
         </article>
       `;
     })
     .join("");
+  renderIcons();
+}
+
+function renderLearning() {
+  const course = getSelectedCourse();
+  const content = getCourseContent(course.id);
+  const lessons = getCourseLessons(course.id);
+  const progress = ensureCourseProgress(course.id);
+  state.activeLessonIndex = clamp(state.activeLessonIndex || 0, 0, lessons.length - 1);
+  const lesson = lessons[state.activeLessonIndex];
+  const isCompleted = progress.completedLessons.includes(state.activeLessonIndex);
+  const percent = getCourseProgressPercent(course.id);
+
+  elements.learningCourseTitle.textContent = course.title;
+  elements.learningCourseOverview.textContent = content.overview || "Curso DOGUI Awareness.";
+  elements.courseProgressBar.style.width = `${percent}%`;
+  elements.courseProgressText.textContent = `${percent}% completado`;
+
+  elements.lessonList.innerHTML = lessons
+    .map((item, index) => {
+      const done = progress.completedLessons.includes(index);
+      const active = index === state.activeLessonIndex;
+      return `
+        <button class="lesson-nav-item${active ? " active" : ""}${done ? " done" : ""}" type="button" data-lesson-index="${index}">
+          <span>${done ? "OK" : String(index + 1).padStart(2, "0")}</span>
+          <strong>${escapeHtml(item.title)}</strong>
+          <small>${escapeHtml(item.duration || "Leccion")}</small>
+        </button>
+      `;
+    })
+    .join("");
+
+  elements.lessonCounter.textContent = `Leccion ${state.activeLessonIndex + 1} de ${lessons.length}`;
+  elements.lessonDuration.textContent = lesson.duration || course.duration;
+  elements.lessonStatus.textContent = isCompleted ? "Completada" : "Pendiente";
+  elements.lessonStatus.classList.toggle("complete", isCompleted);
+  elements.lessonTitle.textContent = lesson.title;
+  elements.lessonBody.textContent = lesson.body;
+  elements.lessonScenario.textContent = lesson.scenario || "Aplica este tema a una situacion real de tu empresa.";
+  elements.lessonActions.innerHTML = (lesson.actions || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  elements.lessonTakeaways.innerHTML = (lesson.takeaways || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+  elements.prevLessonBtn.disabled = state.activeLessonIndex === 0;
+  elements.nextLessonBtn.disabled = state.activeLessonIndex === lessons.length - 1;
+  elements.completeLessonBtn.disabled = isCompleted;
+  elements.completeLessonBtn.innerHTML = `
+    <i data-lucide="${isCompleted ? "check" : "check-circle"}" aria-hidden="true"></i>
+    ${isCompleted ? "Leccion completada" : "Completar leccion"}
+  `;
+
   renderIcons();
 }
 
@@ -497,6 +619,7 @@ function renderCourseSelect() {
   const available = getAvailableCourses();
   if (!available.some((course) => course.id === state.courseId)) {
     state.courseId = available[0].id;
+    state.activeLessonIndex = getNextLessonIndex(state.courseId);
     state.completed = false;
     state.answers = {};
     state.score = null;
@@ -511,21 +634,27 @@ function renderCourseSelect() {
 
 function renderTraining() {
   const selectedCourse = getSelectedCourse();
-  elements.courseStatus.textContent = state.completed
+  const percent = getCourseProgressPercent(selectedCourse.id);
+  const complete = isCourseComplete(selectedCourse.id);
+  state.completed = complete;
+  elements.courseStatus.textContent = complete
     ? `Curso completado: ${selectedCourse.title}`
-    : `Curso asignado: ${selectedCourse.title}`;
+    : `Curso asignado: ${selectedCourse.title} (${percent}% completado)`;
+  elements.gradeQuizBtn.disabled = !complete;
   renderQuestions();
   renderScore();
 }
 
 function renderQuestions() {
-  elements.questionList.innerHTML = questions
+  const activeQuestions = getActiveQuizQuestions();
+  const locked = !isCourseComplete(state.courseId);
+  elements.questionList.innerHTML = activeQuestions
     .map((question, questionIndex) => {
       const options = question.options
         .map((option, optionIndex) => {
           const selected = state.answers[questionIndex] === optionIndex;
           return `
-            <button class="${selected ? "selected" : ""}" type="button" data-question="${questionIndex}" data-answer="${optionIndex}">
+            <button class="${selected ? "selected" : ""}" type="button" data-question="${questionIndex}" data-answer="${optionIndex}" ${locked ? "disabled" : ""}>
               ${escapeHtml(option)}
             </button>
           `;
@@ -545,10 +674,19 @@ function renderScore() {
   const scoreBox = elements.scoreBox;
   scoreBox.classList.remove("pass", "fail");
 
+  if (!isCourseComplete(state.courseId)) {
+    scoreBox.innerHTML = `
+      <strong>Curso en progreso</strong>
+      <span>Completa todas las lecciones del aula para desbloquear la evaluacion.</span>
+    `;
+    renderCertificate();
+    return;
+  }
+
   if (state.score === null) {
     scoreBox.innerHTML = `
       <strong>Sin calificacion</strong>
-      <span>Completa la evaluacion para liberar el reconocimiento.</span>
+      <span>Curso completado. Responde la evaluacion para liberar el reconocimiento.</span>
     `;
     renderCertificate();
     return;
@@ -565,16 +703,17 @@ function renderScore() {
 function renderCertificate() {
   const course = getSelectedCourse();
   const folio = getFolio();
+  const canIssue = state.passed && isCourseComplete(course.id);
   elements.certEmployee.textContent = state.employee || "Empleado";
   elements.certCourse.textContent = course.title;
   elements.certCompany.textContent = state.company || "Empresa";
   elements.certScore.textContent = state.score === null ? "Calificacion pendiente" : `Calificacion ${state.score}%`;
   elements.certFolio.textContent = folio;
 
-  elements.downloadCertificateBtn.disabled = !state.passed;
-  elements.certificateMessage.textContent = state.passed
+  elements.downloadCertificateBtn.disabled = !canIssue;
+  elements.certificateMessage.textContent = canIssue
     ? `Reconocimiento listo para ${state.employee || "el empleado"}.`
-    : "El reconocimiento se activa con 80% o mas en la evaluacion.";
+    : "El reconocimiento se activa al completar el curso y aprobar con 80% o mas.";
 }
 
 function renderCampaignSelect() {
@@ -598,6 +737,7 @@ function renderReport() {
   const trainedPct = percentage(state.trained, state.employees);
   const approvalPct = percentage(state.approved, Math.max(state.trained, 1));
   const course = getSelectedCourse();
+  const courseProgress = getCourseProgressPercent(course.id);
   const plan = plans[state.selectedPlan];
   const simulationText =
     state.selectedPlan === "enterprise"
@@ -607,7 +747,7 @@ function renderReport() {
   elements.reportSummary.innerHTML = `
     <div class="summary-card">
       <strong>${escapeHtml(state.company)}</strong><br />
-      Durante el mes se capacito al ${trainedPct}% del personal. La aprobacion actual es de ${approvalPct}% y el curso activo es ${escapeHtml(course.title)}.
+      Durante el mes se capacito al ${trainedPct}% del personal. La aprobacion actual es de ${approvalPct}% y el curso activo es ${escapeHtml(course.title)} con ${courseProgress}% de avance.
       ${escapeHtml(simulationText)}
     </div>
     <div class="summary-card">
@@ -628,14 +768,24 @@ function renderOverview() {
 }
 
 function syncFormState() {
+  const previousCourseId = state.courseId;
   state.company = elements.companyInput.value.trim() || "Empresa Demo";
   state.employee = elements.employeeInput.value.trim() || "Nombre del empleado";
   state.area = elements.areaSelect.value;
   state.courseId = elements.courseSelect.value;
+  if (state.courseId !== previousCourseId) {
+    state.activeLessonIndex = getNextLessonIndex(state.courseId);
+    state.answers = {};
+    state.score = null;
+    state.passed = false;
+    state.completed = isCourseComplete(state.courseId);
+  }
   state.employees = clamp(Number(elements.employeesInput.value) || 1, 1, 5000);
   state.trained = clamp(state.trained, 0, state.employees);
   state.approved = clamp(state.approved, 0, state.trained);
   saveState();
+  renderCourses();
+  renderLearning();
   renderTraining();
   renderCertificate();
   renderOverview();
@@ -650,10 +800,12 @@ function selectPlan(planId) {
   state.passed = false;
   state.completed = false;
   renderCourseSelect();
+  state.completed = isCourseComplete(state.courseId);
   saveState();
   renderPlanSelect();
   renderPlans();
   renderCourses();
+  renderLearning();
   renderTraining();
   renderSimulation();
   renderReport();
@@ -661,21 +813,31 @@ function selectPlan(planId) {
 }
 
 function gradeQuiz() {
-  const answered = Object.keys(state.answers).length;
-  if (answered < questions.length) {
+  const activeQuestions = getActiveQuizQuestions();
+  if (!isCourseComplete(state.courseId)) {
     elements.scoreBox.classList.remove("pass", "fail");
     elements.scoreBox.innerHTML = `
-      <strong>Evaluacion incompleta</strong>
-      <span>Responde las ${questions.length} preguntas antes de calificar.</span>
+      <strong>Curso en progreso</strong>
+      <span>Completa todas las lecciones antes de calificar.</span>
     `;
     return;
   }
 
-  const correct = questions.reduce((total, question, index) => {
+  const answered = Object.keys(state.answers).length;
+  if (answered < activeQuestions.length) {
+    elements.scoreBox.classList.remove("pass", "fail");
+    elements.scoreBox.innerHTML = `
+      <strong>Evaluacion incompleta</strong>
+      <span>Responde las ${activeQuestions.length} preguntas antes de calificar.</span>
+    `;
+    return;
+  }
+
+  const correct = activeQuestions.reduce((total, question, index) => {
     return total + (state.answers[index] === question.correct ? 1 : 0);
   }, 0);
 
-  state.score = Math.round((correct / questions.length) * 100);
+  state.score = Math.round((correct / activeQuestions.length) * 100);
   state.passed = state.score >= 80;
   state.completed = true;
   if (state.passed) {
@@ -710,12 +872,126 @@ function resetDemo() {
   renderAll();
 }
 
+function startCourse(courseId, shouldScroll = false) {
+  const course = courses.find((item) => item.id === courseId);
+  if (!course || !course.plans.includes(state.selectedPlan)) return;
+  state.courseId = courseId;
+  state.activeLessonIndex = getNextLessonIndex(courseId);
+  state.completed = isCourseComplete(courseId);
+  state.answers = {};
+  state.score = null;
+  state.passed = false;
+  ensureCourseProgress(courseId).status = "in-progress";
+  saveState();
+  renderCourseSelect();
+  renderCourses();
+  renderLearning();
+  renderTraining();
+  renderCertificate();
+  renderReport();
+  if (shouldScroll) {
+    document.getElementById("aula")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function completeCurrentLesson() {
+  const course = getSelectedCourse();
+  const progress = ensureCourseProgress(course.id);
+  if (!progress.completedLessons.includes(state.activeLessonIndex)) {
+    progress.completedLessons.push(state.activeLessonIndex);
+    progress.completedLessons.sort((a, b) => a - b);
+  }
+
+  progress.status = isCourseComplete(course.id) ? "completed" : "in-progress";
+  progress.updatedAt = new Date().toISOString();
+  state.completed = isCourseComplete(course.id);
+  if (!state.completed) {
+    state.activeLessonIndex = getNextLessonIndex(course.id);
+  }
+
+  saveState();
+  renderCourses();
+  renderLearning();
+  renderTraining();
+  renderCertificate();
+  renderReport();
+}
+
 function getAvailableCourses() {
   return courses.filter((course) => course.plans.includes(state.selectedPlan));
 }
 
 function getSelectedCourse() {
   return courses.find((course) => course.id === state.courseId) || getAvailableCourses()[0];
+}
+
+function getCourseContent(courseId) {
+  const course = courses.find((item) => item.id === courseId);
+  const content = courseContent[courseId];
+  if (content) return content;
+
+  return {
+    overview: course ? `Curso enfocado en ${course.title}.` : "Curso DOGUI Awareness.",
+    lessons: (course?.topics || []).map((topic) => ({
+      title: topic,
+      duration: "8 min",
+      body: `Aprende a aplicar buenas practicas sobre ${topic.toLowerCase()} en el trabajo diario.`,
+      scenario: "Analiza una situacion real y decide como actuar de forma segura.",
+      actions: ["Valida el contexto", "Reporta dudas", "Sigue el proceso interno"],
+      takeaways: ["La prevencion reduce incidentes", "El reporte oportuno ayuda a todos"]
+    })),
+    quiz: questions
+  };
+}
+
+function getCourseLessons(courseId) {
+  return getCourseContent(courseId).lessons || [];
+}
+
+function getSelectedLessons() {
+  return getCourseLessons(getSelectedCourse().id);
+}
+
+function getActiveQuizQuestions() {
+  return getCourseContent(state.courseId).quiz || questions;
+}
+
+function ensureCourseProgress(courseId) {
+  if (!state.courseProgress || Array.isArray(state.courseProgress)) {
+    state.courseProgress = {};
+  }
+
+  if (!state.courseProgress[courseId]) {
+    state.courseProgress[courseId] = {
+      completedLessons: [],
+      status: "not-started",
+      updatedAt: null
+    };
+  }
+
+  if (!Array.isArray(state.courseProgress[courseId].completedLessons)) {
+    state.courseProgress[courseId].completedLessons = [];
+  }
+
+  return state.courseProgress[courseId];
+}
+
+function getCourseProgressPercent(courseId) {
+  const lessons = getCourseLessons(courseId);
+  if (!lessons.length) return 0;
+  const completed = ensureCourseProgress(courseId).completedLessons.filter((index) => index < lessons.length).length;
+  return Math.round((completed / lessons.length) * 100);
+}
+
+function isCourseComplete(courseId) {
+  return getCourseProgressPercent(courseId) === 100;
+}
+
+function getNextLessonIndex(courseId) {
+  const lessons = getCourseLessons(courseId);
+  const progress = ensureCourseProgress(courseId);
+  const nextIndex = lessons.findIndex((_, index) => !progress.completedLessons.includes(index));
+  return nextIndex === -1 ? Math.max(lessons.length - 1, 0) : nextIndex;
 }
 
 function getFolio() {
@@ -727,8 +1003,8 @@ function getFolio() {
 }
 
 function downloadCertificatePdf() {
-  if (!state.passed) return;
   const course = getSelectedCourse();
+  if (!state.passed || !isCourseComplete(course.id)) return;
   const lines = [
     { text: "DOGUI Awareness", x: 72, y: 690, size: 24, font: "F2" },
     { text: "Reconocimiento de participacion", x: 72, y: 645, size: 28, font: "F2" },
@@ -749,6 +1025,8 @@ function downloadCertificatePdf() {
 function downloadReportPdf() {
   const trainedPct = percentage(state.trained, state.employees);
   const approvalPct = percentage(state.approved, Math.max(state.trained, 1));
+  const course = getSelectedCourse();
+  const courseProgress = getCourseProgressPercent(course.id);
   const lines = [
     { text: "DOGUI Awareness", x: 72, y: 700, size: 24, font: "F2" },
     { text: "Reporte ejecutivo mensual", x: 72, y: 660, size: 24, font: "F2" },
@@ -757,9 +1035,10 @@ function downloadReportPdf() {
     { text: `Empleados registrados: ${state.employees}`, x: 72, y: 552, size: 13, font: "F1" },
     { text: `Personal capacitado: ${trainedPct}%`, x: 72, y: 530, size: 13, font: "F1" },
     { text: `Aprobacion: ${approvalPct}%`, x: 72, y: 508, size: 13, font: "F1" },
-    { text: `Curso activo: ${getSelectedCourse().title}`, x: 72, y: 474, size: 13, font: "F1" },
-    { text: `Area con mayor riesgo: ${state.simulation.riskArea}`, x: 72, y: 452, size: 13, font: "F1" },
-    { text: `Phishing simulado - apertura ${state.simulation.opened}%, clic ${state.simulation.clicked}%, reporte ${state.simulation.reported}%`, x: 72, y: 430, size: 12, font: "F1" },
+    { text: `Curso activo: ${course.title}`, x: 72, y: 474, size: 13, font: "F1" },
+    { text: `Avance del curso activo: ${courseProgress}%`, x: 72, y: 452, size: 13, font: "F1" },
+    { text: `Area con mayor riesgo: ${state.simulation.riskArea}`, x: 72, y: 430, size: 13, font: "F1" },
+    { text: `Phishing simulado - apertura ${state.simulation.opened}%, clic ${state.simulation.clicked}%, reporte ${state.simulation.reported}%`, x: 72, y: 408, size: 12, font: "F1" },
     { text: "Recomendaciones:", x: 72, y: 382, size: 15, font: "F2" },
     ...plans[state.selectedPlan].recommendations.map((item, index) => ({
       text: `${index + 1}. ${item}`,

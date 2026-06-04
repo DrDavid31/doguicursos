@@ -6,12 +6,14 @@ Plataforma estatica de concientizacion en ciberseguridad para empresas.
 
 - 3 planes comerciales: Basico, Profesional y Enterprise.
 - Catalogo de cursos de ciberseguridad.
+- Aula funcional con lecciones navegables.
+- Avance guardado por curso en el navegador.
 - Cursos por area: Finanzas, Recursos Humanos, Direccion y TI.
 - Microcursos mensuales.
-- Evaluacion rapida.
+- Evaluacion rapida por curso.
 - Simulaciones de phishing para Enterprise.
 - Reporte ejecutivo mensual.
-- Reconocimiento PDF al aprobar la evaluacion.
+- Reconocimiento PDF al completar el curso y aprobar la evaluacion.
 
 ## Como abrirlo
 

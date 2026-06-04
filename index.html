@@ -22,6 +22,7 @@
         <nav class="main-nav" aria-label="Navegacion principal">
           <a href="#planes">Planes</a>
           <a href="#cursos">Cursos</a>
+          <a href="#aula">Aula</a>
           <a href="#operacion">Operacion</a>
           <a href="#reportes">Reportes</a>
         </nav>
@@ -42,9 +43,9 @@
             </p>
 
             <div class="action-row">
-              <a class="button primary" href="#operacion">
+              <a class="button primary" href="#aula">
                 <i data-lucide="play-circle" aria-hidden="true"></i>
-                Operar demo
+                Iniciar curso
               </a>
               <button class="button ghost" id="downloadReportBtn" type="button">
                 <i data-lucide="file-down" aria-hidden="true"></i>
@@ -113,6 +114,74 @@
           <div class="course-grid" id="courseGrid"></div>
         </section>
 
+        <section class="section-block learning-band" id="aula">
+          <div class="section-heading">
+            <p class="eyebrow">Aula DOGUI</p>
+            <h2>Cursos funcionales</h2>
+          </div>
+
+          <div class="learning-layout">
+            <aside class="tool-panel learning-sidebar">
+              <div class="panel-title">
+                <i data-lucide="book-open-check" aria-hidden="true"></i>
+                <h3 id="learningCourseTitle">Curso</h3>
+              </div>
+
+              <p id="learningCourseOverview" class="learning-overview"></p>
+
+              <div class="course-progress">
+                <div class="progress-track" aria-hidden="true">
+                  <span id="courseProgressBar"></span>
+                </div>
+                <strong id="courseProgressText">0% completado</strong>
+              </div>
+
+              <div class="lesson-list" id="lessonList"></div>
+            </aside>
+
+            <article class="tool-panel lesson-panel">
+              <div class="lesson-toolbar">
+                <span class="pill" id="lessonCounter">Leccion 1</span>
+                <span class="pill warn" id="lessonDuration">0 min</span>
+                <span class="pill" id="lessonStatus">Pendiente</span>
+              </div>
+
+              <h3 id="lessonTitle">Selecciona un curso</h3>
+              <p id="lessonBody" class="lesson-body"></p>
+
+              <div class="lesson-detail-grid">
+                <section>
+                  <h4>Escenario</h4>
+                  <p id="lessonScenario"></p>
+                </section>
+                <section>
+                  <h4>Acciones</h4>
+                  <ul id="lessonActions" class="topic-list"></ul>
+                </section>
+                <section>
+                  <h4>Aprendizajes</h4>
+                  <ul id="lessonTakeaways" class="topic-list"></ul>
+                </section>
+              </div>
+
+              <div class="lesson-controls">
+                <button class="button ghost" id="prevLessonBtn" type="button">
+                  <i data-lucide="chevron-left" aria-hidden="true"></i>
+                  Anterior
+                </button>
+                <button class="button primary" id="completeLessonBtn" type="button">
+                  <i data-lucide="check-circle" aria-hidden="true"></i>
+                  Completar leccion
+                </button>
+                <button class="button ghost" id="nextLessonBtn" type="button">
+                  Siguiente
+                  <i data-lucide="chevron-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
+
         <section class="section-block operation-band" id="operacion">
           <div class="section-heading">
             <p class="eyebrow">Operacion</p>
@@ -152,8 +221,8 @@
               </label>
 
               <button class="button primary full" id="completeCourseBtn" type="button">
-                <i data-lucide="check-circle" aria-hidden="true"></i>
-                Marcar curso completado
+                <i data-lucide="book-open" aria-hidden="true"></i>
+                Abrir curso asignado
               </button>
             </form>
 
@@ -277,5 +346,6 @@
         </section>
       </main>
     </div>
+    <script src="course-content.js"></script>
   </body>
 </html>

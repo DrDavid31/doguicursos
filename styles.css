@@ -346,6 +346,7 @@ h3 {
 
 .plan-grid,
 .course-grid,
+.learning-layout,
 .workspace-grid,
 .certificate-layout,
 .report-grid {
@@ -512,6 +513,10 @@ h3 {
   padding: 18px;
 }
 
+.course-card .button {
+  align-self: end;
+}
+
 .course-card.locked {
   background: #f8faf9;
   opacity: 0.72;
@@ -541,6 +546,153 @@ h3 {
 .pill.lock {
   background: rgba(213, 82, 74, 0.12);
   color: #91352f;
+}
+
+.mini-progress,
+.progress-track {
+  width: 100%;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e5eeeb;
+}
+
+.mini-progress span,
+.progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--teal), var(--lime));
+}
+
+.course-progress-label {
+  color: var(--teal-dark);
+  font-size: 0.86rem;
+}
+
+.learning-band {
+  background: #f8faf9;
+}
+
+.learning-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.45fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.learning-sidebar {
+  position: sticky;
+  top: 88px;
+}
+
+.learning-overview {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.course-progress {
+  display: grid;
+  gap: 8px;
+}
+
+.course-progress strong {
+  color: var(--teal-dark);
+  font-size: 0.9rem;
+}
+
+.lesson-list {
+  display: grid;
+  gap: 8px;
+}
+
+.lesson-nav-item {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 10px;
+  text-align: left;
+}
+
+.lesson-nav-item span {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--teal-dark);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.lesson-nav-item strong {
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+}
+
+.lesson-nav-item small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.lesson-nav-item.active {
+  border-color: rgba(8, 127, 117, 0.58);
+  box-shadow: 0 10px 20px rgba(8, 127, 117, 0.08);
+}
+
+.lesson-nav-item.done span {
+  background: var(--teal);
+  color: #ffffff;
+}
+
+.lesson-toolbar,
+.lesson-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.lesson-panel h3 {
+  font-size: clamp(1.35rem, 2vw, 2rem);
+}
+
+.lesson-body,
+#lessonScenario {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.lesson-detail-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.lesson-detail-grid section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf9;
+  padding: 14px;
+}
+
+.lesson-detail-grid h4 {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+}
+
+.pill.complete {
+  background: rgba(8, 127, 117, 0.12);
+  color: var(--teal-dark);
 }
 
 .workspace-grid,
@@ -778,10 +930,15 @@ label {
   .overview-band,
   .plan-grid,
   .course-grid,
+  .learning-layout,
   .workspace-grid,
   .certificate-layout,
   .report-grid {
     grid-template-columns: 1fr;
+  }
+
+  .learning-sidebar {
+    position: static;
   }
 
   .overview-visual {
@@ -801,7 +958,7 @@ label {
 
   .main-nav {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .main-nav a {
@@ -817,6 +974,14 @@ label {
   .metric-strip,
   .simulation-metrics {
     grid-template-columns: 1fr;
+  }
+
+  .lesson-nav-item {
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+
+  .lesson-nav-item small {
+    grid-column: 2;
   }
 
   .action-row,
