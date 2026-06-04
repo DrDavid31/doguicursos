@@ -423,6 +423,13 @@ const defaultState = {
   courseProgress: {},
   customCourses: [],
   courseDraft: { lessons: [], quiz: [] },
+  connection: {
+    mode: "local",
+    apiUrl: "",
+    tenant: "empresa-demo",
+    token: "",
+    lastSync: null
+  },
   employees: 50,
   trained: 43,
   approved: 37,
@@ -521,6 +528,16 @@ function bindElements() {
     "clearCourseDraftBtn",
     "customCourseStatus",
     "customCoursesList",
+    "storageMode",
+    "apiBaseUrl",
+    "apiTenant",
+    "apiToken",
+    "lastSync",
+    "saveConnectionBtn",
+    "testConnectionBtn",
+    "pullCoursesBtn",
+    "pushCoursesBtn",
+    "connectionStatus",
     "metricEmployees",
     "metricTrained",
     "metricApproval",
@@ -611,6 +628,10 @@ function bindEvents() {
   elements.addQuestionBtn.addEventListener("click", addDraftQuestion);
   elements.saveCustomCourseBtn.addEventListener("click", saveCustomCourse);
   elements.clearCourseDraftBtn.addEventListener("click", clearCourseDraft);
+  elements.saveConnectionBtn.addEventListener("click", saveConnectionConfig);
+  elements.testConnectionBtn.addEventListener("click", testConnection);
+  elements.pullCoursesBtn.addEventListener("click", pullCoursesFromRemote);
+  elements.pushCoursesBtn.addEventListener("click", () => pushCoursesToRemote({ silent: false }));
   elements.customCoursesList.addEventListener("click", (event) => {
     const startButton = event.target.closest("[data-start-course]");
     if (startButton) {
@@ -642,6 +663,7 @@ function renderAll() {
   renderTabs();
   renderForm();
   renderCourseBuilder();
+  renderConnection();
   renderCourses();
   renderLearning();
   renderTraining();
@@ -1293,6 +1315,7 @@ function saveCustomCourse() {
   setCustomCourseStatus("Curso guardado. Ya aparece en Mis cursos y en el aula.");
   saveState();
   renderAll();
+  pushCoursesToRemote({ silent: true });
   document.getElementById("aula")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1326,10 +1349,201 @@ function deleteCustomCourse(courseId) {
   setCustomCourseStatus("Curso eliminado.");
   saveState();
   renderAll();
+  pushCoursesToRemote({ silent: true });
 }
 
 function setCustomCourseStatus(message) {
   elements.customCourseStatus.textContent = message;
+}
+
+function renderConnection() {
+  ensureConnection();
+  elements.storageMode.value = state.connection.mode;
+  elements.apiBaseUrl.value = state.connection.apiUrl;
+  elements.apiTenant.value = state.connection.tenant;
+  elements.apiToken.value = state.connection.token;
+  elements.lastSync.value = state.connection.lastSync
+    ? new Date(state.connection.lastSync).toLocaleString("es-MX")
+    : "Sin sincronizar";
+
+  const isApi = isRemoteEnabled();
+  elements.testConnectionBtn.disabled = !isApi;
+  elements.pullCoursesBtn.disabled = !isApi;
+  elements.pushCoursesBtn.disabled = !isApi;
+  elements.connectionStatus.textContent = isApi
+    ? `API configurada para ${state.connection.tenant}. Cursos propios locales: ${state.customCourses.length}.`
+    : `Modo local activo. Cursos propios guardados en este navegador: ${state.customCourses.length}.`;
+}
+
+function saveConnectionConfig() {
+  state.connection = {
+    mode: elements.storageMode.value,
+    apiUrl: elements.apiBaseUrl.value.trim(),
+    tenant: elements.apiTenant.value.trim() || "empresa-demo",
+    token: elements.apiToken.value.trim(),
+    lastSync: state.connection?.lastSync || null
+  };
+  saveState();
+  renderConnection();
+  setConnectionStatus(isRemoteEnabled() ? "Conexion guardada. Puedes probar o sincronizar." : "Modo local guardado.");
+}
+
+async function testConnection() {
+  saveConnectionConfig();
+  if (!isRemoteEnabled()) return;
+  setConnectionStatus("Probando conexion...");
+  try {
+    const response = await fetch(getCoursesEndpoint(), {
+      method: "GET",
+      headers: getApiHeaders()
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    setConnectionStatus("Conexion correcta. El API respondio.");
+  } catch (error) {
+    setConnectionStatus(`No se pudo conectar: ${error.message}. Revisa URL, CORS, token o endpoint.`);
+  }
+}
+
+async function pullCoursesFromRemote() {
+  saveConnectionConfig();
+  if (!isRemoteEnabled()) return;
+  setConnectionStatus("Descargando cursos remotos...");
+  try {
+    const response = await fetch(getCoursesEndpoint(), {
+      method: "GET",
+      headers: getApiHeaders()
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const payload = await response.json();
+    const remoteCourses = Array.isArray(payload) ? payload : payload.courses;
+    if (!Array.isArray(remoteCourses)) {
+      throw new Error("La respuesta no incluye courses.");
+    }
+
+    state.customCourses = normalizeRemoteCourses(remoteCourses);
+    state.connection.lastSync = new Date().toISOString();
+    if (!getAllCourses().some((course) => course.id === state.courseId)) {
+      state.courseId = getAvailableCourses()[0]?.id || "basic-course";
+    }
+    saveState();
+    renderAll();
+    setConnectionStatus(`Cursos descargados: ${state.customCourses.length}.`);
+  } catch (error) {
+    setConnectionStatus(`No se pudieron descargar cursos: ${error.message}.`);
+  }
+}
+
+async function pushCoursesToRemote({ silent = false } = {}) {
+  if (!isRemoteEnabled()) return;
+  if (!silent) setConnectionStatus("Subiendo cursos al API...");
+  try {
+    const body = JSON.stringify({
+      tenant: state.connection.tenant,
+      courses: state.customCourses,
+      updatedAt: new Date().toISOString()
+    });
+    let response = await fetch(getCoursesEndpoint(), {
+      method: "PUT",
+      headers: getApiHeaders(),
+      body
+    });
+
+    if (response.status === 404 || response.status === 405) {
+      response = await fetch(getCoursesEndpoint(), {
+        method: "POST",
+        headers: getApiHeaders(),
+        body
+      });
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    state.connection.lastSync = new Date().toISOString();
+    saveState();
+    renderConnection();
+    if (!silent) setConnectionStatus(`Cursos subidos: ${state.customCourses.length}.`);
+  } catch (error) {
+    setConnectionStatus(`No se pudieron subir cursos: ${error.message}.`);
+  }
+}
+
+function getCoursesEndpoint() {
+  const base = state.connection.apiUrl.replace(/\/+$/, "");
+  return `${base}/courses?tenant=${encodeURIComponent(state.connection.tenant)}`;
+}
+
+function getApiHeaders() {
+  const headers = { "Content-Type": "application/json" };
+  if (state.connection.token) {
+    headers.Authorization = `Bearer ${state.connection.token}`;
+  }
+  return headers;
+}
+
+function isRemoteEnabled() {
+  ensureConnection();
+  return state.connection.mode === "api" && Boolean(state.connection.apiUrl);
+}
+
+function ensureConnection() {
+  if (!state.connection) {
+    state.connection = structuredClone(defaultState.connection);
+  }
+  state.connection.mode = state.connection.mode || "local";
+  state.connection.apiUrl = state.connection.apiUrl || "";
+  state.connection.tenant = state.connection.tenant || "empresa-demo";
+  state.connection.token = state.connection.token || "";
+  return state.connection;
+}
+
+function normalizeRemoteCourses(remoteCourses) {
+  return remoteCourses
+    .filter((course) => course && course.title)
+    .map((course, index) => ({
+      id: course.id || `remote-${Date.now()}-${index}`,
+      custom: true,
+      title: String(course.title),
+      audience: areas[course.audience] ? course.audience : "general",
+      duration: course.duration || "30 min",
+      type: "Propio",
+      plans: Array.isArray(course.plans) && course.plans.length ? course.plans : ["professional", "enterprise"],
+      topics: Array.isArray(course.topics) && course.topics.length
+        ? course.topics
+        : (course.lessons || []).map((lesson) => lesson.title).filter(Boolean),
+      overview: course.overview || "Curso propio sincronizado desde API.",
+      lessons: Array.isArray(course.lessons) && course.lessons.length
+        ? course.lessons
+        : [
+            {
+              title: "Leccion inicial",
+              duration: "8 min",
+              body: "Contenido pendiente por completar.",
+              scenario: "Caso pendiente.",
+              actions: ["Completar contenido"],
+              takeaways: ["Completar aprendizaje"]
+            }
+          ],
+      quiz: Array.isArray(course.quiz) && course.quiz.length
+        ? course.quiz
+        : [
+            {
+              text: "Pregunta pendiente por configurar",
+              options: ["Opcion A", "Opcion B", "Opcion C"],
+              correct: 0
+            }
+          ]
+    }));
+}
+
+function setConnectionStatus(message) {
+  elements.connectionStatus.textContent = message;
 }
 
 function startCourse(courseId, shouldScroll = false) {
@@ -1664,6 +1878,14 @@ function normalizeState(nextState) {
   if (!nextState.courseProgress || Array.isArray(nextState.courseProgress)) {
     nextState.courseProgress = {};
   }
+  if (!nextState.connection) {
+    nextState.connection = structuredClone(defaultState.connection);
+  }
+  nextState.connection.mode = nextState.connection.mode || "local";
+  nextState.connection.apiUrl = nextState.connection.apiUrl || "";
+  nextState.connection.tenant = nextState.connection.tenant || "empresa-demo";
+  nextState.connection.token = nextState.connection.token || "";
+  nextState.connection.lastSync = nextState.connection.lastSync || null;
   return nextState;
 }
 

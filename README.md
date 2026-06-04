@@ -50,6 +50,41 @@ La plataforma incluye una seccion `Crear` para que puedas armar tus propios curs
 
 En esta version estatica los cursos se guardan en el navegador con `localStorage`. Para que varios empleados compartan los mismos cursos, usuarios, calificaciones y reportes centrales, el siguiente paso es conectarlo a un backend o a un LMS como Moodle.
 
+## Conexion API
+
+La seccion `Conectar` permite sincronizar cursos propios con un backend externo. GitHub Pages no ejecuta backend, por eso DOGUI usa una conexion configurable.
+
+Contrato esperado:
+
+```http
+GET /courses?tenant=empresa
+```
+
+Respuesta:
+
+```json
+{
+  "courses": []
+}
+```
+
+Guardar cursos:
+
+```http
+PUT /courses?tenant=empresa
+```
+
+Body:
+
+```json
+{
+  "tenant": "empresa",
+  "courses": []
+}
+```
+
+Si el backend no soporta `PUT`, la plataforma intenta `POST`. Para conectar Moodle, lo recomendable es crear un middleware DOGUI que reciba este contrato y lo traduzca a los web services de Moodle.
+
 ## Como abrirlo
 
 Abre `index.html` en tu navegador.

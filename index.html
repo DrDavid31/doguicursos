@@ -24,6 +24,7 @@
           <a href="#planes">Planes</a>
           <a href="#cursos">Cursos</a>
           <a href="#crear">Crear</a>
+          <a href="#conectar">Conectar</a>
           <a href="#aula">Aula</a>
           <a href="#operacion">Operacion</a>
           <a href="#reportes">Reportes</a>
@@ -252,6 +253,89 @@
                 <h3>Mis cursos creados</h3>
               </div>
               <div class="custom-course-list" id="customCoursesList"></div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="section-block connection-band" id="conectar">
+          <div class="section-heading">
+            <p class="eyebrow">Sincronizacion</p>
+            <h2>Conectar cursos a un backend</h2>
+          </div>
+
+          <div class="connection-layout">
+            <form class="tool-panel connection-panel" id="connectionForm">
+              <div class="panel-title">
+                <i data-lucide="plug-zap" aria-hidden="true"></i>
+                <h3>Conexion API</h3>
+              </div>
+
+              <label>
+                Modo
+                <select id="storageMode">
+                  <option value="local">Local en navegador</option>
+                  <option value="api">API remota</option>
+                </select>
+              </label>
+
+              <label>
+                URL base del API
+                <input id="apiBaseUrl" type="url" placeholder="https://api.tudominio.com/dogui" />
+              </label>
+
+              <div class="builder-fields">
+                <label>
+                  Empresa / tenant
+                  <input id="apiTenant" type="text" placeholder="empresa-demo" />
+                </label>
+                <label>
+                  Token API
+                  <input id="apiToken" type="password" placeholder="Bearer token opcional" />
+                </label>
+                <label>
+                  Ultima sincronizacion
+                  <input id="lastSync" type="text" readonly />
+                </label>
+              </div>
+
+              <div class="connection-actions">
+                <button class="button primary" id="saveConnectionBtn" type="button">
+                  <i data-lucide="save" aria-hidden="true"></i>
+                  Guardar conexion
+                </button>
+                <button class="button ghost" id="testConnectionBtn" type="button">
+                  <i data-lucide="wifi" aria-hidden="true"></i>
+                  Probar
+                </button>
+                <button class="button ghost" id="pullCoursesBtn" type="button">
+                  <i data-lucide="download-cloud" aria-hidden="true"></i>
+                  Descargar cursos
+                </button>
+                <button class="button ghost" id="pushCoursesBtn" type="button">
+                  <i data-lucide="upload-cloud" aria-hidden="true"></i>
+                  Subir cursos
+                </button>
+              </div>
+
+              <div class="status-line" id="connectionStatus">Modo local activo.</div>
+            </form>
+
+            <aside class="tool-panel api-contract-panel">
+              <div class="panel-title">
+                <i data-lucide="braces" aria-hidden="true"></i>
+                <h3>Contrato esperado</h3>
+              </div>
+              <p>
+                DOGUI puede sincronizar tus cursos propios con cualquier backend que exponga estos endpoints.
+              </p>
+              <pre><code>GET /courses?tenant=empresa
+Respuesta: { "courses": [...] }
+
+PUT /courses?tenant=empresa
+Body: { "tenant": "empresa", "courses": [...] }</code></pre>
+              <p>
+                Para Moodle, lo recomendable es usar un middleware que traduzca este contrato a la API de Moodle.
+              </p>
             </aside>
           </div>
         </section>
