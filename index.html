@@ -4,10 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DOGUI Awareness</title>
-    <link rel="stylesheet" href="styles.css?v=baf3fdb" />
+    <meta name="description" content="Plataforma DOGUI Awareness para cursos, evaluaciones, certificados, phishing simulado y reportes de ciberseguridad." />
+    <meta name="theme-color" content="#087f75" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="stylesheet" href="styles.css?v=ui-polish-20260606" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="course-content.js?v=baf3fdb" defer></script>
-    <script src="app.js?v=baf3fdb" defer></script>
+    <script src="course-content.js?v=ui-polish-20260606" defer></script>
+    <script src="app.js?v=ui-polish-20260606" defer></script>
   </head>
   <body>
     <div class="app-shell">
@@ -71,10 +74,34 @@
                 <small>aprobacion</small>
               </article>
             </div>
+
+            <div class="hero-status-grid" aria-label="Estado de plataforma">
+              <article>
+                <i data-lucide="book-marked" aria-hidden="true"></i>
+                <div>
+                  <small>Curso activo</small>
+                  <strong id="heroActiveCourse">Curso</strong>
+                </div>
+              </article>
+              <article>
+                <i data-lucide="cloud" aria-hidden="true"></i>
+                <div>
+                  <small>Sincronizacion</small>
+                  <strong id="heroConnectionStatus">Local</strong>
+                </div>
+              </article>
+              <article>
+                <i data-lucide="sparkles" aria-hidden="true"></i>
+                <div>
+                  <small>Cursos propios</small>
+                  <strong id="heroCustomCourses">0</strong>
+                </div>
+              </article>
+            </div>
           </div>
 
           <div class="overview-visual">
-            <img src="assets/awareness-dashboard.png?v=baf3fdb" alt="Dashboard visual de DOGUI Awareness" />
+            <img src="assets/awareness-dashboard.png?v=ui-polish-20260606" alt="Dashboard visual de DOGUI Awareness" loading="eager" decoding="async" />
           </div>
         </section>
 
@@ -90,6 +117,14 @@
           <div class="section-heading">
             <p class="eyebrow">Contenido incluido</p>
             <h2>Catalogo de cursos</h2>
+          </div>
+
+          <div class="catalog-toolbar">
+            <label class="search-field" for="courseSearch">
+              <i data-lucide="search" aria-hidden="true"></i>
+              <input id="courseSearch" type="search" placeholder="Buscar curso, tema o area" autocomplete="off" />
+            </label>
+            <strong id="catalogCount">0 cursos visibles</strong>
           </div>
 
           <div class="tabs" id="audienceTabs" role="tablist" aria-label="Filtros de cursos">

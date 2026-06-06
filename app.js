@@ -415,6 +415,7 @@ const starterCourses = [
 const defaultState = {
   selectedPlan: "professional",
   activeAudience: "all",
+  courseSearch: "",
   company: "Empresa Demo",
   employee: "Nombre del empleado",
   area: "finance",
@@ -444,6 +445,7 @@ const defaultState = {
 const courseContent = window.DOGUI_COURSE_CONTENT || {};
 
 let state = loadState();
+let iconRenderQueued = false;
 
 const elements = {};
 
@@ -458,6 +460,8 @@ function bindElements() {
     "planSelect",
     "planCards",
     "courseGrid",
+    "courseSearch",
+    "catalogCount",
     "audienceTabs",
     "learningCourseTitle",
     "learningCourseOverview",
@@ -541,6 +545,9 @@ function bindElements() {
     "metricEmployees",
     "metricTrained",
     "metricApproval",
+    "heroActiveCourse",
+    "heroConnectionStatus",
+    "heroCustomCourses",
     "downloadReportBtn"
   ].forEach((id) => {
     elements[id] = document.getElementById(id);
@@ -565,6 +572,12 @@ function bindEvents() {
     saveState();
     renderCourses();
     renderTabs();
+  });
+
+  elements.courseSearch.addEventListener("input", (event) => {
+    state.courseSearch = event.target.value;
+    saveState();
+    renderCourses();
   });
 
   elements.courseGrid.addEventListener("click", (event) => {
@@ -714,11 +727,31 @@ function renderTabs() {
 }
 
 function renderCourses() {
+  elements.courseSearch.value = state.courseSearch || "";
+  const query = normalizeSearch(state.courseSearch || "");
   const filtered = getAllCourses().filter((course) => {
-    if (state.activeAudience === "all") return true;
-    if (state.activeAudience === "custom") return Boolean(course.custom);
-    return course.audience === state.activeAudience;
+    const audienceMatch =
+      state.activeAudience === "all" ||
+      (state.activeAudience === "custom" && Boolean(course.custom)) ||
+      course.audience === state.activeAudience;
+    if (!audienceMatch) return false;
+    if (!query) return true;
+    return getCourseSearchText(course).includes(query);
   });
+
+  elements.catalogCount.textContent = `${filtered.length} ${filtered.length === 1 ? "curso visible" : "cursos visibles"}`;
+
+  if (!filtered.length) {
+    elements.courseGrid.innerHTML = `
+      <article class="empty-catalog">
+        <i data-lucide="search-x" aria-hidden="true"></i>
+        <strong>No encontramos cursos con ese filtro.</strong>
+        <span>Cambia el texto de busqueda o selecciona otra area.</span>
+      </article>
+    `;
+    renderIcons();
+    return;
+  }
 
   elements.courseGrid.innerHTML = filtered
     .map((course) => {
@@ -1038,9 +1071,13 @@ function renderIntegrations() {
 }
 
 function renderOverview() {
+  const selectedCourse = getSelectedCourse();
   elements.metricEmployees.textContent = Number(state.employees).toLocaleString("es-MX");
   elements.metricTrained.textContent = `${percentage(state.trained, state.employees)}%`;
   elements.metricApproval.textContent = `${percentage(state.approved, Math.max(state.trained, 1))}%`;
+  elements.heroActiveCourse.textContent = selectedCourse?.title || "Sin curso";
+  elements.heroConnectionStatus.textContent = isRemoteEnabled() ? "API remota" : "Local";
+  elements.heroCustomCourses.textContent = String(state.customCourses.length);
 }
 
 function syncFormState() {
@@ -1385,6 +1422,7 @@ function saveConnectionConfig() {
   };
   saveState();
   renderConnection();
+  renderOverview();
   setConnectionStatus(isRemoteEnabled() ? "Conexion guardada. Puedes probar o sincronizar." : "Modo local guardado.");
 }
 
@@ -1597,6 +1635,26 @@ function getAvailableCourses() {
 
 function getAllCourses() {
   return [...courses, ...(state.customCourses || [])];
+}
+
+function getCourseSearchText(course) {
+  return normalizeSearch(
+    [
+      course.title,
+      course.type,
+      areas[course.audience],
+      ...(course.topics || []),
+      ...(getCourseLessons(course.id) || []).map((lesson) => lesson.title)
+    ].join(" ")
+  );
+}
+
+function normalizeSearch(value) {
+  return String(value)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
 }
 
 function getSelectedCourse() {
@@ -1907,7 +1965,12 @@ function escapeHtml(value) {
 }
 
 function renderIcons() {
-  if (window.lucide) {
-    window.lucide.createIcons();
+  if (!window.lucide || iconRenderQueued) {
+    return;
   }
+  iconRenderQueued = true;
+  requestAnimationFrame(() => {
+    window.lucide.createIcons();
+    iconRenderQueued = false;
+  });
 }
