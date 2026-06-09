@@ -1123,6 +1123,7 @@ function selectPlan(planId) {
   renderSimulation();
   renderReport();
   renderCertificate();
+  renderOverview();
 }
 
 function gradeQuiz() {
@@ -1136,8 +1137,8 @@ function gradeQuiz() {
     return;
   }
 
-  const answered = Object.keys(state.answers).length;
-  if (answered < activeQuestions.length) {
+  const answered = activeQuestions.every((_, index) => Object.prototype.hasOwnProperty.call(state.answers, index));
+  if (!answered) {
     elements.scoreBox.classList.remove("pass", "fail");
     elements.scoreBox.innerHTML = `
       <strong>Evaluacion incompleta</strong>
@@ -1165,7 +1166,8 @@ function gradeQuiz() {
 
 function runSimulation() {
   if (state.selectedPlan !== "enterprise") return;
-  const selected = campaigns.find((campaign) => campaign.id === state.campaignId);
+  const selected = campaigns.find((campaign) => campaign.id === state.campaignId) || campaigns[0];
+  state.campaignId = selected.id;
   const variation = () => Math.floor(Math.random() * 9) - 4;
   state.simulation = {
     opened: clamp(selected.base.opened + variation(), 10, 75),
@@ -1180,9 +1182,9 @@ function runSimulation() {
 }
 
 function resetDemo() {
-  const customCourses = structuredClone(state.customCourses || []);
-  const courseDraft = structuredClone(ensureCourseDraft());
-  state = structuredClone(defaultState);
+  const customCourses = cloneData(state.customCourses || []);
+  const courseDraft = cloneData(ensureCourseDraft());
+  state = cloneData(defaultState);
   state.customCourses = customCourses;
   state.courseDraft = courseDraft;
   saveState();
@@ -1330,8 +1332,8 @@ function saveCustomCourse() {
     plans: getPlanAccess(planId),
     topics: draft.lessons.map((lesson) => lesson.title),
     overview,
-    lessons: structuredClone(draft.lessons),
-    quiz: structuredClone(draft.quiz)
+    lessons: cloneData(draft.lessons),
+    quiz: cloneData(draft.quiz)
   };
 
   state.customCourses.push(course);
@@ -1532,7 +1534,7 @@ function isRemoteEnabled() {
 
 function ensureConnection() {
   if (!state.connection) {
-    state.connection = structuredClone(defaultState.connection);
+    state.connection = cloneData(defaultState.connection);
   }
   state.connection.mode = state.connection.mode || "local";
   state.connection.apiUrl = state.connection.apiUrl || "";
@@ -1542,42 +1544,20 @@ function ensureConnection() {
 }
 
 function normalizeRemoteCourses(remoteCourses) {
-  return remoteCourses
-    .filter((course) => course && course.title)
-    .map((course, index) => ({
-      id: course.id || `remote-${Date.now()}-${index}`,
-      custom: true,
-      title: String(course.title),
-      audience: areas[course.audience] ? course.audience : "general",
-      duration: course.duration || "30 min",
-      type: "Propio",
-      plans: Array.isArray(course.plans) && course.plans.length ? course.plans : ["professional", "enterprise"],
-      topics: Array.isArray(course.topics) && course.topics.length
-        ? course.topics
-        : (course.lessons || []).map((lesson) => lesson.title).filter(Boolean),
-      overview: course.overview || "Curso propio sincronizado desde API.",
-      lessons: Array.isArray(course.lessons) && course.lessons.length
-        ? course.lessons
-        : [
-            {
-              title: "Leccion inicial",
-              duration: "8 min",
-              body: "Contenido pendiente por completar.",
-              scenario: "Caso pendiente.",
-              actions: ["Completar contenido"],
-              takeaways: ["Completar aprendizaje"]
-            }
-          ],
-      quiz: Array.isArray(course.quiz) && course.quiz.length
-        ? course.quiz
-        : [
-            {
-              text: "Pregunta pendiente por configurar",
-              options: ["Opcion A", "Opcion B", "Opcion C"],
-              correct: 0
-            }
-          ]
-    }));
+  const normalizedCourses = remoteCourses
+    .map((course, index) =>
+      normalizeCustomCourse(
+        {
+          ...course,
+          id: course?.id || `remote-${Date.now()}-${index}`,
+          overview: course?.overview || "Curso propio sincronizado desde API."
+        },
+        index,
+        "remote"
+      )
+    )
+    .filter(Boolean);
+  return ensureUniqueCourseIds(normalizedCourses);
 }
 
 function setConnectionStatus(message) {
@@ -1601,6 +1581,7 @@ function startCourse(courseId, shouldScroll = false) {
   renderTraining();
   renderCertificate();
   renderReport();
+  renderOverview();
   if (shouldScroll) {
     document.getElementById("aula")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -1728,6 +1709,13 @@ function ensureCourseProgress(courseId) {
   if (!Array.isArray(state.courseProgress[courseId].completedLessons)) {
     state.courseProgress[courseId].completedLessons = [];
   }
+  state.courseProgress[courseId].completedLessons = [
+    ...new Set(
+      state.courseProgress[courseId].completedLessons
+        .map((index) => Number(index))
+        .filter((index) => Number.isInteger(index) && index >= 0)
+    )
+  ];
 
   return state.courseProgress[courseId];
 }
@@ -1916,35 +1904,249 @@ function downloadPdf(filename, pdfTextValue) {
 function loadState() {
   try {
     const stored = localStorage.getItem("doguiAwarenessState");
-    return normalizeState(stored ? { ...structuredClone(defaultState), ...JSON.parse(stored) } : structuredClone(defaultState));
+    return normalizeState(stored ? { ...cloneData(defaultState), ...JSON.parse(stored) } : cloneData(defaultState));
   } catch {
-    return normalizeState(structuredClone(defaultState));
+    return normalizeState(cloneData(defaultState));
   }
 }
 
 function saveState() {
-  localStorage.setItem("doguiAwarenessState", JSON.stringify(state));
+  try {
+    localStorage.setItem("doguiAwarenessState", JSON.stringify(state));
+  } catch {
+    // La app debe seguir funcionando aunque el navegador bloquee o llene localStorage.
+  }
 }
 
 function normalizeState(nextState) {
+  if (!plans[nextState.selectedPlan]) {
+    nextState.selectedPlan = defaultState.selectedPlan;
+  }
+  const validAudiences = ["all", "custom", ...Object.keys(areas)];
+  if (!validAudiences.includes(nextState.activeAudience)) {
+    nextState.activeAudience = defaultState.activeAudience;
+  }
+  nextState.courseSearch = String(nextState.courseSearch || "");
+  nextState.company = String(nextState.company || defaultState.company);
+  nextState.employee = String(nextState.employee || defaultState.employee);
+  nextState.area = areas[nextState.area] ? nextState.area : defaultState.area;
+  nextState.employees = clamp(Number(nextState.employees) || defaultState.employees, 1, 5000);
+  nextState.trained = clamp(Number(nextState.trained) || 0, 0, nextState.employees);
+  nextState.approved = clamp(Number(nextState.approved) || 0, 0, nextState.trained);
+  nextState.activeLessonIndex = Math.max(Number(nextState.activeLessonIndex) || 0, 0);
+  const scoreValue = Number(nextState.score);
+  nextState.score =
+    nextState.score === null || nextState.score === undefined || nextState.score === "" || !Number.isFinite(scoreValue)
+      ? null
+      : clamp(Math.round(scoreValue), 0, 100);
+  nextState.completed = Boolean(nextState.completed);
+  nextState.passed = Boolean(nextState.passed);
+  if (!nextState.answers || typeof nextState.answers !== "object" || Array.isArray(nextState.answers)) {
+    nextState.answers = {};
+  } else {
+    nextState.answers = Object.fromEntries(
+      Object.entries(nextState.answers)
+        .map(([questionIndex, answerIndex]) => [questionIndex, Number(answerIndex)])
+        .filter(([questionIndex, answerIndex]) => {
+          return Number.isInteger(Number(questionIndex)) && Number.isInteger(answerIndex) && answerIndex >= 0;
+        })
+    );
+  }
   if (!Array.isArray(nextState.customCourses)) {
     nextState.customCourses = [];
   }
+  nextState.customCourses = nextState.customCourses
+    .map((course, index) => normalizeCustomCourse(course, index, "custom"))
+    .filter(Boolean);
+  nextState.customCourses = ensureUniqueCourseIds(nextState.customCourses);
   if (!nextState.courseDraft || !Array.isArray(nextState.courseDraft.lessons) || !Array.isArray(nextState.courseDraft.quiz)) {
     nextState.courseDraft = { lessons: [], quiz: [] };
+  } else {
+    nextState.courseDraft = {
+      lessons: normalizeLessons(nextState.courseDraft.lessons, false),
+      quiz: normalizeQuiz(nextState.courseDraft.quiz, false)
+    };
   }
   if (!nextState.courseProgress || Array.isArray(nextState.courseProgress)) {
     nextState.courseProgress = {};
+  } else {
+    nextState.courseProgress = Object.fromEntries(
+      Object.entries(nextState.courseProgress).map(([courseId, progress]) => [
+        courseId,
+        normalizeProgress(progress)
+      ])
+    );
   }
   if (!nextState.connection) {
-    nextState.connection = structuredClone(defaultState.connection);
+    nextState.connection = cloneData(defaultState.connection);
   }
   nextState.connection.mode = nextState.connection.mode || "local";
+  if (!["local", "api"].includes(nextState.connection.mode)) {
+    nextState.connection.mode = "local";
+  }
   nextState.connection.apiUrl = nextState.connection.apiUrl || "";
   nextState.connection.tenant = nextState.connection.tenant || "empresa-demo";
   nextState.connection.token = nextState.connection.token || "";
   nextState.connection.lastSync = nextState.connection.lastSync || null;
+  const allCourses = [...courses, ...nextState.customCourses];
+  const available = allCourses.filter((course) => course.plans.includes(nextState.selectedPlan));
+  if (!available.some((course) => course.id === nextState.courseId)) {
+    nextState.courseId = available[0]?.id || defaultState.courseId;
+    nextState.activeLessonIndex = 0;
+    nextState.answers = {};
+    nextState.score = null;
+    nextState.passed = false;
+  }
+  const selectedCampaign = campaigns.find((campaign) => campaign.id === nextState.campaignId) || campaigns[0];
+  nextState.campaignId = selectedCampaign.id;
+  nextState.simulation = normalizeSimulation(nextState.simulation, selectedCampaign);
   return nextState;
+}
+
+function normalizeCustomCourse(course, index, prefix) {
+  const title = String(course?.title || "").trim();
+  if (!title) return null;
+  const id = normalizeCourseId(course.id, `${prefix}-${Date.now()}-${index}`);
+  const lessons = normalizeLessons(course.lessons, true);
+  const quiz = normalizeQuiz(course.quiz, true);
+  const coursePlans = Array.isArray(course.plans)
+    ? course.plans.filter((planId) => plans[planId])
+    : [];
+  const topics = Array.isArray(course.topics) && course.topics.length
+    ? course.topics.map((topic) => String(topic)).filter(Boolean)
+    : lessons.map((lesson) => lesson.title);
+
+  return {
+    id,
+    custom: true,
+    title,
+    audience: areas[course.audience] ? course.audience : "general",
+    duration: String(course.duration || "30 min"),
+    type: "Propio",
+    plans: coursePlans.length ? coursePlans : ["professional", "enterprise"],
+    topics,
+    overview: String(course.overview || "Curso propio creado en DOGUI Awareness."),
+    lessons,
+    quiz
+  };
+}
+
+function normalizeLessons(lessons, withFallback) {
+  const normalized = Array.isArray(lessons)
+    ? lessons
+        .filter((lesson) => lesson && (lesson.title || lesson.body))
+        .map((lesson, index) => ({
+          title: String(lesson.title || `Leccion ${index + 1}`),
+          duration: String(lesson.duration || "8 min"),
+          body: String(lesson.body || "Contenido pendiente por completar."),
+          scenario: String(lesson.scenario || "Caso pendiente."),
+          actions: normalizeStringList(lesson.actions, ["Completar contenido"]),
+          takeaways: normalizeStringList(lesson.takeaways, ["Completar aprendizaje"])
+        }))
+    : [];
+
+  if (normalized.length || !withFallback) return normalized;
+  return [
+    {
+      title: "Leccion inicial",
+      duration: "8 min",
+      body: "Contenido pendiente por completar.",
+      scenario: "Caso pendiente.",
+      actions: ["Completar contenido"],
+      takeaways: ["Completar aprendizaje"]
+    }
+  ];
+}
+
+function normalizeQuiz(quiz, withFallback) {
+  const normalized = Array.isArray(quiz)
+    ? quiz
+        .filter((question) => question && question.text)
+        .map((question) => {
+          const options = normalizeStringList(question.options, ["Opcion A", "Opcion B", "Opcion C"]).slice(0, 3);
+          while (options.length < 3) {
+            options.push(`Opcion ${String.fromCharCode(65 + options.length)}`);
+          }
+          return {
+            text: String(question.text),
+            options,
+            correct: clamp(Number(question.correct) || 0, 0, options.length - 1)
+          };
+        })
+    : [];
+
+  if (normalized.length || !withFallback) return normalized;
+  return [
+    {
+      text: "Pregunta pendiente por configurar",
+      options: ["Opcion A", "Opcion B", "Opcion C"],
+      correct: 0
+    }
+  ];
+}
+
+function normalizeStringList(value, fallback) {
+  const items = Array.isArray(value)
+    ? value.map((item) => String(item).trim()).filter(Boolean)
+    : [];
+  return items.length ? items : fallback;
+}
+
+function normalizeProgress(progress) {
+  const completedLessons = Array.isArray(progress?.completedLessons)
+    ? [...new Set(progress.completedLessons.map((index) => Number(index)).filter((index) => Number.isInteger(index) && index >= 0))]
+    : [];
+  return {
+    completedLessons,
+    status: ["not-started", "in-progress", "completed"].includes(progress?.status) ? progress.status : "not-started",
+    updatedAt: progress?.updatedAt || null
+  };
+}
+
+function ensureUniqueCourseIds(customCourses) {
+  const used = new Set(courses.map((course) => course.id));
+  return customCourses.map((course, index) => {
+    const baseId = normalizeCourseId(course.id, `custom-${index}`);
+    let id = baseId;
+    let suffix = 2;
+    while (used.has(id)) {
+      id = `${baseId}-${suffix}`;
+      suffix += 1;
+    }
+    used.add(id);
+    return id === course.id ? course : { ...course, id };
+  });
+}
+
+function normalizeCourseId(value, fallback) {
+  const normalized = String(value || fallback)
+    .trim()
+    .replace(/[^a-z0-9_-]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+  return normalized || fallback;
+}
+
+function normalizeSimulation(simulation, campaign) {
+  const source = simulation && typeof simulation === "object" ? simulation : campaign.base;
+  const numberOrFallback = (value, fallback) => {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : fallback;
+  };
+  return {
+    opened: clamp(numberOrFallback(source.opened, campaign.base.opened), 0, 100),
+    clicked: clamp(numberOrFallback(source.clicked, campaign.base.clicked), 0, 100),
+    reported: clamp(numberOrFallback(source.reported, campaign.base.reported), 0, 100),
+    submitted: clamp(numberOrFallback(source.submitted, campaign.base.submitted), 0, 100),
+    riskArea: String(source.riskArea || campaign.riskArea)
+  };
+}
+
+function cloneData(value) {
+  if (typeof structuredClone === "function") {
+    return structuredClone(value);
+  }
+  return JSON.parse(JSON.stringify(value));
 }
 
 function percentage(value, total) {
