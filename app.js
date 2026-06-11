@@ -461,6 +461,7 @@ function bindElements() {
     "planCards",
     "courseGrid",
     "courseSearch",
+    "clearCourseSearchBtn",
     "catalogCount",
     "audienceTabs",
     "learningCourseTitle",
@@ -541,6 +542,9 @@ function bindElements() {
     "testConnectionBtn",
     "pullCoursesBtn",
     "pushCoursesBtn",
+    "downloadCoursesJsonBtn",
+    "importCoursesJsonBtn",
+    "importCoursesFile",
     "connectionStatus",
     "metricEmployees",
     "metricTrained",
@@ -579,6 +583,8 @@ function bindEvents() {
     saveState();
     renderCourses();
   });
+
+  elements.clearCourseSearchBtn.addEventListener("click", clearCourseSearch);
 
   elements.courseGrid.addEventListener("click", (event) => {
     const startButton = event.target.closest("[data-start-course]");
@@ -645,6 +651,12 @@ function bindEvents() {
   elements.testConnectionBtn.addEventListener("click", testConnection);
   elements.pullCoursesBtn.addEventListener("click", pullCoursesFromRemote);
   elements.pushCoursesBtn.addEventListener("click", () => pushCoursesToRemote({ silent: false }));
+  elements.downloadCoursesJsonBtn.addEventListener("click", downloadCustomCoursesJson);
+  elements.importCoursesJsonBtn.addEventListener("click", () => {
+    elements.importCoursesFile.value = "";
+    elements.importCoursesFile.click();
+  });
+  elements.importCoursesFile.addEventListener("change", importCustomCoursesJson);
   elements.customCoursesList.addEventListener("click", (event) => {
     const startButton = event.target.closest("[data-start-course]");
     if (startButton) {
@@ -728,6 +740,7 @@ function renderTabs() {
 
 function renderCourses() {
   elements.courseSearch.value = state.courseSearch || "";
+  elements.clearCourseSearchBtn.hidden = !state.courseSearch;
   const query = normalizeSearch(state.courseSearch || "");
   const filtered = getAllCourses().filter((course) => {
     const audienceMatch =
@@ -796,6 +809,13 @@ function renderCourses() {
     })
     .join("");
   renderIcons();
+}
+
+function clearCourseSearch() {
+  state.courseSearch = "";
+  saveState();
+  renderCourses();
+  elements.courseSearch.focus();
 }
 
 function renderLearning() {
@@ -1409,6 +1429,7 @@ function renderConnection() {
   elements.testConnectionBtn.disabled = !isApi;
   elements.pullCoursesBtn.disabled = !isApi;
   elements.pushCoursesBtn.disabled = !isApi;
+  elements.downloadCoursesJsonBtn.disabled = !state.customCourses.length;
   elements.connectionStatus.textContent = isApi
     ? `API configurada para ${state.connection.tenant}. Cursos propios locales: ${state.customCourses.length}.`
     : `Modo local activo. Cursos propios guardados en este navegador: ${state.customCourses.length}.`;
@@ -1512,6 +1533,70 @@ async function pushCoursesToRemote({ silent = false } = {}) {
   } catch (error) {
     setConnectionStatus(`No se pudieron subir cursos: ${error.message}.`);
   }
+}
+
+function downloadCustomCoursesJson() {
+  if (!state.customCourses.length) {
+    setConnectionStatus("No hay cursos propios para exportar.");
+    return;
+  }
+
+  const courseLabel = state.customCourses.length === 1 ? "curso propio" : "cursos propios";
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    source: "DOGUI Awareness",
+    tenant: ensureConnection().tenant,
+    courses: state.customCourses
+  };
+  downloadFile("dogui-cursos-propios.json", JSON.stringify(payload, null, 2), "application/json");
+  setConnectionStatus(`Archivo JSON generado con ${state.customCourses.length} ${courseLabel}.`);
+}
+
+async function importCustomCoursesJson(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  setConnectionStatus("Importando cursos desde JSON...");
+  try {
+    const payload = JSON.parse(await readTextFile(file));
+    const importedCourses = Array.isArray(payload) ? payload : payload.courses;
+    if (!Array.isArray(importedCourses)) {
+      throw new Error("El archivo debe incluir un arreglo courses.");
+    }
+
+    const normalizedCourses = normalizeRemoteCourses(importedCourses);
+    if (!normalizedCourses.length) {
+      throw new Error("No se encontraron cursos validos.");
+    }
+
+    const importedIds = new Set(normalizedCourses.map((course) => course.id));
+    state.customCourses = ensureUniqueCourseIds([
+      ...state.customCourses.filter((course) => !importedIds.has(course.id)),
+      ...normalizedCourses
+    ]);
+    state.connection.lastSync = new Date().toISOString();
+    saveState();
+    renderAll();
+    const importedLabel = normalizedCourses.length === 1 ? "curso importado" : "cursos importados";
+    setConnectionStatus(`${normalizedCourses.length} ${importedLabel}. Total de cursos propios: ${state.customCourses.length}.`);
+  } catch (error) {
+    setConnectionStatus(`No se pudo importar JSON: ${error.message}.`);
+  } finally {
+    event.target.value = "";
+  }
+}
+
+function readTextFile(file) {
+  if (file.text) {
+    return file.text();
+  }
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("No se pudo leer el archivo."));
+    reader.readAsText(file);
+  });
 }
 
 function getCoursesEndpoint() {
@@ -1891,14 +1976,19 @@ function escapePdfText(value) {
 }
 
 function downloadPdf(filename, pdfTextValue) {
-  const blob = new Blob([pdfTextValue], { type: "application/pdf" });
+  downloadFile(filename, pdfTextValue, "application/pdf");
+}
+
+function downloadFile(filename, content, type) {
+  const blob = new Blob([content], { type });
   const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
+  const objectUrl = URL.createObjectURL(blob);
+  link.href = objectUrl;
   link.download = filename;
   document.body.appendChild(link);
   link.click();
   link.remove();
-  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
 }
 
 function loadState() {
