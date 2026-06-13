@@ -71,7 +71,7 @@ const courses = [
     id: "basic-course",
     title: "Curso basico para todos los empleados",
     audience: "general",
-    duration: "60 min",
+    duration: "82 min",
     type: "Entrada",
     plans: ["basic", "professional", "enterprise"],
     topics: [
@@ -91,7 +91,7 @@ const courses = [
     id: "finance-course",
     title: "Ruta para Finanzas y Administracion",
     audience: "finance",
-    duration: "35 min",
+    duration: "46 min",
     type: "Por area",
     plans: ["professional", "enterprise"],
     topics: [
@@ -107,7 +107,7 @@ const courses = [
     id: "hr-course",
     title: "Ruta para Recursos Humanos",
     audience: "hr",
-    duration: "30 min",
+    duration: "39 min",
     type: "Por area",
     plans: ["professional", "enterprise"],
     topics: [
@@ -122,7 +122,7 @@ const courses = [
     id: "direction-course",
     title: "Ruta para Direccion",
     audience: "direction",
-    duration: "30 min",
+    duration: "45 min",
     type: "Por area",
     plans: ["professional", "enterprise"],
     topics: [
@@ -138,7 +138,7 @@ const courses = [
     id: "it-course",
     title: "Ruta para TI",
     audience: "it",
-    duration: "40 min",
+    duration: "50 min",
     type: "Por area",
     plans: ["professional", "enterprise"],
     topics: [
@@ -154,7 +154,7 @@ const courses = [
     id: "monthly-course",
     title: "Microcursos mensuales",
     audience: "general",
-    duration: "10-15 min",
+    duration: "10-15 min c/u",
     type: "Mensual",
     plans: ["professional", "enterprise"],
     topics: [
@@ -164,6 +164,8 @@ const courses = [
       "Como crear contrasenas seguras",
       "Que es MFA y por que importa",
       "Como evitar fraudes con QR",
+      "Que hacer si abriste un archivo sospechoso",
+      "Como proteger informacion confidencial",
       "Fraudes con inteligencia artificial",
       "Como reportar un incidente"
     ]
@@ -172,7 +174,7 @@ const courses = [
     id: "phishing-course",
     title: "Simulaciones de phishing",
     audience: "general",
-    duration: "Campana",
+    duration: "60 min",
     type: "Medicion",
     plans: ["enterprise"],
     topics: [
@@ -181,7 +183,8 @@ const courses = [
       "WhatsApp falso de direccion",
       "Cambio de contrasena",
       "Alerta falsa de banco",
-      "Documento falso de proveedor"
+      "Documento falso de proveedor",
+      "Metricas y reporte ejecutivo"
     ]
   }
 ];
@@ -446,6 +449,9 @@ const courseContent = window.DOGUI_COURSE_CONTENT || {};
 
 let state = loadState();
 let iconRenderQueued = false;
+let stateSaveHandle = null;
+let stateSaveHandleType = null;
+const courseSearchCache = new Map();
 
 const elements = {};
 
@@ -453,6 +459,12 @@ document.addEventListener("DOMContentLoaded", () => {
   bindElements();
   renderAll();
   bindEvents();
+});
+window.addEventListener?.("pagehide", persistStateNow);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    persistStateNow();
+  }
 });
 
 function bindElements() {
@@ -692,7 +704,6 @@ function renderAll() {
   renderCourses();
   renderLearning();
   renderTraining();
-  renderCertificate();
   renderCampaignSelect();
   renderSimulation();
   renderReport();
@@ -739,9 +750,12 @@ function renderTabs() {
 }
 
 function renderCourses() {
-  elements.courseSearch.value = state.courseSearch || "";
+  const searchValue = state.courseSearch || "";
+  if (elements.courseSearch.value !== searchValue) {
+    elements.courseSearch.value = searchValue;
+  }
   elements.clearCourseSearchBtn.hidden = !state.courseSearch;
-  const query = normalizeSearch(state.courseSearch || "");
+  const query = normalizeSearch(searchValue);
   const filtered = getAllCourses().filter((course) => {
     const audienceMatch =
       state.activeAudience === "all" ||
@@ -1120,7 +1134,6 @@ function syncFormState() {
   renderCourses();
   renderLearning();
   renderTraining();
-  renderCertificate();
   renderOverview();
   renderReport();
 }
@@ -1142,7 +1155,6 @@ function selectPlan(planId) {
   renderTraining();
   renderSimulation();
   renderReport();
-  renderCertificate();
   renderOverview();
 }
 
@@ -1367,6 +1379,7 @@ function saveCustomCourse() {
   if (!course.plans.includes(state.selectedPlan)) {
     state.selectedPlan = planId;
   }
+  clearCourseSearchCache();
 
   elements.customCourseTitle.value = "";
   elements.customCourseDuration.value = "";
@@ -1397,6 +1410,7 @@ function clearCourseDraft() {
 function deleteCustomCourse(courseId) {
   state.customCourses = state.customCourses.filter((course) => course.id !== courseId);
   delete state.courseProgress[courseId];
+  clearCourseSearchCache();
   if (state.courseId === courseId) {
     state.courseId = getAvailableCourses()[0]?.id || "basic-course";
     state.activeLessonIndex = 0;
@@ -1487,6 +1501,7 @@ async function pullCoursesFromRemote() {
     }
 
     state.customCourses = normalizeRemoteCourses(remoteCourses);
+    clearCourseSearchCache();
     state.connection.lastSync = new Date().toISOString();
     if (!getAllCourses().some((course) => course.id === state.courseId)) {
       state.courseId = getAvailableCourses()[0]?.id || "basic-course";
@@ -1574,6 +1589,7 @@ async function importCustomCoursesJson(event) {
       ...state.customCourses.filter((course) => !importedIds.has(course.id)),
       ...normalizedCourses
     ]);
+    clearCourseSearchCache();
     state.connection.lastSync = new Date().toISOString();
     saveState();
     renderAll();
@@ -1664,7 +1680,6 @@ function startCourse(courseId, shouldScroll = false) {
   renderCourses();
   renderLearning();
   renderTraining();
-  renderCertificate();
   renderReport();
   renderOverview();
   if (shouldScroll) {
@@ -1691,7 +1706,6 @@ function completeCurrentLesson() {
   renderCourses();
   renderLearning();
   renderTraining();
-  renderCertificate();
   renderReport();
 }
 
@@ -1704,7 +1718,10 @@ function getAllCourses() {
 }
 
 function getCourseSearchText(course) {
-  return normalizeSearch(
+  const cached = courseSearchCache.get(course.id);
+  if (cached) return cached;
+
+  const searchText = normalizeSearch(
     [
       course.title,
       course.type,
@@ -1713,6 +1730,12 @@ function getCourseSearchText(course) {
       ...(getCourseLessons(course.id) || []).map((lesson) => lesson.title)
     ].join(" ")
   );
+  courseSearchCache.set(course.id, searchText);
+  return searchText;
+}
+
+function clearCourseSearchCache() {
+  courseSearchCache.clear();
 }
 
 function normalizeSearch(value) {
@@ -1775,7 +1798,38 @@ function getSelectedLessons() {
 }
 
 function getActiveQuizQuestions() {
-  return getCourseContent(state.courseId).quiz || questions;
+  const activeQuiz = getCourseContent(state.courseId).quiz || questions;
+  return activeQuiz.map((question, index) => getStableQuestionOptions(question, state.courseId, index));
+}
+
+function getStableQuestionOptions(question, courseId, questionIndex) {
+  if (!Array.isArray(question.options) || question.options.length < 2) return question;
+
+  const seedText = `${courseId}|${questionIndex}|${question.text}|${question.options.join("|")}`;
+  const shuffled = question.options.map((option, optionIndex) => ({ option, optionIndex }));
+  let seed = hashString(seedText);
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    const swapIndex = seed % (index + 1);
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+
+  const correct = shuffled.findIndex((item) => item.optionIndex === question.correct);
+  return {
+    ...question,
+    options: shuffled.map((item) => item.option),
+    correct: correct >= 0 ? correct : question.correct
+  };
+}
+
+function hashString(value) {
+  let hash = 2166136261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
 }
 
 function ensureCourseProgress(courseId) {
@@ -2001,6 +2055,28 @@ function loadState() {
 }
 
 function saveState() {
+  if (stateSaveHandle !== null) return;
+  const persist = () => persistStateNow();
+  if (typeof window.requestIdleCallback === "function") {
+    stateSaveHandle = window.requestIdleCallback(persist, { timeout: 600 });
+    stateSaveHandleType = "idle";
+  } else {
+    stateSaveHandle = setTimeout(persist, 80);
+    stateSaveHandleType = "timeout";
+  }
+}
+
+function persistStateNow() {
+  if (stateSaveHandle !== null) {
+    if (stateSaveHandleType === "idle" && typeof window.cancelIdleCallback === "function") {
+      window.cancelIdleCallback(stateSaveHandle);
+    } else if (stateSaveHandleType === "timeout") {
+      clearTimeout(stateSaveHandle);
+    }
+    stateSaveHandle = null;
+    stateSaveHandleType = null;
+  }
+
   try {
     localStorage.setItem("doguiAwarenessState", JSON.stringify(state));
   } catch {

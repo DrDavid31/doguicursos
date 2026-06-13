@@ -409,6 +409,13 @@ h3 {
   padding: clamp(34px, 5vw, 62px) clamp(18px, 5vw, 64px);
 }
 
+@supports (content-visibility: auto) {
+  .section-block {
+    content-visibility: auto;
+    contain-intrinsic-size: 900px;
+  }
+}
+
 .section-heading {
   display: grid;
   gap: 8px;
