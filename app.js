@@ -1257,7 +1257,7 @@ function renderIntegrations() {
 
           <div class="integration-actions">
             <a class="button ghost" href="${tool.repo}" target="_blank" rel="noopener noreferrer">
-              <i data-lucide="github" aria-hidden="true"></i>
+              <i data-lucide="code-2" aria-hidden="true"></i>
               GitHub
             </a>
             <a class="button primary" href="${tool.site}" target="_blank" rel="noopener noreferrer">

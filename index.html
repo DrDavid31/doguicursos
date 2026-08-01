@@ -9,12 +9,11 @@
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://www.youtube.com" />
     <link rel="preconnect" href="https://i.ytimg.com" />
-    <link rel="preload" as="image" href="assets/awareness-dashboard.png?v=courses-20260801c" />
-    <link rel="stylesheet" href="styles.css?v=courses-20260801c" />
+    <link rel="stylesheet" href="styles.css?v=courses-20260801e" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
     <script src="https://www.youtube.com/iframe_api" defer></script>
-    <script src="course-content.js?v=courses-20260801c" defer></script>
-    <script src="app.js?v=courses-20260801c" defer></script>
+    <script src="course-content.js?v=courses-20260801e" defer></script>
+    <script src="app.js?v=courses-20260801e" defer></script>
   </head>
   <body>
     <div class="app-shell">
@@ -46,6 +45,21 @@
 
       <main>
         <section class="overview-band" id="overview">
+          <div class="hero-field" aria-hidden="true"></div>
+          <div class="hero-glow" aria-hidden="true"></div>
+          <svg class="hero-radar" viewBox="0 0 500 500" aria-hidden="true">
+            <circle cx="250" cy="250" r="80" />
+            <circle cx="250" cy="250" r="150" />
+            <circle cx="250" cy="250" r="220" />
+            <g class="radar-sweep">
+              <path d="M250 250 L250 30 A220 220 0 0 1 405 105 Z" fill="currentColor" opacity="0.14" />
+            </g>
+            <circle class="radar-blip" cx="330" cy="160" r="4" style="animation-delay: 0s" />
+            <circle class="radar-blip" cx="150" cy="310" r="4" style="animation-delay: 0.8s" />
+            <circle class="radar-blip" cx="360" cy="320" r="4" style="animation-delay: 1.6s" />
+            <circle class="radar-blip" cx="200" cy="140" r="4" style="animation-delay: 2.3s" />
+          </svg>
+
           <div class="overview-copy">
             <p class="eyebrow">Concientizacion en ciberseguridad</p>
             <h1>DOGUI Awareness</h1>
@@ -105,7 +119,52 @@
           </div>
 
           <div class="overview-visual">
-            <img src="assets/awareness-dashboard.png?v=courses-20260801c" alt="Dashboard visual de DOGUI Awareness" width="1693" height="929" loading="eager" decoding="async" fetchpriority="high" />
+            <aside class="hero-panel" aria-label="Vista ejecutiva de DOGUI Awareness">
+              <div class="panel-topline">
+                <span class="panel-status">Plataforma lista para capacitar</span>
+                <span class="panel-pill">LIVE</span>
+              </div>
+
+              <h2>Del riesgo humano al control medible</h2>
+
+              <div class="panel-metrics">
+                <div>
+                  <i data-lucide="radar" aria-hidden="true"></i>
+                  <strong>01</strong>
+                  <span>Detectar</span>
+                </div>
+                <div>
+                  <i data-lucide="graduation-cap" aria-hidden="true"></i>
+                  <strong>02</strong>
+                  <span>Capacitar</span>
+                </div>
+                <div>
+                  <i data-lucide="bar-chart-3" aria-hidden="true"></i>
+                  <strong>03</strong>
+                  <span>Medir</span>
+                </div>
+              </div>
+
+              <div class="panel-stack" aria-label="Capas de DOGUI Awareness">
+                <div>
+                  <i data-lucide="video" aria-hidden="true"></i>
+                  <span>Aula con video obligatorio</span>
+                  <strong>Sin saltos, avance secuencial y evaluado</strong>
+                </div>
+                <div>
+                  <i data-lucide="mail-warning" aria-hidden="true"></i>
+                  <span>Phishing simulado</span>
+                  <strong>Campanas controladas y metricas por area</strong>
+                </div>
+                <div>
+                  <i data-lucide="award" aria-hidden="true"></i>
+                  <span>Reconocimiento y reporte</span>
+                  <strong>Certificado PDF y reporte ejecutivo mensual</strong>
+                </div>
+              </div>
+
+              <p>Aula, evaluacion, phishing simulado y reportes coordinados en una sola plataforma DOGUI.</p>
+            </aside>
           </div>
         </section>
 

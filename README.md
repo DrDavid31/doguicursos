@@ -126,7 +126,6 @@ dogui-awareness/
   app.js
   course-content.js
   assets/
-    awareness-dashboard.png
     fonts/
       space-grotesk-variable.woff2
       space-mono-400.woff2
