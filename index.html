@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DOGUI Awareness</title>
     <meta name="description" content="Plataforma DOGUI Awareness para cursos, evaluaciones, certificados, phishing simulado y reportes de ciberseguridad." />
-    <meta name="theme-color" content="#087f75" />
+    <meta name="theme-color" content="#0b0d10" />
     <link rel="preconnect" href="https://unpkg.com" />
-    <link rel="preload" as="image" href="assets/awareness-dashboard.png?v=courses-20260613" />
-    <link rel="stylesheet" href="styles.css?v=courses-20260613" />
+    <link rel="preconnect" href="https://www.youtube.com" />
+    <link rel="preconnect" href="https://i.ytimg.com" />
+    <link rel="preload" as="image" href="assets/awareness-dashboard.png?v=courses-20260801c" />
+    <link rel="stylesheet" href="styles.css?v=courses-20260801c" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-    <script src="course-content.js?v=courses-20260613" defer></script>
-    <script src="app.js?v=courses-20260613" defer></script>
+    <script src="https://www.youtube.com/iframe_api" defer></script>
+    <script src="course-content.js?v=courses-20260801c" defer></script>
+    <script src="app.js?v=courses-20260801c" defer></script>
   </head>
   <body>
     <div class="app-shell">
@@ -102,7 +105,7 @@
           </div>
 
           <div class="overview-visual">
-            <img src="assets/awareness-dashboard.png?v=courses-20260613" alt="Dashboard visual de DOGUI Awareness" width="1693" height="929" loading="eager" decoding="async" fetchpriority="high" />
+            <img src="assets/awareness-dashboard.png?v=courses-20260801c" alt="Dashboard visual de DOGUI Awareness" width="1693" height="929" loading="eager" decoding="async" fetchpriority="high" />
           </div>
         </section>
 
@@ -419,9 +422,23 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
                 <span class="pill" id="lessonCounter">Leccion 1</span>
                 <span class="pill warn" id="lessonDuration">0 min</span>
                 <span class="pill" id="lessonStatus">Pendiente</span>
+                <span class="pill video-pending" id="lessonVideoPill">Video pendiente</span>
               </div>
 
               <h3 id="lessonTitle">Selecciona un curso</h3>
+
+              <div class="lesson-video" id="lessonVideoBlock">
+                <div class="lesson-video-frame" id="lessonVideoFrame"></div>
+                <div class="video-gate" id="videoGate" role="status" aria-live="polite">
+                  <span class="icon"><i data-lucide="lock" aria-hidden="true"></i></span>
+                  <div>
+                    <strong id="videoGateTitle">Video obligatorio</strong>
+                    <span id="videoGateText">Mira el video completo para desbloquear "Completar leccion". No puedes adelantarlo ni saltarlo.</span>
+                  </div>
+                </div>
+                <span class="video-source" id="videoSource"></span>
+              </div>
+
               <p id="lessonBody" class="lesson-body"></p>
 
               <div class="lesson-detail-grid">

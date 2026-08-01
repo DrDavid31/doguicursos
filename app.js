@@ -425,6 +425,7 @@ const defaultState = {
   courseId: "finance-course",
   activeLessonIndex: 0,
   courseProgress: {},
+  videoWatched: {},
   customCourses: [],
   courseDraft: { lessons: [], quiz: [] },
   connection: {
@@ -485,6 +486,13 @@ function bindElements() {
     "lessonDuration",
     "lessonStatus",
     "lessonTitle",
+    "lessonVideoBlock",
+    "lessonVideoFrame",
+    "videoGate",
+    "videoGateTitle",
+    "videoGateText",
+    "videoSource",
+    "lessonVideoPill",
     "lessonBody",
     "lessonScenario",
     "lessonActions",
@@ -622,7 +630,7 @@ function bindEvents() {
 
   elements.lessonList.addEventListener("click", (event) => {
     const button = event.target.closest("[data-lesson-index]");
-    if (!button) return;
+    if (!button || button.disabled) return;
     state.activeLessonIndex = Number(button.dataset.lessonIndex);
     saveState();
     renderLearning();
@@ -635,7 +643,11 @@ function bindEvents() {
   });
 
   elements.nextLessonBtn.addEventListener("click", () => {
-    state.activeLessonIndex = clamp(state.activeLessonIndex + 1, 0, getSelectedLessons().length - 1);
+    const course = getSelectedCourse();
+    const maxUnlocked = getMaxUnlockedLessonIndex(course.id);
+    const target = clamp(state.activeLessonIndex + 1, 0, getSelectedLessons().length - 1);
+    if (target > maxUnlocked) return;
+    state.activeLessonIndex = target;
     saveState();
     renderLearning();
   });
@@ -838,6 +850,10 @@ function renderLearning() {
   const lessons = getCourseLessons(course.id);
   const progress = ensureCourseProgress(course.id);
   state.activeLessonIndex = clamp(state.activeLessonIndex || 0, 0, lessons.length - 1);
+  const maxUnlocked = getMaxUnlockedLessonIndex(course.id);
+  if (state.activeLessonIndex > maxUnlocked) {
+    state.activeLessonIndex = maxUnlocked;
+  }
   const lesson = lessons[state.activeLessonIndex];
   const isCompleted = progress.completedLessons.includes(state.activeLessonIndex);
   const percent = getCourseProgressPercent(course.id);
@@ -851,9 +867,10 @@ function renderLearning() {
     .map((item, index) => {
       const done = progress.completedLessons.includes(index);
       const active = index === state.activeLessonIndex;
+      const locked = index > maxUnlocked;
       return `
-        <button class="lesson-nav-item${active ? " active" : ""}${done ? " done" : ""}" type="button" data-lesson-index="${index}">
-          <span>${done ? "OK" : String(index + 1).padStart(2, "0")}</span>
+        <button class="lesson-nav-item${active ? " active" : ""}${done ? " done" : ""}" type="button" data-lesson-index="${index}" ${locked ? "disabled" : ""}>
+          <span>${done ? "OK" : locked ? "..." : String(index + 1).padStart(2, "0")}</span>
           <strong>${escapeHtml(item.title)}</strong>
           <small>${escapeHtml(item.duration || "Leccion")}</small>
         </button>
@@ -871,14 +888,185 @@ function renderLearning() {
   elements.lessonActions.innerHTML = (lesson.actions || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
   elements.lessonTakeaways.innerHTML = (lesson.takeaways || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
   elements.prevLessonBtn.disabled = state.activeLessonIndex === 0;
-  elements.nextLessonBtn.disabled = state.activeLessonIndex === lessons.length - 1;
-  elements.completeLessonBtn.disabled = isCompleted;
-  elements.completeLessonBtn.innerHTML = `
-    <i data-lucide="${isCompleted ? "check" : "check-circle"}" aria-hidden="true"></i>
-    ${isCompleted ? "Leccion completada" : "Completar leccion"}
-  `;
+  elements.nextLessonBtn.disabled = state.activeLessonIndex === lessons.length - 1 || state.activeLessonIndex >= maxUnlocked;
+
+  const video = getLessonVideoInfo(lesson);
+  const lessonKey = getLessonKey(course.id, state.activeLessonIndex);
+  const watched = !video || Boolean(state.videoWatched[lessonKey]);
+  renderVideoBlock(video, lessonKey, watched);
+
+  elements.completeLessonBtn.disabled = isCompleted || !watched;
+  elements.completeLessonBtn.innerHTML = isCompleted
+    ? `<i data-lucide="check" aria-hidden="true"></i> Leccion completada`
+    : watched
+      ? `<i data-lucide="check-circle" aria-hidden="true"></i> Completar leccion`
+      : `<i data-lucide="lock" aria-hidden="true"></i> Termina el video para continuar`;
 
   renderIcons();
+}
+
+function getMaxUnlockedLessonIndex(courseId) {
+  const lessons = getCourseLessons(courseId);
+  if (!lessons.length) return 0;
+  return clamp(getNextLessonIndex(courseId), 0, lessons.length - 1);
+}
+
+function getLessonKey(courseId, lessonIndex) {
+  return `${courseId}::${lessonIndex}`;
+}
+
+function getLessonVideoInfo(lesson) {
+  const registry = window.DOGUI_LESSON_VIDEOS || {};
+  return lesson && lesson.video ? registry[lesson.video] || null : null;
+}
+
+function renderVideoBlock(video, lessonKey, watched) {
+  if (!elements.lessonVideoBlock) return;
+
+  if (!video) {
+    elements.lessonVideoBlock.hidden = true;
+    elements.lessonVideoPill.hidden = true;
+    destroyVideoPlayer();
+    return;
+  }
+
+  elements.lessonVideoBlock.hidden = false;
+  elements.lessonVideoPill.hidden = false;
+  elements.lessonVideoPill.textContent = watched ? "Video visto" : "Video pendiente";
+  elements.lessonVideoPill.classList.toggle("video-done", watched);
+  elements.lessonVideoPill.classList.toggle("video-pending", !watched);
+
+  elements.videoGate.classList.toggle("watched", watched);
+  elements.videoGateTitle.textContent = watched ? "Video completado" : "Video obligatorio";
+  elements.videoGateText.textContent = watched
+    ? "Ya puedes completar esta leccion."
+    : "Mira el video completo para desbloquear \"Completar leccion\". No puedes adelantarlo ni saltarlo.";
+  const gateIconWrap = elements.videoGate.querySelector(".icon");
+  if (gateIconWrap) {
+    gateIconWrap.innerHTML = `<i data-lucide="${watched ? "check-circle" : "lock"}" aria-hidden="true"></i>`;
+  }
+
+  elements.videoSource.innerHTML = `Fuente: <a href="${video.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(video.source || "YouTube")}</a>`;
+
+  loadLessonVideo(video, lessonKey, watched);
+}
+
+/* ------------------------------ video obligatorio -------------------------- */
+
+let ytPlayer = null;
+let ytPollHandle = null;
+let ytMaxWatchedSeconds = 0;
+let ytLoadedLessonKey = null;
+let ytPendingLoad = null;
+
+window.onYouTubeIframeAPIReady = function onYouTubeIframeAPIReady() {
+  if (ytPendingLoad) {
+    const { video, lessonKey, watched } = ytPendingLoad;
+    ytPendingLoad = null;
+    createYouTubePlayer(video, lessonKey, watched);
+  }
+};
+
+function loadLessonVideo(video, lessonKey, watched) {
+  if (lessonKey === ytLoadedLessonKey && ytPlayer) {
+    if (watched) {
+      ytMaxWatchedSeconds = Infinity;
+    }
+    return;
+  }
+
+  destroyVideoPlayer();
+  ytLoadedLessonKey = lessonKey;
+  ytMaxWatchedSeconds = watched ? Infinity : 0;
+
+  if (window.YT && window.YT.Player) {
+    createYouTubePlayer(video, lessonKey, watched);
+  } else {
+    ytPendingLoad = { video, lessonKey, watched };
+  }
+}
+
+function createYouTubePlayer(video, lessonKey, watched) {
+  if (!elements.lessonVideoFrame) return;
+  elements.lessonVideoFrame.innerHTML = "";
+  const target = document.createElement("div");
+  target.id = "ytTarget";
+  elements.lessonVideoFrame.appendChild(target);
+
+  ytPlayer = new window.YT.Player(target.id, {
+    videoId: video.youtubeId,
+    playerVars: {
+      rel: 0,
+      modestbranding: 1,
+      playsinline: 1,
+      disablekb: watched ? 0 : 1
+    },
+    events: {
+      onStateChange: (event) => onVideoStateChange(event, lessonKey)
+    }
+  });
+}
+
+function onVideoStateChange(event, lessonKey) {
+  if (!window.YT) return;
+  if (event.data === window.YT.PlayerState.PLAYING) {
+    startVideoPolling(lessonKey);
+  } else if (event.data === window.YT.PlayerState.ENDED) {
+    stopVideoPolling();
+    markVideoWatched(lessonKey);
+  } else {
+    stopVideoPolling();
+  }
+}
+
+function startVideoPolling(lessonKey) {
+  stopVideoPolling();
+  ytPollHandle = setInterval(() => {
+    if (!ytPlayer || typeof ytPlayer.getCurrentTime !== "function") return;
+    if (ytMaxWatchedSeconds === Infinity) return;
+
+    const current = ytPlayer.getCurrentTime();
+    const duration = typeof ytPlayer.getDuration === "function" ? ytPlayer.getDuration() : 0;
+
+    if (current > ytMaxWatchedSeconds + 1.5) {
+      ytPlayer.seekTo(ytMaxWatchedSeconds, true);
+      return;
+    }
+
+    if (current > ytMaxWatchedSeconds) {
+      ytMaxWatchedSeconds = current;
+    }
+
+    if (duration && current >= duration - 0.75) {
+      markVideoWatched(lessonKey);
+    }
+  }, 500);
+}
+
+function stopVideoPolling() {
+  if (ytPollHandle) {
+    clearInterval(ytPollHandle);
+    ytPollHandle = null;
+  }
+}
+
+function markVideoWatched(lessonKey) {
+  if (!lessonKey || state.videoWatched[lessonKey]) return;
+  state.videoWatched[lessonKey] = true;
+  ytMaxWatchedSeconds = Infinity;
+  saveState();
+  if (getLessonKey(state.courseId, state.activeLessonIndex) === lessonKey) {
+    renderLearning();
+  }
+}
+
+function destroyVideoPlayer() {
+  stopVideoPolling();
+  if (ytPlayer && typeof ytPlayer.destroy === "function") {
+    ytPlayer.destroy();
+  }
+  ytPlayer = null;
+  ytLoadedLessonKey = null;
 }
 
 function renderForm() {
@@ -1689,6 +1877,11 @@ function startCourse(courseId, shouldScroll = false) {
 
 function completeCurrentLesson() {
   const course = getSelectedCourse();
+  const lesson = getCourseLessons(course.id)[state.activeLessonIndex];
+  const video = getLessonVideoInfo(lesson);
+  const lessonKey = getLessonKey(course.id, state.activeLessonIndex);
+  if (video && !state.videoWatched[lessonKey]) return;
+
   const progress = ensureCourseProgress(course.id);
   if (!progress.completedLessons.includes(state.activeLessonIndex)) {
     progress.completedLessons.push(state.activeLessonIndex);
@@ -2133,6 +2326,13 @@ function normalizeState(nextState) {
       quiz: normalizeQuiz(nextState.courseDraft.quiz, false)
     };
   }
+  if (!nextState.videoWatched || typeof nextState.videoWatched !== "object" || Array.isArray(nextState.videoWatched)) {
+    nextState.videoWatched = {};
+  } else {
+    nextState.videoWatched = Object.fromEntries(
+      Object.entries(nextState.videoWatched).filter(([, value]) => value === true)
+    );
+  }
   if (!nextState.courseProgress || Array.isArray(nextState.courseProgress)) {
     nextState.courseProgress = {};
   } else {
@@ -2333,12 +2533,20 @@ function escapeHtml(value) {
 }
 
 function renderIcons() {
-  if (!window.lucide || iconRenderQueued) {
+  if (iconRenderQueued) return;
+
+  if (!window.lucide) {
+    iconRenderQueued = true;
+    window.setTimeout(() => {
+      iconRenderQueued = false;
+      renderIcons();
+    }, 60);
     return;
   }
+
   iconRenderQueued = true;
-  requestAnimationFrame(() => {
+  window.setTimeout(() => {
     window.lucide.createIcons();
     iconRenderQueued = false;
-  });
+  }, 0);
 }

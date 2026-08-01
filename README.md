@@ -6,8 +6,8 @@ Plataforma estatica de concientizacion en ciberseguridad para empresas.
 
 - 3 planes comerciales: Basico, Profesional y Enterprise.
 - Catalogo de cursos de ciberseguridad.
-- Aula funcional con lecciones navegables.
-- Avance guardado por curso en el navegador.
+- Aula funcional con lecciones navegables y video obligatorio por leccion (no se puede adelantar ni saltar; "Completar leccion" se desbloquea hasta terminar el video).
+- Avance guardado por curso en el navegador, con desbloqueo secuencial de lecciones.
 - Creador de cursos propios desde la interfaz.
 - Constructor de lecciones y preguntas para cursos internos DOGUI.
 - Cursos por area: Finanzas, Recursos Humanos, Direccion y TI.
@@ -124,12 +124,28 @@ dogui-awareness/
   index.html
   styles.css
   app.js
+  course-content.js
   assets/
     awareness-dashboard.png
+    fonts/
+      space-grotesk-variable.woff2
+      space-mono-400.woff2
+      space-mono-700.woff2
   cursos/
     index.html
   README.md
 ```
+
+## Videos de las lecciones
+
+Cada leccion de los 7 cursos incluidos trae un video corto de una fuente oficial o reconocida (INCIBE, OSI, y otros canales especializados en concientizacion de ciberseguridad), embebido con la API de IFrame de YouTube. El reproductor:
+
+- No permite adelantar el video arrastrando la barra de progreso mas alla de lo ya visto.
+- Mantiene bloqueado el boton "Completar leccion" hasta que el video termina.
+- Bloquea la navegacion a lecciones futuras hasta completar la leccion actual (desbloqueo secuencial).
+- Guarda que videos ya se vieron en `localStorage`, por curso y por leccion.
+
+Los cursos creados desde la seccion `Crear` no requieren video: son contenido de texto definido por cada empresa.
 
 ## Notas
 

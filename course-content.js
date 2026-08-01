@@ -1,3 +1,102 @@
+window.DOGUI_LESSON_VIDEOS = {
+  phishing: {
+    youtubeId: "uhzV5-iFb5E",
+    title: "Que es el phishing",
+    source: "INCIBE - AprendeCiberseguridad",
+    url: "https://www.youtube.com/watch?v=uhzV5-iFb5E"
+  },
+  ingenieria_social: {
+    youtubeId: "Wp_KJVFMsEc",
+    title: "Que es la ingenieria social",
+    source: "INCIBE - Ciberseguridad",
+    url: "https://www.youtube.com/watch?v=Wp_KJVFMsEc"
+  },
+  redes_sociales: {
+    youtubeId: "F88S5VfeFTk",
+    title: "Riesgos y fraudes en redes sociales",
+    source: "Dia de Internet Segura",
+    url: "https://www.youtube.com/watch?v=F88S5VfeFTk"
+  },
+  contrasenas: {
+    youtubeId: "n0vvSJJCFbs",
+    title: "Contrasenas robustas",
+    source: "OSI - INCIBE",
+    url: "https://www.youtube.com/watch?v=n0vvSJJCFbs"
+  },
+  mfa: {
+    youtubeId: "YnhNJLQlYcA",
+    title: "Que es el doble factor de autenticacion (2FA / MFA)",
+    source: "Ciberseguridad practica",
+    url: "https://www.youtube.com/watch?v=YnhNJLQlYcA"
+  },
+  smishing: {
+    youtubeId: "i9S2K6jXYts",
+    title: "Cuidate del smishing: fraudes por SMS y WhatsApp",
+    source: "Concientizacion digital",
+    url: "https://www.youtube.com/watch?v=i9S2K6jXYts"
+  },
+  ransomware: {
+    youtubeId: "tDdLWN4aWh4",
+    title: "Ransomware: que es, como infecta y como protegerse",
+    source: "Ciberseguridad practica",
+    url: "https://www.youtube.com/watch?v=tDdLWN4aWh4"
+  },
+  proteger_empresa: {
+    youtubeId: "5uCi_5u0fWI",
+    title: "INCIBE ayuda a proteger a tu empresa",
+    source: "INCIBE",
+    url: "https://www.youtube.com/watch?v=5uCi_5u0fWI"
+  },
+  ciberseguridad_empresa: {
+    youtubeId: "EHjmxujXIaQ",
+    title: "Ciberseguridad para la empresa",
+    source: "Formacion empresarial",
+    url: "https://www.youtube.com/watch?v=EHjmxujXIaQ"
+  },
+  fraude_bec: {
+    youtubeId: "9m9p9_t31Kc",
+    title: "Que es la estafa BEC (fraude del CEO)",
+    source: "Grupo de Delitos Tecnologicos",
+    url: "https://www.youtube.com/watch?v=9m9p9_t31Kc"
+  },
+  ofertas_falsas: {
+    youtubeId: "uUwARqgWrNo",
+    title: "Asi estan estafando con falsas ofertas de empleo",
+    source: "Periodismo de investigacion",
+    url: "https://www.youtube.com/watch?v=uUwARqgWrNo"
+  },
+  deepfakes: {
+    youtubeId: "S2IUl50Fb60",
+    title: "Los deepfakes: por que son peligrosos y como detectarlos",
+    source: "Alfabetizacion digital",
+    url: "https://www.youtube.com/watch?v=S2IUl50Fb60"
+  },
+  identidad: {
+    youtubeId: "hqyIjgmk0EA",
+    title: "Suplantacion de identidad - casos reales",
+    source: "INCIBE - Linea de Ayuda 017",
+    url: "https://www.youtube.com/watch?v=hqyIjgmk0EA"
+  },
+  accesos_ti: {
+    youtubeId: "HfWX7EF9aE0",
+    title: "Gestion de accesos e identidades (IAM)",
+    source: "Cybersec Cluster",
+    url: "https://www.youtube.com/watch?v=HfWX7EF9aE0"
+  },
+  qr_fraude: {
+    youtubeId: "Pybjt9jNXnQ",
+    title: "Quishing: evita ser victima de estafa mediante un QR",
+    source: "Segmento RPP",
+    url: "https://www.youtube.com/watch?v=Pybjt9jNXnQ"
+  },
+  ia_fraude: {
+    youtubeId: "Q7aDFFXDgc8",
+    title: "Alerta por estafa de clonacion de voz con inteligencia artificial",
+    source: "Alerta ciudadana",
+    url: "https://www.youtube.com/watch?v=Q7aDFFXDgc8"
+  }
+};
+
 window.DOGUI_COURSE_CONTENT = {
   "basic-course": {
     overview:
@@ -5,6 +104,7 @@ window.DOGUI_COURSE_CONTENT = {
     lessons: [
       {
         title: "Que es la ciberseguridad",
+        video: "ciberseguridad_empresa",
         duration: "8 min",
         body:
           "La ciberseguridad protege cuentas, dispositivos, informacion, sistemas y procesos de negocio contra accesos no autorizados, fraude, perdida de datos y operaciones interrumpidas. En una empresa no depende solo de TI: cada persona participa cuando decide si abre un archivo, comparte datos, usa una contrasena o reporta algo sospechoso. El objetivo no es trabajar con miedo, sino reconocer senales de riesgo y actuar con criterio.",
@@ -23,6 +123,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Phishing y correos falsos",
+        video: "phishing",
         duration: "10 min",
         body:
           "El phishing intenta convencerte de dar clic, abrir un archivo, transferir dinero o entregar datos. Puede imitar bancos, paqueterias, proveedores, herramientas internas o directivos. Los correos modernos pueden tener buen diseno, logos correctos y texto sin errores. Por eso hay que revisar la intencion del mensaje: urgencia, amenaza, premio, confidencialidad, solicitud fuera de proceso o cambios inesperados.",
@@ -41,6 +142,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Fraudes por WhatsApp y mensajeria",
+        video: "smishing",
         duration: "8 min",
         body:
           "Los fraudes por WhatsApp, SMS o chats corporativos usan identidad falsa, presion y cercania. Un atacante puede hacerse pasar por un jefe, proveedor, companero o familiar. Tambien puede pedir codigos, compras urgentes, transferencias, cambio de cuenta bancaria o datos internos. El canal de mensajeria facilita el engano porque parece directo y personal.",
@@ -59,6 +161,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Contrasenas seguras",
+        video: "contrasenas",
         duration: "8 min",
         body:
           "Una contrasena segura debe ser larga, unica y dificil de adivinar. Las frases de paso funcionan mejor que palabras cortas con sustituciones obvias. El mayor riesgo es reutilizar la misma clave en correo, nube, bancos, redes y herramientas de trabajo. Si un sitio externo se filtra, esa contrasena puede probarse contra cuentas corporativas.",
@@ -77,6 +180,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Autenticacion multifactor",
+        video: "mfa",
         duration: "7 min",
         body:
           "La autenticacion multifactor, o MFA, agrega una segunda verificacion ademas de la contrasena. Puede ser una app, llave fisica, notificacion, codigo temporal o biometria. MFA reduce el riesgo si una contrasena se filtra, pero no se debe aprobar una solicitud que no iniciaste. Si recibes aprobaciones repetidas, podria ser un ataque de fatiga MFA.",
@@ -95,6 +199,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Uso seguro del correo corporativo",
+        video: "ingenieria_social",
         duration: "9 min",
         body:
           "El correo corporativo concentra informacion sensible, accesos, contactos y conversaciones de negocio. Un correo comprometido permite suplantar identidad, resetear contrasenas, enviar fraudes y leer datos confidenciales. Usarlo de forma segura implica separar lo personal de lo laboral, evitar reenvios no autorizados y revisar destinatarios antes de enviar informacion.",
@@ -113,6 +218,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Archivos y links sospechosos",
+        video: "ransomware",
         duration: "9 min",
         body:
           "Los archivos maliciosos pueden llegar como facturas, CVs, contratos, reportes, comprobantes, archivos comprimidos o supuestos PDF. Algunos piden habilitar macros, instalar complementos o escribir una contrasena para abrir. Los enlaces pueden usar dominios parecidos, acortadores, errores pequenos o paginas clonadas.",
@@ -131,6 +237,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Proteccion de informacion sensible",
+        video: "proteger_empresa",
         duration: "8 min",
         body:
           "La informacion sensible incluye datos personales, financieros, contratos, expedientes, precios, credenciales, reportes internos, datos de clientes y estrategias. Protegerla exige clasificarla, compartir solo lo necesario, usar permisos adecuados y evitar copias innecesarias. La seguridad tambien aplica a capturas de pantalla, impresiones, notas y conversaciones.",
@@ -149,6 +256,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Buenas practicas en redes sociales",
+        video: "redes_sociales",
         duration: "7 min",
         body:
           "Las redes sociales ayudan a atacantes a preparar fraudes personalizados. Publicaciones sobre viajes, cargos, organigramas, proveedores, herramientas, eventos internos o credenciales visibles en fotos pueden usarse para suplantacion e ingenieria social. La regla es compartir con criterio y cuidar la informacion que revela contexto interno.",
@@ -167,6 +275,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Que hacer ante un incidente",
+        video: "identidad",
         duration: "8 min",
         body:
           "Un incidente puede ser dar clic en un enlace falso, abrir un archivo sospechoso, perder un dispositivo, enviar informacion por error, notar accesos no reconocidos o recibir una solicitud fraudulenta. Lo mas importante es reportar rapido, conservar evidencia y seguir instrucciones. Ocultar el evento aumenta el impacto y retrasa la contencion.",
@@ -243,6 +352,7 @@ window.DOGUI_COURSE_CONTENT = {
     lessons: [
       {
         title: "Fraude de transferencias",
+        video: "fraude_bec",
         duration: "8 min",
         body:
           "El fraude de transferencias intenta que una persona autorice o ejecute un pago sin validacion suficiente. El atacante puede usar correos falsos, cuentas comprometidas, llamadas, mensajes de WhatsApp o documentos alterados. Las senales mas importantes son urgencia, confidencialidad, cambio de cuenta, presion de autoridad y solicitud fuera del flujo normal.",
@@ -261,6 +371,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Facturas falsas",
+        video: "fraude_bec",
         duration: "8 min",
         body:
           "Las facturas falsas pueden usar datos reales de proveedores, importes parecidos, folios creibles y diseno profesional. Tambien pueden llegar como respuesta dentro de una cadena de correo comprometida. El objetivo es que se pague una factura que no corresponde o se descargue un archivo malicioso.",
@@ -279,6 +390,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Suplantacion de proveedores",
+        video: "fraude_bec",
         duration: "8 min",
         body:
           "La suplantacion de proveedores ocurre cuando alguien imita a un proveedor real o usa una cuenta comprometida para pedir pagos, cambios de cuenta o informacion. Este fraude suele ser convincente porque el atacante conoce nombres, proyectos, montos y conversaciones previas.",
@@ -297,6 +409,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Correos del director",
+        video: "fraude_bec",
         duration: "7 min",
         body:
           "El fraude del director, o fraude CEO, explota jerarquia para saltarse controles. Puede pedir pagos, compra de tarjetas, adelantos, informacion fiscal o cambio de prioridad. A veces incluye frases como 'no puedo hablar', 'es confidencial' o 'hazlo ahora'. La cultura de seguridad debe permitir validar instrucciones ejecutivas.",
@@ -315,6 +428,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Solicitudes urgentes de pago",
+        video: "phishing",
         duration: "7 min",
         body:
           "La urgencia reduce pensamiento critico. En pagos, una solicitud urgente debe activar mas controles, no menos. Un atacante busca que Finanzas ignore autorizaciones, salte revisiones o pague antes de confirmar datos. Los mejores procesos definen rutas de emergencia con validacion clara.",
@@ -333,6 +447,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Validacion de cuentas bancarias",
+        video: "fraude_bec",
         duration: "8 min",
         body:
           "La validacion bancaria debe ser un control formal. Antes de pagar a una cuenta nueva o modificada, Finanzas debe comparar registros internos, contratos, informacion fiscal, historial de pagos y confirmacion por contacto confiable. El control debe aplicarse aunque el proveedor sea conocido.",
@@ -399,6 +514,7 @@ window.DOGUI_COURSE_CONTENT = {
     lessons: [
       {
         title: "CVs maliciosos",
+        video: "ransomware",
         duration: "8 min",
         body:
           "RH recibe documentos de personas externas todos los dias. Un CV, portafolio o carta puede incluir macros, enlaces a sitios falsos, archivos comprimidos, ejecutables o contenido que intenta robar credenciales. La presion de un proceso de reclutamiento no debe llevar a abrir formatos no autorizados.",
@@ -417,6 +533,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Documentos falsos",
+        video: "identidad",
         duration: "7 min",
         body:
           "Identificaciones, comprobantes, diplomas, constancias y referencias pueden falsificarse o alterarse. RH debe validar con procesos definidos, conservar evidencia de revision y limitar quien puede acceder a expedientes. La validacion protege a la empresa y a las personas involucradas.",
@@ -435,6 +552,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Robo de datos personales",
+        video: "proteger_empresa",
         duration: "9 min",
         body:
           "RH maneja datos de alto valor: identificaciones, domicilios, telefonos, salarios, evaluaciones, incapacidades, datos bancarios y expedientes laborales. Una fuga puede causar fraude, extorsion, dano reputacional y obligaciones legales. El principio central es compartir solo lo necesario, con permisos correctos y por canales autorizados.",
@@ -453,6 +571,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Ofertas laborales falsas",
+        video: "ofertas_falsas",
         duration: "7 min",
         body:
           "Atacantes pueden usar el nombre de la empresa para publicar ofertas falsas, cobrar por procesos, pedir documentos o enganar candidatos. Esto dana a las personas y a la marca empleadora. RH debe mantener canales oficiales claros y monitorear reportes de ofertas sospechosas.",
@@ -471,6 +590,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Ingenieria social a candidatos y RH",
+        video: "ingenieria_social",
         duration: "8 min",
         body:
           "La ingenieria social busca obtener informacion a traves de confianza, curiosidad o presion. En RH puede aparecer como candidatos que piden datos internos, supuestos reclutadores externos, llamadas de verificacion o solicitudes de organigramas. Informacion como nombres de directivos, tecnologias usadas o procesos internos puede alimentar fraudes posteriores.",
@@ -532,6 +652,7 @@ window.DOGUI_COURSE_CONTENT = {
     lessons: [
       {
         title: "Fraude CEO",
+        video: "fraude_bec",
         duration: "8 min",
         body:
           "El fraude CEO usa el nombre, tono o autoridad de una persona directiva para ordenar pagos, cambios de cuenta o entrega de informacion. El atacante intenta que el equipo no valide por miedo, presion o confidencialidad. La mejor defensa es que la direccion comunique claramente que los controles se respetan incluso en urgencias.",
@@ -550,6 +671,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Deepfakes y suplantacion con IA",
+        video: "deepfakes",
         duration: "8 min",
         body:
           "La inteligencia artificial puede generar textos convincentes, clonar voces, crear imagenes y simular videos. Por eso una voz conocida o un mensaje bien redactado ya no bastan para aprobar acciones criticas. Los procesos deben depender de verificacion, no de apariencia.",
@@ -568,6 +690,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Robo de identidad ejecutiva",
+        video: "identidad",
         duration: "7 min",
         body:
           "Las cuentas ejecutivas son objetivos de alto valor porque combinan autoridad, acceso y reputacion. El robo de identidad puede iniciar fraudes, divulgar informacion sensible o afectar negociaciones. Cuidar correo, redes sociales, dispositivos y cuentas personales conectadas es parte de la responsabilidad ejecutiva.",
@@ -586,6 +709,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Proteccion de cuentas criticas",
+        video: "mfa",
         duration: "7 min",
         body:
           "Las cuentas criticas incluyen correo ejecutivo, banca, nube, administradores, sistemas financieros, dominios, redes sociales oficiales y herramientas de colaboracion. Deben tener MFA, contrasenas unicas, recuperacion segura, monitoreo y usuarios de respaldo bien definidos.",
@@ -604,6 +728,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Viajes y dispositivos",
+        video: "proteger_empresa",
         duration: "7 min",
         body:
           "Los viajes aumentan riesgos: redes publicas, perdida de equipo, conversaciones expuestas, revisiones fisicas y carga en puertos desconocidos. Un directivo puede llevar informacion sensible en laptop, telefono, correo o mensajeria. Prepararse antes de viajar reduce exposicion.",
@@ -622,6 +747,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Toma de decisiones ante incidentes",
+        video: "ciberseguridad_empresa",
         duration: "8 min",
         body:
           "En un incidente, direccion debe ayudar a contener, priorizar continuidad, coordinar comunicacion y preservar evidencia. Las decisiones apresuradas pueden borrar rastros, aumentar dano legal o generar mensajes contradictorios. Un plan de respuesta define roles, criterios, escalamiento y comunicacion antes de la crisis.",
@@ -688,6 +814,7 @@ window.DOGUI_COURSE_CONTENT = {
     lessons: [
       {
         title: "Gestion de accesos",
+        video: "accesos_ti",
         duration: "8 min",
         body:
           "La gestion de accesos asegura que cada persona tenga los permisos correctos durante el tiempo correcto. Altas, bajas, cambios de puesto, cuentas privilegiadas y accesos de terceros deben tener aprobacion, trazabilidad y revision periodica. El principio rector es minimo privilegio.",
@@ -706,6 +833,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Hardening basico",
+        video: "accesos_ti",
         duration: "9 min",
         body:
           "Hardening es reducir superficie de ataque mediante configuraciones seguras. Incluye desactivar servicios innecesarios, aplicar parches, cerrar puertos, usar configuraciones recomendadas, restringir administracion remota, asegurar endpoints y registrar eventos relevantes. No es una accion unica: debe mantenerse.",
@@ -724,6 +852,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "MFA para TI y administradores",
+        video: "mfa",
         duration: "8 min",
         body:
           "MFA debe ser obligatorio en accesos administrativos, VPN, correo, nube, herramientas de soporte, consolas y cuentas de emergencia. Para perfiles de TI, una cuenta comprometida puede permitir movimiento lateral, cambios de configuracion o acceso a datos masivos. MFA fuerte y monitoreo reducen el riesgo.",
@@ -742,6 +871,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Manejo de incidentes",
+        video: "ciberseguridad_empresa",
         duration: "8 min",
         body:
           "Un incidente requiere roles claros, criterios de severidad, comunicacion y bitacora. TI debe distinguir entre evento, alerta e incidente, y saber cuando escalar. La improvisacion puede borrar evidencia o extender el dano. El playbook guia acciones de contencion, erradicacion y recuperacion.",
@@ -760,6 +890,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Respuesta inicial",
+        video: "ciberseguridad_empresa",
         duration: "8 min",
         body:
           "La respuesta inicial busca contener sin destruir evidencia. Puede incluir aislar un equipo, revocar sesiones, bloquear indicadores, preservar logs, suspender credenciales y coordinar comunicacion. Las acciones deben hacerse con orden y registro para no perder capacidad de investigacion.",
@@ -778,6 +909,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Respaldo y ransomware",
+        video: "ransomware",
         duration: "9 min",
         body:
           "Ransomware cifra datos y tambien intenta afectar respaldos. Una estrategia de respaldo debe incluir copias separadas, proteccion contra borrado, pruebas de restauracion, prioridades de sistemas y tiempos objetivo de recuperacion. El respaldo solo sirve si se puede restaurar a tiempo.",
@@ -844,6 +976,7 @@ window.DOGUI_COURSE_CONTENT = {
     lessons: [
       {
         title: "Como detectar un correo falso",
+        video: "phishing",
         duration: "10 min",
         body:
           "Para detectar un correo falso, revisa remitente, dominio, tono, urgencia, enlaces, adjuntos y solicitud. No necesitas encontrar muchas senales: una sola inconsistencia puede justificar reporte. Los correos falsos actuales pueden estar bien escritos y usar logos reales.",
@@ -862,6 +995,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Como identificar un link sospechoso",
+        video: "phishing",
         duration: "10 min",
         body:
           "Un link sospechoso puede usar dominios parecidos, letras cambiadas, subdominios confusos, acortadores o palabras que intentan sonar oficiales. Antes de ingresar datos, revisa la direccion completa. En servicios criticos, entra escribiendo la URL oficial o desde favoritos corporativos.",
@@ -880,6 +1014,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Que hacer si recibes un WhatsApp extrano",
+        video: "smishing",
         duration: "10 min",
         body:
           "Un WhatsApp extrano puede pedir pagos, codigos, documentos o acciones urgentes. Aunque use foto y nombre conocidos, debes validar. Los atacantes tambien pueden decir que cambiaron de numero o que no pueden recibir llamadas.",
@@ -898,6 +1033,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Como crear contrasenas seguras",
+        video: "contrasenas",
         duration: "10 min",
         body:
           "Una buena contrasena es larga, unica y dificil de adivinar. Evita fechas, nombres, equipos favoritos, patrones de teclado y cambios obvios. Un administrador de contrasenas permite usar claves fuertes sin memorizarlas todas.",
@@ -916,6 +1052,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Que es MFA y por que importa",
+        video: "mfa",
         duration: "10 min",
         body:
           "MFA agrega una capa de proteccion si una contrasena se filtra. Sin MFA, una clave robada puede bastar para entrar. Con MFA, el atacante necesita un segundo factor. Aun asi, las solicitudes no iniciadas deben rechazarse y reportarse.",
@@ -934,6 +1071,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Como evitar fraudes con QR",
+        video: "qr_fraude",
         duration: "10 min",
         body:
           "Los codigos QR pueden llevar a paginas falsas, cobros fraudulentos o formularios para robar credenciales. Son utiles, pero no son automaticamente seguros. Antes de ingresar datos, revisa la URL que abre el QR y valida que pertenezca al servicio esperado.",
@@ -952,6 +1090,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Que hacer si abriste un archivo sospechoso",
+        video: "ransomware",
         duration: "10 min",
         body:
           "Abrir un archivo sospechoso no siempre significa infeccion, pero si requiere accion rapida. No intentes resolverlo solo ni borres evidencia. Reporta que abriste, de donde venia, que viste y si ingresaste datos o habilitaste contenido.",
@@ -970,6 +1109,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Como proteger informacion confidencial",
+        video: "proteger_empresa",
         duration: "10 min",
         body:
           "La informacion confidencial debe compartirse con minimo necesario, permisos adecuados y canales autorizados. Antes de enviar un archivo, revisa destinatarios, permisos, clasificacion y si realmente todos necesitan acceso. Tambien cuida impresiones y capturas.",
@@ -988,6 +1128,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Fraudes con inteligencia artificial",
+        video: "ia_fraude",
         duration: "12 min",
         body:
           "La IA permite crear mensajes mas convincentes, voces falsas, imagenes manipuladas y perfiles creibles. Esto aumenta la calidad del engano, pero no cambia la defensa: validar identidad, seguir procesos, no compartir codigos y reportar solicitudes raras.",
@@ -1006,6 +1147,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Como reportar un incidente",
+        video: "identidad",
         duration: "10 min",
         body:
           "Un buen reporte incluye que paso, cuando, por que canal llego, que accion tomaste, que datos se compartieron y que evidencia existe. No necesitas investigar por tu cuenta. El equipo responsable se encarga de analizar y contener.",
@@ -1082,6 +1224,7 @@ window.DOGUI_COURSE_CONTENT = {
     lessons: [
       {
         title: "Objetivo de una simulacion",
+        video: "phishing",
         duration: "7 min",
         body:
           "Una simulacion de phishing mide habitos y prepara al personal para detectar ataques reales. Su objetivo es educar y mejorar controles, no avergonzar. Debe tener autorizacion, alcance definido, criterios de medicion y una experiencia de aprendizaje posterior.",
@@ -1100,6 +1243,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Correo falso de factura",
+        video: "fraude_bec",
         duration: "8 min",
         body:
           "La factura falsa es un escenario comun porque Finanzas, Compras y Administracion reciben documentos externos. La simulacion puede evaluar si los usuarios revisan proveedor, dominio, orden de compra, adjunto y urgencia antes de abrir o pagar.",
@@ -1118,6 +1262,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Correo falso de paqueteria",
+        video: "phishing",
         duration: "7 min",
         body:
           "Los mensajes de paqueteria aprovechan curiosidad y expectativa de entrega. Pueden pedir pagos pequenos, direccion, telefono o credenciales. En simulacion, ayudan a entrenar revision de dominio y evitar formularios falsos.",
@@ -1136,6 +1281,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "WhatsApp falso de direccion",
+        video: "smishing",
         duration: "7 min",
         body:
           "La simulacion por mensajeria debe manejarse con especial cuidado y autorizacion. Puede entrenar validacion de identidad, rechazo de codigos y control de pagos informales. Debe evitar recolectar datos reales y debe explicar inmediatamente las senales de alerta.",
@@ -1154,6 +1300,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Link falso de cambio de contrasena",
+        video: "phishing",
         duration: "8 min",
         body:
           "Este escenario entrena a los empleados para no ingresar credenciales desde enlaces. La pagina de simulacion debe usar campos de prueba o detenerse antes de pedir contrasenas reales. Tambien puede ensenar a entrar al portal oficial escribiendo la direccion.",
@@ -1172,6 +1319,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Alerta falsa de banco",
+        video: "phishing",
         duration: "7 min",
         body:
           "Las alertas falsas de banco usan miedo y urgencia: cargos no reconocidos, bloqueo de cuenta, token vencido o validacion inmediata. En una simulacion, este escenario sirve para entrenar a empleados a no usar enlaces de mensajes financieros y a validar desde canales oficiales.",
@@ -1190,6 +1338,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Documento falso de proveedor",
+        video: "fraude_bec",
         duration: "7 min",
         body:
           "El documento falso de proveedor entrena a Compras, Administracion y Finanzas a revisar adjuntos, dominios y cambios de informacion. Puede simular una orden de compra, contrato, comprobante fiscal o actualizacion de cuenta bancaria, siempre sin entregar malware ni archivos peligrosos.",
@@ -1208,6 +1357,7 @@ window.DOGUI_COURSE_CONTENT = {
       },
       {
         title: "Metricas y reporte ejecutivo",
+        video: "ciberseguridad_empresa",
         duration: "8 min",
         body:
           "Las metricas clave son tasa de apertura, clic, reporte, datos de prueba ingresados, tiempo de reporte y riesgo por area. El reporte ejecutivo debe mostrar tendencia, no solo culpables. La meta es decidir refuerzos: microcursos, cambios de proceso, MFA, validaciones o nuevas campanas.",
