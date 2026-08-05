@@ -26,7 +26,7 @@ const plans = {
     summary: "Para empresas que quieren cursos por area, microcursos mensuales y medicion por equipo.",
     features: [
       "Todo lo incluido en Basico",
-      "Cursos para Finanzas, RH, Direccion y TI",
+      "Cursos para Finanzas, RH, Direccion, TI, Ventas y Legal",
       "Microcursos mensuales de 10 a 15 minutos",
       "Score por empleado y por area",
       "Reporte mensual con recomendaciones"
@@ -63,7 +63,9 @@ const areas = {
   finance: "Finanzas y Administracion",
   hr: "Recursos Humanos",
   direction: "Direccion",
-  it: "TI"
+  it: "TI",
+  sales: "Ventas y Atencion a Clientes",
+  legal: "Legal y Cumplimiento"
 };
 
 const courses = [
@@ -168,6 +170,68 @@ const courses = [
       "Como proteger informacion confidencial",
       "Fraudes con inteligencia artificial",
       "Como reportar un incidente"
+    ]
+  },
+  {
+    id: "onboarding-course",
+    title: "Bienvenida: seguridad en tu primera semana",
+    audience: "general",
+    duration: "35 min",
+    type: "Expres",
+    plans: ["basic", "professional", "enterprise"],
+    topics: [
+      "Bienvenida a la seguridad DOGUI",
+      "Tu identidad digital en la empresa",
+      "Correo, chat y videollamadas seguras",
+      "Dispositivos y accesos del primer dia",
+      "A quien y como reportar"
+    ]
+  },
+  {
+    id: "sales-course",
+    title: "Ruta para Ventas y Atencion a Clientes",
+    audience: "sales",
+    duration: "42 min",
+    type: "Por area",
+    plans: ["professional", "enterprise"],
+    topics: [
+      "Proteccion de datos de clientes en el CRM",
+      "Llamadas fraudulentas a ventas y soporte",
+      "Ingenieria social en redes profesionales",
+      "Pagos y datos financieros de clientes",
+      "Suplantacion de tu marca ante clientes",
+      "Cierre de venta seguro"
+    ]
+  },
+  {
+    id: "legal-course",
+    title: "Ruta para Legal y Cumplimiento",
+    audience: "legal",
+    duration: "38 min",
+    type: "Por area",
+    plans: ["professional", "enterprise"],
+    topics: [
+      "Proteccion de datos personales: fundamentos",
+      "Que hacer ante una brecha de datos",
+      "Clausulas de seguridad con proveedores",
+      "Conservacion y destruccion segura de documentos",
+      "Riesgo legal de IA y deepfakes"
+    ]
+  },
+  {
+    id: "devsecure-course",
+    title: "Ruta de desarrollo seguro para TI",
+    audience: "it",
+    duration: "44 min",
+    type: "Por area",
+    plans: ["professional", "enterprise"],
+    topics: [
+      "OWASP Top 10: panorama general",
+      "Inyeccion y validacion de entradas",
+      "Gestion segura de credenciales y secretos",
+      "Seguridad en repositorios y control de versiones",
+      "Autenticacion y control de acceso en aplicaciones",
+      "Dependencias y seguridad en CI/CD"
     ]
   },
   {

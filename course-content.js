@@ -94,6 +94,12 @@ window.DOGUI_LESSON_VIDEOS = {
     title: "Alerta por estafa de clonacion de voz con inteligencia artificial",
     source: "Alerta ciudadana",
     url: "https://www.youtube.com/watch?v=Q7aDFFXDgc8"
+  },
+  owasp_top10: {
+    youtubeId: "vf9Waxh3I04",
+    title: "Que es el OWASP Top 10 (explicado en 8 minutos)",
+    source: "Diccionario de hacking etico",
+    url: "https://www.youtube.com/watch?v=vf9Waxh3I04"
   }
 };
 
@@ -1414,6 +1420,566 @@ window.DOGUI_COURSE_CONTENT = {
       {
         text: "Que debe incluir el reporte ejecutivo?",
         options: ["Tendencia, riesgo por area y recomendaciones", "Solo nombres para castigo", "Datos sin contexto"],
+        correct: 0
+      }
+    ]
+  },
+  "onboarding-course": {
+    overview:
+      "Curso expres para nuevos ingresos. En cinco lecciones cortas aprendes lo esencial para trabajar seguro desde tu primera semana: identidad digital, correo y mensajeria, dispositivos y como reportar cualquier duda.",
+    lessons: [
+      {
+        title: "Bienvenida a la seguridad DOGUI",
+        video: "ciberseguridad_empresa",
+        duration: "6 min",
+        body:
+          "Bienvenido. Durante tu primera semana vas a recibir accesos, correos, invitaciones y herramientas nuevas, y eso te vuelve un objetivo comun para intentos de fraude porque todavia no conoces los procesos internos. La seguridad no depende de memorizar reglas complicadas: depende de reconocer que algo no cuadra y preguntar antes de actuar. Nadie espera que sepas todo el primer dia, pero si que reportes cualquier duda.",
+        scenario:
+          "El segundo dia recibes un correo de 'Recursos Humanos' pidiendo confirmar tus datos bancarios en un formulario externo para procesar tu primer pago.",
+        actions: [
+          "Antes de tu primera semana, guarda el contacto oficial de tu jefe directo y de RH.",
+          "Si algo te presiona a actuar rapido o parece fuera de lo normal, preguntale a tu jefe directo o a RH por un canal ya conocido.",
+          "Nunca te sientas mal por preguntar dos veces si algo no te queda claro."
+        ],
+        takeaways: [
+          "Ser nuevo no es una debilidad, es una razon para verificar mas.",
+          "Los procesos reales de la empresa no dan miedo ni presionan.",
+          "Preguntar a tiempo es parte normal de integrarte."
+        ]
+      },
+      {
+        title: "Tu identidad digital en la empresa",
+        video: "contrasenas",
+        duration: "7 min",
+        body:
+          "Tu cuenta corporativa es la llave de todo: correo, sistemas, documentos y en muchos casos datos de clientes. Desde el primer dia debes usar una contrasena unica para tus accesos de trabajo, distinta a la de tus redes sociales o servicios personales, y activar la autenticacion multifactor si tu equipo de TI la ofrece. Nunca debes compartir tu usuario o contrasena con nadie, ni siquiera con un companero que 'solo necesita entrar un momento'.",
+        scenario:
+          "Un companero de otro equipo te pide tu contrasena porque 'el sistema no le deja entrar' y tiene prisa por terminar un reporte.",
+        actions: [
+          "Crea una contrasena larga y unica para tus accesos de trabajo desde el primer dia.",
+          "Activa MFA en cuanto tu equipo de TI te lo indique.",
+          "Nunca compartas tu contrasena; si alguien la necesita, esa persona debe pedir su propio acceso a TI."
+        ],
+        takeaways: [
+          "Tu contrasena es personal e intransferible, sin excepciones.",
+          "MFA protege tu cuenta aunque alguien mas conozca tu contrasena.",
+          "Compartir accesos rompe la trazabilidad de quien hizo que."
+        ]
+      },
+      {
+        title: "Correo, chat y videollamadas seguras",
+        video: "phishing",
+        duration: "8 min",
+        body:
+          "En tus primeras semanas vas a recibir muchos correos e invitaciones de gente que todavia no conoces, lo que hace mas dificil detectar un mensaje falso. Revisa siempre el dominio del remitente, desconfia de enlaces o archivos inesperados, y valida invitaciones a videollamada que no reconozcas antes de entrar. Si un mensaje te pide una accion urgente o secreta, es una senal de alerta, sin importar quien diga ser el remitente.",
+        scenario:
+          "Recibes un correo de un supuesto proveedor de TI pidiendo que instales una herramienta 'para configurar tu equipo' antes de tu induccion oficial.",
+        actions: [
+          "Revisa el dominio real del remitente antes de abrir enlaces o adjuntos.",
+          "No instales software que no venga de tu equipo de TI por el canal oficial.",
+          "Confirma con tu jefe directo si un mensaje inesperado dice ser parte de tu proceso de induccion."
+        ],
+        takeaways: [
+          "No conocer todavia a todo el equipo no significa confiar en cualquier mensaje.",
+          "La instalacion de software siempre debe pasar por TI.",
+          "La induccion real no depende de enlaces externos urgentes."
+        ]
+      },
+      {
+        title: "Dispositivos y accesos del primer dia",
+        video: "accesos_ti",
+        duration: "7 min",
+        body:
+          "Tu equipo de computo, credenciales, gafete y accesos fisicos son parte de tu responsabilidad desde el primer momento. Bloquea tu pantalla cuando te alejes, no conectes memorias USB desconocidas, y reporta de inmediato si pierdes tu laptop, telefono de trabajo o gafete. Si trabajas desde casa, cuida que tu red y tu espacio de trabajo tambien protejan la informacion de la empresa.",
+        scenario:
+          "Dejas tu laptop desbloqueada en una sala de juntas mientras vas por un cafe, y alguien que no conoces esta sentado cerca.",
+        actions: [
+          "Bloquea tu equipo cada vez que te alejes, aunque sea por poco tiempo.",
+          "No conectes USB o dispositivos desconocidos a tu equipo de trabajo.",
+          "Reporta de inmediato la perdida o robo de cualquier dispositivo o credencial."
+        ],
+        takeaways: [
+          "Un equipo desbloqueado es una puerta abierta a toda tu cuenta.",
+          "Los dispositivos desconocidos pueden contener malware.",
+          "Reportar rapido una perdida reduce el riesgo para toda la empresa."
+        ]
+      },
+      {
+        title: "A quien y como reportar",
+        video: "identidad",
+        duration: "7 min",
+        body:
+          "Saber a quien reportar es tan importante como identificar el riesgo. Cada empresa tiene un canal definido: puede ser un correo, un chat de TI o seguridad, o tu jefe directo. Reportar no te mete en problemas ni te hace ver mal; al contrario, ayuda a proteger a todo el equipo. Entre mas rapido se reporte algo sospechoso, mas facil es contenerlo antes de que cause dano real.",
+        scenario:
+          "Diste clic sin pensar en un enlace de un correo que despues te parecio raro, y no sabes si debes decir algo.",
+        actions: [
+          "Guarda desde tu primera semana el canal oficial de reporte de seguridad.",
+          "Reporta cualquier duda, aunque no estes seguro si es grave.",
+          "No borres el mensaje o evidencia antes de reportar."
+        ],
+        takeaways: [
+          "Reportar siempre es la decision correcta, incluso si resulta no ser nada.",
+          "Nadie espera que un nuevo ingreso identifique todo perfecto.",
+          "La rapidez del reporte importa mas que tener certeza total."
+        ]
+      }
+    ],
+    quiz: [
+      {
+        text: "Por que las personas de nuevo ingreso son un objetivo comun de fraude?",
+        options: ["Porque todavia no conocen los procesos internos", "Porque tienen mas privilegios que nadie", "Porque no usan correo electronico"],
+        correct: 0
+      },
+      {
+        text: "Que debes hacer si un companero te pide tu contrasena?",
+        options: ["Negarte y decirle que pida su propio acceso a TI", "Compartirla si tiene prisa", "Cambiarla despues de prestarla"],
+        correct: 0
+      },
+      {
+        text: "Que senal debe hacerte dudar de un correo de induccion?",
+        options: ["Que pida instalar software fuera del canal oficial de TI", "Que venga de Recursos Humanos", "Que tenga el logo de la empresa"],
+        correct: 0
+      },
+      {
+        text: "Que debes hacer al alejarte de tu equipo de computo?",
+        options: ["Bloquear la pantalla", "Dejarlo abierto si vuelves pronto", "Apagar solo el monitor"],
+        correct: 0
+      },
+      {
+        text: "Que pasa si reportas algo sospechoso y al final no era nada grave?",
+        options: ["Fue la decision correcta de todas formas", "Te vas a meter en problemas", "Debiste estar 100% seguro antes de reportar"],
+        correct: 0
+      }
+    ]
+  },
+  "sales-course": {
+    overview:
+      "Ruta para Ventas y Atencion a Clientes enfocada en proteger datos de clientes en el CRM, detectar vishing e ingenieria social, y cerrar ventas validando canales oficiales.",
+    lessons: [
+      {
+        title: "Proteccion de datos de clientes en el CRM",
+        video: "proteger_empresa",
+        duration: "7 min",
+        body:
+          "El CRM concentra datos de contacto, historial de compras, preferencias y a veces informacion financiera de tus clientes. Exportar reportes completos a tu correo personal, a una hoja de calculo suelta o a un USB parece practico, pero multiplica el riesgo de fuga. El acceso al CRM debe limitarse a lo necesario para tu trabajo, y cualquier exportacion masiva deberia tener una razon de negocio clara.",
+        scenario:
+          "Antes de un viaje, exportas toda tu cartera de clientes a una hoja de calculo y la guardas en tu correo personal 'por si acaso' no tienes internet.",
+        actions: [
+          "Evita exportar datos de clientes fuera de las herramientas autorizadas.",
+          "Usa el CRM desde dispositivos y cuentas corporativas, nunca cuentas personales.",
+          "Solicita acceso solo a los clientes o territorios que realmente manejas."
+        ],
+        takeaways: [
+          "Un CRM exportado sin control es una base de datos filtrada esperando a ocurrir.",
+          "La comodidad personal no vale el riesgo de exponer a un cliente.",
+          "Menos acceso innecesario significa menos impacto si algo falla."
+        ]
+      },
+      {
+        title: "Llamadas fraudulentas a ventas y soporte",
+        video: "ia_fraude",
+        duration: "8 min",
+        body:
+          "Los equipos de ventas y atencion reciben muchas llamadas de numeros desconocidos, lo que los vuelve un blanco frecuente de vishing: llamadas donde alguien se hace pasar por un cliente, proveedor o directivo para pedir descuentos indebidos, cambios de cuenta o informacion confidencial. Con inteligencia artificial, hoy es posible imitar voces conocidas con solo unos segundos de audio, asi que la voz por si sola ya no es prueba suficiente de identidad.",
+        scenario:
+          "Una llamada con voz muy parecida a la de un cliente frecuente pide con urgencia cambiar la cuenta de facturacion antes de que 'se cierre el trimestre'.",
+        actions: [
+          "Valida cambios de datos de facturacion o pago por un canal ya conocido, no por la misma llamada.",
+          "Desconfia de solicitudes urgentes que buscan saltarse el proceso normal.",
+          "Reporta llamadas sospechosas al equipo de seguridad, aunque parezcan menores."
+        ],
+        takeaways: [
+          "Una voz conocida ya no garantiza que la persona sea quien dice ser.",
+          "Los cambios de cuenta o pago siempre deben validarse por un segundo canal.",
+          "La presion de urgencia es una senal, no una razon para saltarse el proceso."
+        ]
+      },
+      {
+        title: "Ingenieria social en redes profesionales",
+        video: "ingenieria_social",
+        duration: "7 min",
+        body:
+          "LinkedIn y otras redes profesionales son una fuente comun de reconocimiento para atacantes: revisan tu puesto, tus clientes, tus conexiones y tus publicaciones para preparar mensajes creibles. Un supuesto reclutador, cliente potencial o socio puede iniciar una conversacion amistosa que termina pidiendo informacion interna, acceso a un documento o una reunion fuera del canal oficial de la empresa.",
+        scenario:
+          "Un perfil que dice ser de un cliente importante te escribe por LinkedIn pidiendo la lista de precios especiales y el nombre de tu contacto interno de finanzas.",
+        actions: [
+          "Verifica identidad y contexto antes de compartir informacion comercial sensible por redes sociales.",
+          "Mueve conversaciones de negocio reales a canales corporativos verificados.",
+          "Evita publicar detalles operativos de clientes o procesos internos en tu perfil."
+        ],
+        takeaways: [
+          "Las redes profesionales tambien son un vector de ingenieria social.",
+          "La informacion publica en tu perfil puede usarse para hacer un engano mas creible.",
+          "El negocio real se confirma en canales corporativos, no en mensajes directos."
+        ]
+      },
+      {
+        title: "Pagos y datos financieros de clientes",
+        video: "fraude_bec",
+        duration: "7 min",
+        body:
+          "Cuando ventas involucra cobros, anticipos o datos de tarjeta, el manejo debe seguir el proceso autorizado por la empresa: enlaces de pago oficiales, terminal certificada o el area de cobranza, nunca capturar numeros de tarjeta por chat, correo o nota. Un cambio de cuenta bancaria para recibir un pago, o una solicitud de descuento fuera de politica con urgencia, son senales clasicas de fraude financiero dirigido a ventas.",
+        scenario:
+          "Un cliente pide que le mandes el link de pago a una cuenta 'nueva' porque la anterior tuvo un problema, y quiere cerrar hoy mismo.",
+        actions: [
+          "Usa unicamente los metodos de cobro autorizados por la empresa.",
+          "Nunca guardes ni envies datos completos de tarjeta por chat o correo.",
+          "Valida cualquier cambio de cuenta de cobro con el area financiera antes de proceder."
+        ],
+        takeaways: [
+          "El manejo de pagos no se improvisa por conveniencia del cierre.",
+          "Un cambio de cuenta de ultima hora siempre debe validarse.",
+          "Proteger los datos de pago del cliente protege tambien tu reputacion como vendedor."
+        ]
+      },
+      {
+        title: "Suplantacion de tu marca ante clientes",
+        video: "identidad",
+        duration: "7 min",
+        body:
+          "Los atacantes pueden crear perfiles, sitios o cuentas de mensajeria que imitan a la empresa para enganar a tus clientes: ofertas falsas, solicitudes de pago a nombre tuyo o de tu equipo, o soporte tecnico falso. Esto no solo afecta al cliente, tambien dana la confianza en tu marca personal y en la empresa. Si un cliente te reporta un mensaje raro 'de parte tuya' que tu no enviaste, es una alerta que debe escalarse de inmediato.",
+        scenario:
+          "Un cliente te escribe agradeciendo la 'promocion especial' que le mandaste por WhatsApp, pero tu nunca enviaste ese mensaje.",
+        actions: [
+          "Escala de inmediato cualquier reporte de suplantacion de tu marca o tu nombre.",
+          "Avisa a tus clientes por un canal oficial si detectas una campana de suplantacion activa.",
+          "Manten actualizados tus canales oficiales para que los clientes puedan verificarlos."
+        ],
+        takeaways: [
+          "La suplantacion de marca es un ataque tanto al cliente como a la empresa.",
+          "Escalar rapido limita cuantos clientes son enganados.",
+          "La confianza del cliente se protege siendo transparente sobre el incidente."
+        ]
+      },
+      {
+        title: "Cierre de venta seguro",
+        video: "phishing",
+        duration: "6 min",
+        body:
+          "En el cierre de una venta importante, la prisa y el entusiasmo pueden bajar la guardia. Antes de firmar, cobrar o entregar acceso, confirma que los documentos, correos y contactos correspondan a canales verificados. Un contrato, factura o solicitud de firma que llega por un canal inusual, con cambios de ultima hora, merece una validacion extra antes de continuar.",
+        scenario:
+          "Llega un contrato para firma electronica desde un dominio parecido al del cliente, con una clausula de pago distinta a lo acordado en la reunion.",
+        actions: [
+          "Confirma cualquier documento de cierre por el canal y dominio oficial ya conocido.",
+          "Compara condiciones finales contra lo acordado antes de firmar o cobrar.",
+          "Reporta discrepancias de ultimo momento antes de continuar con el cierre."
+        ],
+        takeaways: [
+          "El entusiasmo de cerrar una venta no debe saltarse la validacion.",
+          "Los cambios de ultima hora en documentos son una senal de alerta.",
+          "Verificar antes de firmar protege el trato y a ambas partes."
+        ]
+      }
+    ],
+    quiz: [
+      {
+        text: "Por que exportar el CRM completo a un correo personal es riesgoso?",
+        options: ["Multiplica el riesgo de fuga de datos de clientes", "Mejora la seguridad de respaldo", "Es la unica forma de trabajar sin internet"],
+        correct: 0
+      },
+      {
+        text: "Que hacer ante una llamada urgente que pide cambiar datos de facturacion?",
+        options: ["Validar por un canal ya conocido antes de actuar", "Cambiarlo de inmediato para no perder al cliente", "Pedir que lo repita para confirmar la voz"],
+        correct: 0
+      },
+      {
+        text: "Que riesgo representan las redes profesionales como LinkedIn?",
+        options: ["Pueden usarse para preparar ingenieria social dirigida", "Eliminan la necesidad de verificar identidad", "Son un canal oficial de cobranza"],
+        correct: 0
+      },
+      {
+        text: "Como se deben capturar los datos de pago de un cliente?",
+        options: ["Solo con los metodos de cobro autorizados por la empresa", "Por chat para agilizar el cierre", "Guardados en una nota personal"],
+        correct: 0
+      },
+      {
+        text: "Que debes hacer si un cliente reporta un mensaje 'tuyo' que no enviaste?",
+        options: ["Escalarlo de inmediato", "Ignorarlo si el cliente no perdio dinero", "Responder tu mismo sin avisar a nadie"],
+        correct: 0
+      },
+      {
+        text: "Que senal de alerta aparece en un cierre de venta riesgoso?",
+        options: ["Cambios de ultima hora en el documento o canal", "Que el cliente confirme por escrito", "Que el contrato llegue del dominio conocido"],
+        correct: 0
+      }
+    ]
+  },
+  "legal-course": {
+    overview:
+      "Ruta para Legal y Cumplimiento sobre proteccion de datos personales, respuesta a brechas, clausulas de seguridad con proveedores y riesgo legal de IA y deepfakes.",
+    lessons: [
+      {
+        title: "Proteccion de datos personales: fundamentos",
+        video: "proteger_empresa",
+        duration: "8 min",
+        body:
+          "La proteccion de datos personales exige informar a las personas para que sirven sus datos, pedir su consentimiento cuando corresponde, y limitar el uso a esas finalidades. Ademas, las personas tienen derechos de acceso, rectificacion, cancelacion y oposicion sobre su informacion. El area legal debe asegurar que exista un aviso de privacidad claro y que otras areas conozcan que datos pueden recolectar y como deben tratarlos.",
+        scenario:
+          "Marketing quiere usar la base de clientes para una campana nueva que no estaba contemplada en el aviso de privacidad original.",
+        actions: [
+          "Verifica que cualquier nuevo uso de datos personales sea compatible con el aviso de privacidad vigente.",
+          "Documenta las finalidades y bases legales de cada tratamiento de datos.",
+          "Atiende solicitudes de derechos ARCO dentro de los plazos establecidos."
+        ],
+        takeaways: [
+          "Los datos personales solo deben usarse para lo que se informo a la persona.",
+          "Un aviso de privacidad desactualizado es un riesgo legal real.",
+          "Los derechos de las personas sobre sus datos deben poder ejercerse facilmente."
+        ]
+      },
+      {
+        title: "Que hacer ante una brecha de datos",
+        video: "identidad",
+        duration: "8 min",
+        body:
+          "Ante una posible brecha de datos, legal debe coordinarse rapido con TI, seguridad y comunicacion para entender el alcance, contener el incidente y evaluar si existe obligacion de notificar a las personas afectadas o a la autoridad correspondiente, y en que plazo. Actuar tarde o sin documentar las decisiones aumenta el riesgo legal y reputacional, incluso si el incidente tecnico ya fue contenido.",
+        scenario:
+          "TI confirma que una base de datos con informacion de clientes estuvo expuesta por error durante varias horas antes de corregirse.",
+        actions: [
+          "Activa el protocolo de respuesta a incidentes con TI, seguridad y comunicacion.",
+          "Evalua el alcance real, los datos involucrados y las obligaciones de notificacion.",
+          "Documenta cada decision, plazo y accion tomada durante la respuesta."
+        ],
+        takeaways: [
+          "La velocidad y la documentacion de la respuesta importan tanto como la contencion tecnica.",
+          "No toda exposicion requiere el mismo tipo de notificacion; el analisis legal es clave.",
+          "Una respuesta ordenada reduce el riesgo legal, aunque el incidente ya haya ocurrido."
+        ]
+      },
+      {
+        title: "Clausulas de seguridad con proveedores",
+        video: "accesos_ti",
+        duration: "7 min",
+        body:
+          "Cuando un proveedor procesa datos o tiene acceso a sistemas de la empresa, el contrato debe incluir obligaciones claras de seguridad: confidencialidad, medidas minimas de proteccion, notificacion de incidentes y, cuando aplique, derecho de auditoria. Sin estas clausulas, un incidente en el proveedor puede convertirse en un problema legal para tu empresa sin herramientas contractuales para exigir responsabilidad.",
+        scenario:
+          "Un proveedor de nomina sufre un incidente de seguridad y la empresa se entera por redes sociales, no por el proveedor.",
+        actions: [
+          "Incluye clausulas de notificacion de incidentes con plazos definidos en los contratos con proveedores.",
+          "Exige medidas minimas de seguridad y confidencialidad para quien procese datos de la empresa.",
+          "Revisa periodicamente el cumplimiento de proveedores criticos."
+        ],
+        takeaways: [
+          "Un buen contrato es una herramienta de seguridad, no solo un tramite legal.",
+          "La notificacion de incidentes debe ser una obligacion contractual explicita.",
+          "El riesgo de un proveedor puede volverse un riesgo legal propio."
+        ]
+      },
+      {
+        title: "Conservacion y destruccion segura de documentos",
+        video: "proteger_empresa",
+        duration: "7 min",
+        body:
+          "Guardar informacion para siempre 'por si se necesita' aumenta el riesgo sin necesidad: entre mas datos acumulados, mayor es el impacto de una fuga. Legal debe definir cuanto tiempo se conserva cada tipo de documento o dato personal, y asegurar que al vencer ese plazo se elimine de forma segura, no solo se mueva a otra carpeta. La destruccion debe dejar evidencia de que realmente ocurrio.",
+        scenario:
+          "Se descubren expedientes de exempleados de hace mas de diez anos guardados sin ninguna razon de negocio vigente.",
+        actions: [
+          "Define periodos de conservacion claros por tipo de documento o dato.",
+          "Elimina de forma segura la informacion que ya cumplio su plazo o finalidad.",
+          "Deja evidencia documentada de los procesos de destruccion."
+        ],
+        takeaways: [
+          "Guardar informacion indefinidamente no es una practica segura, es un riesgo acumulado.",
+          "La destruccion segura debe ser verificable, no solo asumida.",
+          "Menos datos guardados sin razon significa menos exposicion futura."
+        ]
+      },
+      {
+        title: "Riesgo legal de IA y deepfakes",
+        video: "deepfakes",
+        duration: "8 min",
+        body:
+          "El uso de inteligencia artificial trae preguntas legales nuevas: quien es responsable si una herramienta de IA usa datos personales sin base legal, o si un deepfake se usa para suplantar a un directivo, danar la reputacion de la empresa o cometer fraude. Legal debe participar en la adopcion de herramientas de IA dentro de la empresa y ayudar a definir como actuar y que evidencia conservar si la empresa es victima de un fraude con deepfake.",
+        scenario:
+          "Circula un video manipulado donde parece que el director general anuncia una decision que nunca tomo.",
+        actions: [
+          "Define un protocolo de respuesta legal y de comunicacion ante contenido falso generado con IA.",
+          "Involucra a legal antes de adoptar herramientas de IA que usen datos personales o de clientes.",
+          "Conserva evidencia tecnica y cronologica si la empresa es victima de un deepfake."
+        ],
+        takeaways: [
+          "La IA generativa crea riesgos legales nuevos que antes no existian.",
+          "La velocidad de respuesta importa tanto en un deepfake como en cualquier otro incidente.",
+          "Legal debe ser parte de las decisiones sobre adopcion de IA, no solo reaccionar despues."
+        ]
+      }
+    ],
+    quiz: [
+      {
+        text: "Para que deben usarse los datos personales de un cliente?",
+        options: ["Solo para las finalidades informadas y consentidas", "Para cualquier campana futura sin restriccion", "Solo si el cliente lo pregunta"],
+        correct: 0
+      },
+      {
+        text: "Que debe pasar primero ante una posible brecha de datos?",
+        options: ["Activar el protocolo de respuesta y evaluar el alcance", "Esperar a que alguien mas lo reporte", "Borrar los registros para evitar confusion"],
+        correct: 0
+      },
+      {
+        text: "Que debe incluir un contrato con un proveedor que maneja datos de la empresa?",
+        options: ["Clausulas de seguridad y notificacion de incidentes", "Solo el precio y tiempo de entrega", "Ninguna obligacion adicional de seguridad"],
+        correct: 0
+      },
+      {
+        text: "Que riesgo tiene guardar documentos sin limite de tiempo?",
+        options: ["Aumenta el impacto de una fuga si algo falla", "Ninguno, mas informacion siempre es mejor", "Solo afecta el espacio de almacenamiento"],
+        correct: 0
+      },
+      {
+        text: "Que debe hacer legal ante un posible deepfake que afecta a la empresa?",
+        options: ["Activar un protocolo de respuesta y conservar evidencia", "Ignorarlo hasta que se vuelva viral", "Responder de inmediato sin validar los hechos"],
+        correct: 0
+      }
+    ]
+  },
+  "devsecure-course": {
+    overview:
+      "Ruta de desarrollo seguro para TI sobre OWASP Top 10, inyeccion, gestion de credenciales, seguridad en repositorios, control de acceso en aplicaciones y dependencias en CI/CD.",
+    lessons: [
+      {
+        title: "OWASP Top 10: panorama general",
+        video: "owasp_top10",
+        duration: "8 min",
+        body:
+          "El OWASP Top 10 resume los riesgos mas comunes y de mayor impacto en aplicaciones web: perdida de control de acceso, fallas criptograficas, inyeccion, errores de diseno, mala configuracion, componentes vulnerables, fallas de autenticacion, entre otros. No es una lista teorica: describe los patrones que mas se explotan en incidentes reales. Conocerla ayuda a priorizar que revisar primero en el diseno y revision de codigo.",
+        scenario:
+          "Un equipo va a lanzar una funcionalidad nueva y quiere saber por donde empezar la revision de seguridad antes de salir a produccion.",
+        actions: [
+          "Usa el OWASP Top 10 como checklist minimo antes de lanzar funcionalidad nueva.",
+          "Prioriza revisar control de acceso, validacion de entradas y manejo de credenciales.",
+          "Actualiza el conocimiento del equipo cuando OWASP publique una version nueva."
+        ],
+        takeaways: [
+          "La mayoria de incidentes de aplicaciones repiten un numero pequeno de patrones conocidos.",
+          "Conocer el Top 10 no sustituye una revision completa, pero ordena las prioridades.",
+          "La seguridad en desarrollo empieza en el diseno, no solo en produccion."
+        ]
+      },
+      {
+        title: "Inyeccion y validacion de entradas",
+        video: "owasp_top10",
+        duration: "8 min",
+        body:
+          "La inyeccion ocurre cuando datos que vienen del usuario se interpretan como parte de un comando o consulta, como en SQL injection o cross-site scripting. La defensa principal es nunca confiar en la entrada del usuario: usar consultas parametrizadas en vez de construir texto directamente, validar formato y longitud, y escapar la salida antes de mostrarla en una pagina.",
+        scenario:
+          "Un formulario de busqueda arma la consulta a la base de datos concatenando directamente el texto que escribe el usuario.",
+        actions: [
+          "Usa consultas parametrizadas o un ORM en vez de concatenar texto de usuario.",
+          "Valida y limita el formato esperado de cada campo de entrada.",
+          "Escapa la salida al mostrar contenido generado por usuarios en una pagina."
+        ],
+        takeaways: [
+          "Toda entrada de usuario debe tratarse como potencialmente maliciosa.",
+          "La inyeccion sigue siendo una de las fallas mas explotadas y mas prevenibles.",
+          "Validar en el cliente no reemplaza validar tambien en el servidor."
+        ]
+      },
+      {
+        title: "Gestion segura de credenciales y secretos",
+        video: "contrasenas",
+        duration: "7 min",
+        body:
+          "Las credenciales, llaves de API y tokens nunca deben quedar escritas directamente en el codigo ni subirse a un repositorio, ni siquiera en un commit que despues se borra, porque el historial de Git conserva ese registro. Lo correcto es usar variables de entorno o un gestor de secretos, rotarlas periodicamente, y limitar quien puede verlas segun el principio de minimo privilegio.",
+        scenario:
+          "Un desarrollador sube por error una llave de API valida a un repositorio publico dentro de un archivo de configuracion.",
+        actions: [
+          "Nunca incluyas credenciales o llaves directamente en el codigo fuente.",
+          "Usa un gestor de secretos o variables de entorno fuera del repositorio.",
+          "Si una credencial se expone, rotala de inmediato en vez de solo borrar el commit."
+        ],
+        takeaways: [
+          "El historial de Git conserva lo que se subio, aunque se borre despues.",
+          "Rotar una credencial expuesta es mas seguro que confiar en que nadie la vio.",
+          "Menos personas y sistemas con acceso a un secreto significa menos riesgo."
+        ]
+      },
+      {
+        title: "Seguridad en repositorios y control de versiones",
+        video: "accesos_ti",
+        duration: "7 min",
+        body:
+          "El repositorio de codigo es tan sensible como cualquier otro sistema critico. Las ramas principales deben protegerse para exigir revision antes de fusionar cambios, los permisos deben asignarse por rol, y las cuentas de exempleados o colaboradores externos deben revocarse a tiempo. Revisar el codigo de otra persona no es solo buscar errores logicos: tambien es una oportunidad para detectar riesgos de seguridad antes de que lleguen a produccion.",
+        scenario:
+          "Un exdesarrollador contratista sigue teniendo acceso de escritura al repositorio principal meses despues de terminar su contrato.",
+        actions: [
+          "Protege las ramas principales con revision obligatoria antes de fusionar.",
+          "Revoca accesos de repositorio en cuanto termine una colaboracion externa o interna.",
+          "Incluye revision de seguridad basica dentro del proceso normal de revision de codigo."
+        ],
+        takeaways: [
+          "Un repositorio sin control de accesos es tan riesgoso como un servidor sin contrasena.",
+          "La revocacion de accesos debe ser parte del proceso de baja, no un pendiente.",
+          "La revision de codigo es tambien una capa de seguridad."
+        ]
+      },
+      {
+        title: "Autenticacion y control de acceso en aplicaciones",
+        video: "mfa",
+        duration: "8 min",
+        body:
+          "Una aplicacion segura no solo verifica quien eres al iniciar sesion, tambien debe verificar en cada accion que tengas permiso para hacerla. Los errores de control de acceso ocurren cuando la aplicacion confia en datos que el usuario puede manipular, como un identificador en la URL, para decidir que informacion mostrar. El diseno debe aplicar minimo privilegio y validar permisos en el servidor, no solo ocultar opciones en la interfaz.",
+        scenario:
+          "Un usuario cambia el numero de una factura en la URL y logra ver el documento de otro cliente distinto al suyo.",
+        actions: [
+          "Valida permisos en el servidor para cada solicitud, no solo en la interfaz.",
+          "Nunca confies en identificadores que el usuario puede modificar sin verificar propiedad.",
+          "Ofrece MFA como opcion o requisito para cuentas con datos sensibles."
+        ],
+        takeaways: [
+          "Ocultar un boton en la interfaz no es lo mismo que proteger el acceso real.",
+          "Cada solicitud al servidor debe validar que el usuario tiene permiso sobre ese dato especifico.",
+          "El control de acceso roto es uno de los riesgos mas comunes y mas daninos."
+        ]
+      },
+      {
+        title: "Dependencias y seguridad en CI/CD",
+        video: "owasp_top10",
+        duration: "8 min",
+        body:
+          "Cada libreria externa que usas es codigo que no escribiste pero que corre con los mismos permisos que tu aplicacion. Mantener dependencias actualizadas, revisar alertas de vulnerabilidades conocidas y evitar paquetes sin mantenimiento reduce ese riesgo. El pipeline de CI/CD tambien necesita proteccion: los secretos usados para desplegar no deben quedar visibles en logs, y solo cambios revisados deberian poder llegar a produccion.",
+        scenario:
+          "Una alerta automatica reporta una vulnerabilidad conocida en una libreria que el proyecto usa desde hace mas de un ano sin actualizar.",
+        actions: [
+          "Revisa y atiende alertas de vulnerabilidades en dependencias con prioridad segun severidad.",
+          "Evita agregar librerias sin mantenimiento activo o de origen desconocido.",
+          "Protege los secretos del pipeline de CI/CD y evita que se impriman en logs."
+        ],
+        takeaways: [
+          "Una dependencia vulnerable es una puerta trasera involuntaria a tu aplicacion.",
+          "Actualizar librerias es mantenimiento de seguridad, no solo de funcionalidad.",
+          "El pipeline que despliega tu aplicacion tambien es parte de la superficie de ataque."
+        ]
+      }
+    ],
+    quiz: [
+      {
+        text: "Para que sirve el OWASP Top 10?",
+        options: ["Prioriza los riesgos mas comunes en aplicaciones web", "Reemplaza cualquier revision de seguridad", "Aplica solo a bases de datos"],
+        correct: 0
+      },
+      {
+        text: "Cual es la mejor defensa contra inyeccion?",
+        options: ["Consultas parametrizadas y validacion de entradas", "Confiar en la validacion del lado del cliente", "Aumentar el tamano del campo de texto"],
+        correct: 0
+      },
+      {
+        text: "Que hacer si una credencial se expone en un repositorio?",
+        options: ["Rotarla de inmediato", "Borrar el commit y no decir nada", "Esperar a ver si alguien la usa"],
+        correct: 0
+      },
+      {
+        text: "Que debe pasar antes de fusionar cambios a la rama principal?",
+        options: ["Una revision obligatoria de codigo", "Nada, cualquiera puede fusionar directo", "Solo una prueba manual rapida"],
+        correct: 0
+      },
+      {
+        text: "Donde debe validarse el permiso sobre un dato sensible?",
+        options: ["En el servidor, en cada solicitud", "Solo ocultando el boton en la interfaz", "Solo al iniciar sesion"],
+        correct: 0
+      },
+      {
+        text: "Que riesgo tiene una dependencia sin actualizar?",
+        options: ["Puede tener vulnerabilidades conocidas explotables", "Ninguno si el proyecto funciona bien", "Solo afecta el tiempo de compilacion"],
         correct: 0
       }
     ]
