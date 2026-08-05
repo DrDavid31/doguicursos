@@ -9,11 +9,11 @@
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="preconnect" href="https://www.youtube.com" />
     <link rel="preconnect" href="https://i.ytimg.com" />
-    <link rel="stylesheet" href="styles.css?v=courses-20260802a" />
+    <link rel="stylesheet" href="styles.css?v=courses-20260802b" />
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
     <script src="https://www.youtube.com/iframe_api" defer></script>
-    <script src="course-content.js?v=courses-20260802a" defer></script>
-    <script src="app.js?v=courses-20260802a" defer></script>
+    <script src="course-content.js?v=courses-20260802b" defer></script>
+    <script src="app.js?v=courses-20260802b" defer></script>
   </head>
   <body>
     <div class="app-shell">
@@ -26,13 +26,13 @@
           </span>
         </a>
 
-        <nav class="main-nav" aria-label="Navegacion principal">
+        <nav class="main-nav" aria-label="Navegación principal">
           <a href="#planes">Planes</a>
           <a href="#cursos">Cursos</a>
           <a href="#crear">Crear</a>
           <a href="#conectar">Conectar</a>
           <a href="#aula">Aula</a>
-          <a href="#operacion">Operacion</a>
+          <a href="#operacion">Operación</a>
           <a href="#reportes">Reportes</a>
           <a href="#integraciones">Integraciones</a>
         </nav>
@@ -61,10 +61,10 @@
           </svg>
 
           <div class="overview-copy">
-            <p class="eyebrow">Concientizacion en ciberseguridad</p>
+            <p class="eyebrow">Concientización en ciberseguridad</p>
             <h1>DOGUI Awareness</h1>
             <p class="lead">
-              Capacitacion, simulaciones y reportes para reducir el riesgo humano en empresas.
+              Capacitación, simulaciones y reportes para reducir el riesgo humano en empresas.
             </p>
 
             <div class="action-row">
@@ -89,7 +89,7 @@
               </article>
               <article>
                 <span id="metricApproval">0%</span>
-                <small>aprobacion</small>
+                <small>aprobación</small>
               </article>
             </div>
 
@@ -104,7 +104,7 @@
               <article>
                 <i data-lucide="cloud" aria-hidden="true"></i>
                 <div>
-                  <small>Sincronizacion</small>
+                  <small>Sincronización</small>
                   <strong id="heroConnectionStatus">Local</strong>
                 </div>
               </article>
@@ -154,7 +154,7 @@
                 <div>
                   <i data-lucide="mail-warning" aria-hidden="true"></i>
                   <span>Phishing simulado</span>
-                  <strong>Campanas controladas y metricas por area</strong>
+                  <strong>Campanas controladas y metricas por área</strong>
                 </div>
                 <div>
                   <i data-lucide="award" aria-hidden="true"></i>
@@ -163,7 +163,7 @@
                 </div>
               </div>
 
-              <p>Aula, evaluacion, phishing simulado y reportes coordinados en una sola plataforma DOGUI.</p>
+              <p>Aula, evaluación, phishing simulado y reportes coordinados en una sola plataforma DOGUI.</p>
             </aside>
           </div>
         </section>
@@ -179,14 +179,14 @@
         <section class="section-block curriculum-band" id="cursos">
           <div class="section-heading">
             <p class="eyebrow">Contenido incluido</p>
-            <h2>Catalogo de cursos</h2>
+            <h2>Catálogo de cursos</h2>
           </div>
 
           <div class="catalog-toolbar">
             <div class="search-field">
-              <label class="visually-hidden" for="courseSearch">Buscar curso, tema o area</label>
+              <label class="visually-hidden" for="courseSearch">Buscar curso, tema o área</label>
               <i data-lucide="search" aria-hidden="true"></i>
-              <input id="courseSearch" type="search" placeholder="Buscar curso, tema o area" autocomplete="off" />
+              <input id="courseSearch" type="search" placeholder="Buscar curso, tema o área" autocomplete="off" />
               <button class="search-clear" id="clearCourseSearchBtn" type="button" aria-label="Limpiar busqueda" hidden>
                 <i data-lucide="x" aria-hidden="true"></i>
               </button>
@@ -209,7 +209,7 @@
             </button>
             <button type="button" data-audience="direction">
               <i data-lucide="briefcase" aria-hidden="true"></i>
-              Direccion
+              Dirección
             </button>
             <button type="button" data-audience="it">
               <i data-lucide="server-cog" aria-hidden="true"></i>
@@ -259,20 +259,20 @@
                 <label>
                   Plan
                   <select id="customCoursePlan">
-                    <option value="basic">Basico</option>
+                    <option value="basic">Básico</option>
                     <option value="professional" selected>Profesional</option>
                     <option value="enterprise">Enterprise</option>
                   </select>
                 </label>
 
                 <label>
-                  Duracion
+                  Duración
                   <input id="customCourseDuration" type="text" placeholder="30 min" />
                 </label>
               </div>
 
               <label>
-                Descripcion
+                Descripción
                 <textarea id="customCourseOverview" rows="3" placeholder="Describe que aprendera el empleado en este curso."></textarea>
               </label>
 
@@ -283,18 +283,18 @@
                 </div>
 
                 <label>
-                  Titulo de la leccion
+                  Titulo de la lección
                   <input id="customLessonTitle" type="text" placeholder="Ej. Detectar correos falsos" />
                 </label>
 
                 <label>
                   Contenido
-                  <textarea id="customLessonBody" rows="4" placeholder="Escribe la explicacion, escenario o buenas practicas de la leccion."></textarea>
+                  <textarea id="customLessonBody" rows="4" placeholder="Escribe la explicación, escenario o buenas prácticas de la lección."></textarea>
                 </label>
 
                 <button class="button ghost full" id="addLessonBtn" type="button">
                   <i data-lucide="plus" aria-hidden="true"></i>
-                  Agregar leccion
+                  Agregar lección
                 </button>
 
                 <div class="draft-list" id="customLessonList"></div>
@@ -313,15 +313,15 @@
 
                 <div class="builder-fields">
                   <label>
-                    Opcion A
+                    Opción A
                     <input id="customOptionA" type="text" />
                   </label>
                   <label>
-                    Opcion B
+                    Opción B
                     <input id="customOptionB" type="text" />
                   </label>
                   <label>
-                    Opcion C
+                    Opción C
                     <input id="customOptionC" type="text" />
                   </label>
                 </div>
@@ -329,9 +329,9 @@
                 <label>
                   Respuesta correcta
                   <select id="customCorrectAnswer">
-                    <option value="0">Opcion A</option>
-                    <option value="1">Opcion B</option>
-                    <option value="2">Opcion C</option>
+                    <option value="0">Opción A</option>
+                    <option value="1">Opción B</option>
+                    <option value="2">Opción C</option>
                   </select>
                 </label>
 
@@ -354,7 +354,7 @@
                 </button>
               </div>
 
-              <div class="status-line" id="customCourseStatus" role="status" aria-live="polite">Agrega al menos una leccion y una pregunta.</div>
+              <div class="status-line" id="customCourseStatus" role="status" aria-live="polite">Agrega al menos una lección y una pregunta.</div>
             </form>
 
             <aside class="tool-panel custom-course-panel">
@@ -369,7 +369,7 @@
 
         <section class="section-block connection-band" id="conectar">
           <div class="section-heading">
-            <p class="eyebrow">Sincronizacion</p>
+            <p class="eyebrow">Sincronización</p>
             <h2>Conectar cursos a un backend</h2>
           </div>
 
@@ -377,7 +377,7 @@
             <form class="tool-panel connection-panel" id="connectionForm">
               <div class="panel-title">
                 <i data-lucide="plug-zap" aria-hidden="true"></i>
-                <h3>Conexion API</h3>
+                <h3>Conexión API</h3>
               </div>
 
               <label>
@@ -403,7 +403,7 @@
                   <input id="apiToken" type="password" placeholder="Bearer token opcional" />
                 </label>
                 <label>
-                  Ultima sincronizacion
+                  Ultima sincronización
                   <input id="lastSync" type="text" readonly />
                 </label>
               </div>
@@ -411,7 +411,7 @@
               <div class="connection-actions">
                 <button class="button primary" id="saveConnectionBtn" type="button">
                   <i data-lucide="save" aria-hidden="true"></i>
-                  Guardar conexion
+                  Guardar conexión
                 </button>
                 <button class="button ghost" id="testConnectionBtn" type="button">
                   <i data-lucide="wifi" aria-hidden="true"></i>
@@ -486,7 +486,7 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
 
             <article class="tool-panel lesson-panel">
               <div class="lesson-toolbar">
-                <span class="pill" id="lessonCounter">Leccion 1</span>
+                <span class="pill" id="lessonCounter">Lección 1</span>
                 <span class="pill warn" id="lessonDuration">0 min</span>
                 <span class="pill" id="lessonStatus">Pendiente</span>
                 <span class="pill video-pending" id="lessonVideoPill">Video pendiente</span>
@@ -500,7 +500,7 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
                   <span class="icon"><i data-lucide="lock" aria-hidden="true"></i></span>
                   <div>
                     <strong id="videoGateTitle">Video obligatorio</strong>
-                    <span id="videoGateText">Mira el video completo para desbloquear "Completar leccion". No puedes adelantarlo ni saltarlo.</span>
+                    <span id="videoGateText">Mira el video completo para desbloquear "Completar lección". No puedes adelantarlo ni saltarlo.</span>
                   </div>
                 </div>
                 <span class="video-source" id="videoSource"></span>
@@ -530,7 +530,7 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
                 </button>
                 <button class="button primary" id="completeLessonBtn" type="button">
                   <i data-lucide="check-circle" aria-hidden="true"></i>
-                  Completar leccion
+                  Completar lección
                 </button>
                 <button class="button ghost" id="nextLessonBtn" type="button">
                   Siguiente
@@ -543,15 +543,15 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
 
         <section class="section-block operation-band" id="operacion">
           <div class="section-heading">
-            <p class="eyebrow">Operacion</p>
-            <h2>Capacitacion y evaluacion</h2>
+            <p class="eyebrow">Operación</p>
+            <h2>Capacitación y evaluación</h2>
           </div>
 
           <div class="workspace-grid">
             <form class="tool-panel" id="enrollmentForm">
               <div class="panel-title">
                 <i data-lucide="clipboard-check" aria-hidden="true"></i>
-                <h3>Asignacion</h3>
+                <h3>Asignación</h3>
               </div>
 
               <label>
@@ -588,7 +588,7 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
             <div class="tool-panel quiz-panel">
               <div class="panel-title">
                 <i data-lucide="list-checks" aria-hidden="true"></i>
-                <h3>Evaluacion rapida</h3>
+                <h3>Evaluación rápida</h3>
               </div>
 
               <div class="status-line" id="courseStatus">Curso pendiente</div>
@@ -606,8 +606,8 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
               </div>
 
               <div class="score-box" id="scoreBox">
-                <strong>Sin calificacion</strong>
-                <span>Completa la evaluacion para liberar el reconocimiento.</span>
+                <strong>Sin calificación</strong>
+                <span>Completa la evaluación para liberar el reconocimiento.</span>
               </div>
             </div>
           </div>
@@ -622,14 +622,14 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
           <div class="certificate-layout">
             <div class="certificate-preview" id="certificatePreview">
               <span class="cert-kicker">DOGUI Awareness</span>
-              <h3>Reconocimiento de participacion</h3>
+              <h3>Reconocimiento de participación</h3>
               <p>Se otorga a</p>
               <strong id="certEmployee">Empleado</strong>
               <p>por completar satisfactoriamente</p>
               <span id="certCourse">Curso DOGUI Awareness</span>
               <div class="cert-meta">
                 <span id="certCompany">Empresa</span>
-                <span id="certScore">Calificacion pendiente</span>
+                <span id="certScore">Calificación pendiente</span>
                 <span id="certFolio">Folio DOGUI-0000</span>
               </div>
             </div>
@@ -637,9 +637,9 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
             <div class="tool-panel certificate-actions">
               <div class="panel-title">
                 <i data-lucide="award" aria-hidden="true"></i>
-                <h3>Emision</h3>
+                <h3>Emisión</h3>
               </div>
-              <p id="certificateMessage">El reconocimiento se activa con 80% o mas en la evaluacion.</p>
+              <p id="certificateMessage">El reconocimiento se activa con 80% o más en la evaluación.</p>
               <button class="button primary full" id="downloadCertificateBtn" type="button" disabled>
                 <i data-lucide="download" aria-hidden="true"></i>
                 Descargar reconocimiento PDF
@@ -650,8 +650,8 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
 
         <section class="section-block report-band" id="reportes">
           <div class="section-heading">
-            <p class="eyebrow">Medicion</p>
-            <h2>Simulacion y reporte ejecutivo</h2>
+            <p class="eyebrow">Medición</p>
+            <h2>Simulación y reporte ejecutivo</h2>
           </div>
 
           <div class="report-grid">
@@ -668,7 +668,7 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
 
               <button class="button primary full" id="runSimulationBtn" type="button">
                 <i data-lucide="send" aria-hidden="true"></i>
-                Ejecutar simulacion
+                Ejecutar simulación
               </button>
 
               <div class="simulation-metrics">
@@ -715,7 +715,7 @@ Body: { "tenant": "empresa", "courses": [...] }</code></pre>
               <h3>Dogui Cyber Academy</h3>
               <p>
                 La plataforma puede crecer como un ecosistema: LMS para cursos, modulo de phishing,
-                laboratorios tecnicos y retos CTF para equipos de TI o desarrollo.
+                laboratorios técnicos y retos CTF para equipos de TI o desarrollo.
               </p>
             </div>
             <button class="button primary" id="copyIntegrationUrlsBtn" type="button">

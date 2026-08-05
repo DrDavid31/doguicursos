@@ -1,26 +1,26 @@
 # DOGUI Awareness
 
-Plataforma estatica de concientizacion en ciberseguridad para empresas.
+Plataforma estática de concientización en ciberseguridad para empresas.
 
 ## Que incluye
 
-- 3 planes comerciales: Basico, Profesional y Enterprise.
-- Catalogo de cursos de ciberseguridad.
-- Aula funcional con lecciones navegables y video obligatorio por leccion (no se puede adelantar ni saltar; "Completar leccion" se desbloquea hasta terminar el video).
+- 3 planes comerciales: Básico, Profesional y Enterprise.
+- Catálogo de cursos de ciberseguridad.
+- Aula funcional con lecciones navegables y video obligatorio por lección (no se puede adelantar ni saltar; "Completar lección" se desbloquea hasta terminar el video).
 - Avance guardado por curso en el navegador, con desbloqueo secuencial de lecciones.
 - Creador de cursos propios desde la interfaz.
 - Constructor de lecciones y preguntas para cursos internos DOGUI.
-- Cursos por area: Finanzas, Recursos Humanos, Direccion y TI.
+- Cursos por área: Finanzas, Recursos Humanos, Dirección y TI.
 - Microcursos mensuales.
-- Evaluacion rapida por curso.
+- Evaluación rápida por curso.
 - Simulaciones de phishing para Enterprise.
 - Reporte ejecutivo mensual.
-- Reconocimiento PDF al completar el curso y aprobar la evaluacion.
-- Seccion de integraciones open source para evolucionar la plataforma.
+- Reconocimiento PDF al completar el curso y aprobar la evaluación.
+- Sección de integraciones open source para evolucionar la plataforma.
 
 ## Integraciones recomendadas
 
-La demo estatica ya muestra la ruta de integracion para convertir DOGUI en una plataforma completa:
+La demo estática ya muestra la ruta de integración para convertir DOGUI en una plataforma completa:
 
 | Producto DOGUI | Base recomendada | URLs |
 | --- | --- | --- |
@@ -32,27 +32,27 @@ La demo estatica ya muestra la ruta de integracion para convertir DOGUI en una p
 
 ## Ruta de producto
 
-- Moodle como LMS principal para usuarios, cursos, examenes, certificados y reportes.
-- Gophish como modulo de phishing simulado y awareness.
+- Moodle como LMS principal para usuarios, cursos, exámenes, certificados y reportes.
+- Gophish como módulo de phishing simulado y awareness.
 - OWASP Security Shepherd y Juice Shop como laboratorios premium para TI y desarrollo.
 - Juice Shop CTF Extension para eventos CTF empresariales.
 
 ## Cursos propios
 
-La plataforma incluye una seccion `Crear` para que puedas armar tus propios cursos sin tocar codigo:
+La plataforma incluye una sección `Crear` para que puedas armar tus propios cursos sin tocar código:
 
 - Nombre del curso.
 - Area a la que pertenece.
-- Plan donde estara disponible.
-- Descripcion.
+- Plan donde estará disponible.
+- Descripción.
 - Lecciones propias.
-- Preguntas de evaluacion.
+- Preguntas de evaluación.
 
-En esta version estatica los cursos se guardan en el navegador con `localStorage`. Para que varios empleados compartan los mismos cursos, usuarios, calificaciones y reportes centrales, el siguiente paso es conectarlo a un backend o a un LMS como Moodle.
+En esta versión estática los cursos se guardan en el navegador con `localStorage`. Para que varios empleados compartan los mismos cursos, usuarios, calificaciones y reportes centrales, el siguiente paso es conectarlo a un backend o a un LMS como Moodle.
 
-## Conexion API
+## Conexión API
 
-La seccion `Conectar` permite sincronizar cursos propios con un backend externo. GitHub Pages no ejecuta backend, por eso DOGUI usa una conexion configurable.
+La sección `Conectar` permite sincronizar cursos propios con un backend externo. GitHub Pages no ejecuta backend, por eso DOGUI usa una conexión configurable.
 
 Contrato esperado:
 
@@ -91,14 +91,14 @@ Abre `index.html` en tu navegador.
 
 ## Como subirlo a GitHub Pages
 
-Importante: GitHub Pages necesita que `index.html` este directamente en la raiz publicada del repositorio.
+Importante: GitHub Pages necesita que `index.html` esté directamente en la raíz publicada del repositorio.
 
-Si al abrir tu sitio solo ves el nombre del repositorio y una carpeta, significa que el `index.html` quedo dentro de una subcarpeta.
+Si al abrir tu sitio solo ves el nombre del repositorio y una carpeta, significa que el `index.html` quedó dentro de una subcarpeta.
 
 1. Descomprime el ZIP.
 2. Entra a la carpeta descomprimida.
-3. Sube el contenido de esa carpeta a la raiz del repositorio, no la carpeta completa.
-4. Deben quedar asi en GitHub:
+3. Sube el contenido de esa carpeta a la raíz del repositorio, no la carpeta completa.
+4. Deben quedar así en GitHub:
    - `index.html`
    - `styles.css`
    - `app.js`
@@ -111,7 +111,7 @@ Si al abrir tu sitio solo ves el nombre del repositorio y una carpeta, significa
    - Selecciona la rama `main` y la carpeta `/root`.
    - Guarda los cambios.
 
-La URL final deberia abrir directamente la plataforma:
+La URL final debería abrir directamente la plataforma:
 
 ```text
 https://TU-USUARIO.github.io/TU-REPOSITORIO/
@@ -137,15 +137,15 @@ dogui-awareness/
 
 ## Videos de las lecciones
 
-Cada leccion de los 7 cursos incluidos trae un video corto de una fuente oficial o reconocida (INCIBE, OSI, y otros canales especializados en concientizacion de ciberseguridad), embebido con la API de IFrame de YouTube. El reproductor:
+Cada lección de los 7 cursos incluidos trae un video corto de una fuente oficial o reconocida (INCIBE, OSI, y otros canales especializados en concientización de ciberseguridad), embebido con la API de IFrame de YouTube. El reproductor:
 
-- No permite adelantar el video arrastrando la barra de progreso mas alla de lo ya visto.
-- Mantiene bloqueado el boton "Completar leccion" hasta que el video termina.
-- Bloquea la navegacion a lecciones futuras hasta completar la leccion actual (desbloqueo secuencial).
-- Guarda que videos ya se vieron en `localStorage`, por curso y por leccion.
+- No permite adelantar el video arrastrando la barra de progreso más alla de lo ya visto.
+- Mantiene bloqueado el boton "Completar lección" hasta que el video termina.
+- Bloquea la navegación a lecciones futuras hasta completar la lección actual (desbloqueo secuencial).
+- Guarda que videos ya se vieron en `localStorage`, por curso y por lección.
 
-Los cursos creados desde la seccion `Crear` no requieren video: son contenido de texto definido por cada empresa.
+Los cursos creados desde la sección `Crear` no requieren video: son contenido de texto definido por cada empresa.
 
 ## Notas
 
-La plataforma esta hecha con HTML, CSS y JavaScript puro. No requiere instalar dependencias ni ejecutar backend.
+La plataforma está hecha con HTML, CSS y JavaScript puro. No requiere instalar dependencias ni ejecutar backend.

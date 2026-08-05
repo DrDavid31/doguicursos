@@ -1,108 +1,108 @@
 const plans = {
   basic: {
-    name: "DOGUI Awareness Basico",
-    shortName: "Basico",
+    name: "DOGUI Awareness Básico",
+    shortName: "Básico",
     tag: "Curso inicial",
     className: "basic",
     summary: "Para empresas que quieren capacitar a todo el personal por primera vez.",
     features: [
-      "Curso basico para todos los empleados",
-      "Evaluacion final de 5 a 10 preguntas",
-      "Calificacion por empleado",
+      "Curso básico para todos los empleados",
+      "Evaluación final de 5 a 10 preguntas",
+      "Calificación por empleado",
       "Reconocimiento PDF al finalizar",
-      "Reporte basico para la empresa"
+      "Reporte básico para la empresa"
     ],
     recommendations: [
-      "Cerrar la capacitacion inicial del 100% del personal.",
-      "Reforzar phishing, contrasenas y reporte de incidentes.",
+      "Cerrar la capacitación inicial del 100% del personal.",
+      "Reforzar phishing, contraseñas y reporte de incidentes.",
       "Activar MFA en cuentas corporativas prioritarias."
     ]
   },
   professional: {
     name: "DOGUI Awareness Profesional",
     shortName: "Profesional",
-    tag: "Capacitacion continua",
+    tag: "Capacitación continua",
     className: "professional",
-    summary: "Para empresas que quieren cursos por area, microcursos mensuales y medicion por equipo.",
+    summary: "Para empresas que quieren cursos por área, microcursos mensuales y medición por equipo.",
     features: [
-      "Todo lo incluido en Basico",
-      "Cursos para Finanzas, RH, Direccion, TI, Ventas y Legal",
+      "Todo lo incluido en Básico",
+      "Cursos para Finanzas, RH, Dirección, TI, Ventas y Legal",
       "Microcursos mensuales de 10 a 15 minutos",
-      "Score por empleado y por area",
+      "Score por empleado y por área",
       "Reporte mensual con recomendaciones"
     ],
     recommendations: [
-      "Asignar rutas por area para reducir riesgos especificos.",
+      "Asignar rutas por área para reducir riesgos especificos.",
       "Programar microcursos mensuales de refuerzo.",
-      "Comparar score por area contra el mes anterior."
+      "Comparar score por área contra el mes anterior."
     ]
   },
   enterprise: {
     name: "DOGUI Awareness Enterprise",
     shortName: "Enterprise",
-    tag: "Medicion avanzada",
+    tag: "Medición avanzada",
     className: "enterprise",
     summary: "Para empresas que quieren simulaciones de phishing, dashboard ejecutivo y plan de mejora.",
     features: [
       "Todo lo incluido en Profesional",
       "Simulaciones de phishing autorizadas",
-      "Medicion de aperturas, clics, reportes y datos de prueba",
+      "Medición de aperturas, clics, reportes y datos de prueba",
       "Dashboard ejecutivo de riesgo",
       "Reporte mensual avanzado y plan de mejora"
     ],
     recommendations: [
-      "Ejecutar simulaciones controladas despues de cada bloque.",
-      "Priorizar areas con mayor clic o menor reporte.",
-      "Revisar pagos urgentes, validacion bancaria y cuentas criticas."
+      "Ejecutar simulaciones controladas después de cada bloque.",
+      "Priorizar áreas con mayor clic o menor reporte.",
+      "Revisar pagos urgentes, validación bancaria y cuentas críticas."
     ]
   }
 };
 
 const areas = {
   general: "General",
-  finance: "Finanzas y Administracion",
+  finance: "Finanzas y Administración",
   hr: "Recursos Humanos",
-  direction: "Direccion",
+  direction: "Dirección",
   it: "TI",
-  sales: "Ventas y Atencion a Clientes",
+  sales: "Ventas y Atención a Clientes",
   legal: "Legal y Cumplimiento"
 };
 
 const courses = [
   {
     id: "basic-course",
-    title: "Curso basico para todos los empleados",
+    title: "Curso básico para todos los empleados",
     audience: "general",
     duration: "82 min",
     type: "Entrada",
     plans: ["basic", "professional", "enterprise"],
     topics: [
-      "Que es la ciberseguridad",
+      "Qué es la ciberseguridad",
       "Phishing y correos falsos",
       "Fraudes por WhatsApp",
-      "Contrasenas seguras",
-      "Autenticacion multifactor",
+      "Contraseñas seguras",
+      "Autenticación multifactor",
       "Uso seguro del correo corporativo",
       "Archivos y links sospechosos",
-      "Proteccion de informacion sensible",
-      "Buenas practicas en redes sociales",
-      "Que hacer ante un incidente"
+      "Protección de información sensible",
+      "Buenas prácticas en redes sociales",
+      "Qué hacer ante un incidente"
     ]
   },
   {
     id: "finance-course",
-    title: "Ruta para Finanzas y Administracion",
+    title: "Ruta para Finanzas y Administración",
     audience: "finance",
     duration: "46 min",
-    type: "Por area",
+    type: "Por área",
     plans: ["professional", "enterprise"],
     topics: [
       "Fraude de transferencias",
       "Facturas falsas",
-      "Suplantacion de proveedores",
+      "Suplantación de proveedores",
       "Correos del director",
       "Solicitudes urgentes de pago",
-      "Validacion de cuentas bancarias"
+      "Validación de cuentas bancarias"
     ]
   },
   {
@@ -110,28 +110,28 @@ const courses = [
     title: "Ruta para Recursos Humanos",
     audience: "hr",
     duration: "39 min",
-    type: "Por area",
+    type: "Por área",
     plans: ["professional", "enterprise"],
     topics: [
       "CVs maliciosos",
       "Documentos falsos",
       "Robo de datos personales",
       "Ofertas laborales falsas",
-      "Ingenieria social a candidatos"
+      "Ingeniería social a candidatos"
     ]
   },
   {
     id: "direction-course",
-    title: "Ruta para Direccion",
+    title: "Ruta para Dirección",
     audience: "direction",
     duration: "45 min",
-    type: "Por area",
+    type: "Por área",
     plans: ["professional", "enterprise"],
     topics: [
       "Fraude CEO",
       "Deepfakes",
       "Robo de identidad",
-      "Proteccion de cuentas criticas",
+      "Protección de cuentas críticas",
       "Viajes y dispositivos",
       "Toma de decisiones ante incidentes"
     ]
@@ -141,11 +141,11 @@ const courses = [
     title: "Ruta para TI",
     audience: "it",
     duration: "50 min",
-    type: "Por area",
+    type: "Por área",
     plans: ["professional", "enterprise"],
     topics: [
-      "Gestion de accesos",
-      "Hardening basico",
+      "Gestión de accesos",
+      "Hardening básico",
       "MFA",
       "Manejo de incidentes",
       "Respuesta inicial",
@@ -160,16 +160,16 @@ const courses = [
     type: "Mensual",
     plans: ["professional", "enterprise"],
     topics: [
-      "Como detectar un correo falso",
-      "Como identificar un link sospechoso",
-      "Que hacer si recibes un WhatsApp extrano",
-      "Como crear contrasenas seguras",
-      "Que es MFA y por que importa",
-      "Como evitar fraudes con QR",
-      "Que hacer si abriste un archivo sospechoso",
-      "Como proteger informacion confidencial",
+      "Cómo detectar un correo falso",
+      "Cómo identificar un link sospechoso",
+      "Qué hacer si recibes un WhatsApp extraño",
+      "Cómo crear contraseñas seguras",
+      "Qué es MFA y por qué importa",
+      "Cómo evitar fraudes con QR",
+      "Qué hacer si abriste un archivo sospechoso",
+      "Cómo proteger información confidencial",
       "Fraudes con inteligencia artificial",
-      "Como reportar un incidente"
+      "Cómo reportar un incidente"
     ]
   },
   {
@@ -183,23 +183,23 @@ const courses = [
       "Bienvenida a la seguridad DOGUI",
       "Tu identidad digital en la empresa",
       "Correo, chat y videollamadas seguras",
-      "Dispositivos y accesos del primer dia",
+      "Dispositivos y accesos del primer día",
       "A quien y como reportar"
     ]
   },
   {
     id: "sales-course",
-    title: "Ruta para Ventas y Atencion a Clientes",
+    title: "Ruta para Ventas y Atención a Clientes",
     audience: "sales",
     duration: "42 min",
-    type: "Por area",
+    type: "Por área",
     plans: ["professional", "enterprise"],
     topics: [
-      "Proteccion de datos de clientes en el CRM",
+      "Protección de datos de clientes en el CRM",
       "Llamadas fraudulentas a ventas y soporte",
-      "Ingenieria social en redes profesionales",
+      "Ingeniería social en redes profesionales",
       "Pagos y datos financieros de clientes",
-      "Suplantacion de tu marca ante clientes",
+      "Suplantación de tu marca ante clientes",
       "Cierre de venta seguro"
     ]
   },
@@ -208,13 +208,13 @@ const courses = [
     title: "Ruta para Legal y Cumplimiento",
     audience: "legal",
     duration: "38 min",
-    type: "Por area",
+    type: "Por área",
     plans: ["professional", "enterprise"],
     topics: [
-      "Proteccion de datos personales: fundamentos",
-      "Que hacer ante una brecha de datos",
-      "Clausulas de seguridad con proveedores",
-      "Conservacion y destruccion segura de documentos",
+      "Protección de datos personales: fundamentos",
+      "Qué hacer ante una brecha de datos",
+      "Cláusulas de seguridad con proveedores",
+      "Conservación y destrucción segura de documentos",
       "Riesgo legal de IA y deepfakes"
     ]
   },
@@ -223,14 +223,14 @@ const courses = [
     title: "Ruta de desarrollo seguro para TI",
     audience: "it",
     duration: "44 min",
-    type: "Por area",
+    type: "Por área",
     plans: ["professional", "enterprise"],
     topics: [
       "OWASP Top 10: panorama general",
-      "Inyeccion y validacion de entradas",
-      "Gestion segura de credenciales y secretos",
+      "Inyección y validación de entradas",
+      "Gestión segura de credenciales y secretos",
       "Seguridad en repositorios y control de versiones",
-      "Autenticacion y control de acceso en aplicaciones",
+      "Autenticación y control de acceso en aplicaciones",
       "Dependencias y seguridad en CI/CD"
     ]
   },
@@ -239,13 +239,13 @@ const courses = [
     title: "Simulaciones de phishing",
     audience: "general",
     duration: "60 min",
-    type: "Medicion",
+    type: "Medición",
     plans: ["enterprise"],
     topics: [
       "Factura falsa",
-      "Paqueteria falsa",
-      "WhatsApp falso de direccion",
-      "Cambio de contrasena",
+      "Paquetería falsa",
+      "WhatsApp falso de dirección",
+      "Cambio de contraseña",
       "Alerta falsa de banco",
       "Documento falso de proveedor",
       "Metricas y reporte ejecutivo"
@@ -255,7 +255,7 @@ const courses = [
 
 const questions = [
   {
-    text: "Recibes un correo urgente que pide tu contrasena corporativa. Que accion es correcta?",
+    text: "¿Recibes un correo urgente que pide tu contraseña corporativa. Que acción es correcta?",
     options: [
       "Responder para evitar bloqueo de cuenta",
       "Reportarlo y no ingresar credenciales",
@@ -264,38 +264,38 @@ const questions = [
     correct: 1
   },
   {
-    text: "Para que sirve MFA?",
+    text: "¿Para que sirve MFA?",
     options: [
-      "Agregar una segunda verificacion de identidad",
-      "Eliminar la necesidad de contrasenas",
+      "Agregar una segunda verificación de identidad",
+      "Eliminar la necesidad de contraseñas",
       "Permitir que todos usen la misma cuenta"
     ],
     correct: 0
   },
   {
-    text: "Un mensaje de WhatsApp pide una transferencia urgente de direccion. Que conviene hacer?",
+    text: "¿Un mensaje de WhatsApp pide una transferencia urgente de dirección. Que conviene hacer?",
     options: [
-      "Pagar rapido y guardar captura",
+      "Pagar rápido y guardar captura",
       "Validar por un canal oficial antes de actuar",
       "Compartir datos bancarios para confirmar"
     ],
     correct: 1
   },
   {
-    text: "Cual es una senal de link sospechoso?",
+    text: "¿Cuál es una señal de link sospechoso?",
     options: [
       "Dominio parecido al real pero con letras cambiadas",
-      "Que el correo tenga saludo personalizado",
-      "Que el link venga en color azul"
+      "Qué el correo tenga saludo personalizado",
+      "Qué el link venga en color azul"
     ],
     correct: 0
   },
   {
-    text: "Si abriste un archivo sospechoso, que debes hacer?",
+    text: "¿Si abriste un archivo sospechoso, que debes hacer?",
     options: [
       "Borrarlo y no avisar para evitar problemas",
       "Reportar de inmediato y seguir el protocolo interno",
-      "Mandarlo a otros companeros para revisar"
+      "Mandarlo a otros compañeros para revisar"
     ],
     correct: 1
   }
@@ -305,37 +305,37 @@ const campaigns = [
   {
     id: "invoice",
     name: "Correo falso de factura",
-    riskArea: "Finanzas y Administracion",
+    riskArea: "Finanzas y Administración",
     base: { opened: 46, clicked: 22, reported: 18, submitted: 5 }
   },
   {
     id: "parcel",
-    name: "Correo falso de paqueteria",
+    name: "Correo falso de paquetería",
     riskArea: "General",
     base: { opened: 54, clicked: 18, reported: 23, submitted: 3 }
   },
   {
     id: "director",
-    name: "WhatsApp falso de direccion",
-    riskArea: "Direccion",
+    name: "WhatsApp falso de dirección",
+    riskArea: "Dirección",
     base: { opened: 41, clicked: 16, reported: 14, submitted: 4 }
   },
   {
     id: "password",
-    name: "Link falso de cambio de contrasena",
+    name: "Link falso de cambio de contraseña",
     riskArea: "TI",
     base: { opened: 38, clicked: 12, reported: 32, submitted: 2 }
   },
   {
     id: "bank",
     name: "Alerta falsa de banco",
-    riskArea: "Finanzas y Administracion",
+    riskArea: "Finanzas y Administración",
     base: { opened: 49, clicked: 20, reported: 19, submitted: 6 }
   },
   {
     id: "provider",
     name: "Documento falso de proveedor",
-    riskArea: "Administracion",
+    riskArea: "Administración",
     base: { opened: 44, clicked: 21, reported: 15, submitted: 5 }
   }
 ];
@@ -353,13 +353,13 @@ const integrationTools = [
     summary:
       "Motor para cursos por empresa, usuarios por cliente, evaluaciones, certificados, avance por empleado y reportes para RH o TI.",
     features: [
-      "Cursos y modulos por empresa",
-      "Usuarios por cliente y area",
+      "Cursos y módulos por empresa",
+      "Usuarios por cliente y área",
       "Cuestionarios, avance y certificados",
       "Reportes para administradores"
     ],
     doguiUse:
-      "Usarlo como backend LMS cuando DOGUI deje de ser una demo estatica y necesite usuarios reales, roles, grupos y calificaciones centralizadas."
+      "Usarlo como backend LMS cuando DOGUI deje de ser una demo estática y necesite usuarios reales, roles, grupos y calificaciones centralizadas."
   },
   {
     id: "gophish",
@@ -385,48 +385,48 @@ const integrationTools = [
     id: "security-shepherd",
     name: "OWASP Security Shepherd",
     product: "Dogui Cyber Labs",
-    role: "Laboratorios tecnicos",
-    status: "Premium tecnico",
+    role: "Laboratorios técnicos",
+    status: "Premium técnico",
     icon: "shield-check",
     repo: "https://github.com/OWASP/SecurityShepherd",
     site: "https://owasp.org/www-project-security-shepherd/",
     summary:
-      "Plataforma de entrenamiento para seguridad web y movil, util para awareness tecnico, AppSec y practicas de pentesting.",
+      "Plataforma de entrenamiento para seguridad web y movil, util para awareness técnico, AppSec y prácticas de pentesting.",
     features: [
       "OWASP Top 10",
       "SQL Injection y XSS",
-      "Autenticacion y control de acceso",
+      "Autenticación y control de acceso",
       "Retos practicos para TI y desarrollo"
     ],
     doguiUse:
-      "Ofrecerlo como paquete premium para clientes con areas de TI, desarrollo, soporte tecnico o seguridad interna."
+      "Ofrecerlo como paquete premium para clientes con áreas de TI, desarrollo, soporte técnico o seguridad interna."
   },
   {
     id: "juice-shop",
     name: "OWASP Juice Shop",
     product: "Dogui Cyber Labs",
     role: "Laboratorio OWASP Top 10",
-    status: "Practica guiada",
+    status: "Práctica guiada",
     icon: "flask-conical",
     repo: "https://github.com/juice-shop/juice-shop",
     site: "https://owasp-juice.shop/",
     summary:
-      "Aplicacion vulnerable controlada para entrenamientos, demostraciones, CTFs y practicas sobre vulnerabilidades reales.",
+      "Aplicación vulnerable controlada para entrenamientos, demostraciones, CTFs y prácticas sobre vulnerabilidades reales.",
     features: [
       "Cursos practicos de OWASP Top 10",
       "Demos de vulnerabilidades",
       "Retos de seguridad aplicativa",
-      "Practica segura en entorno controlado"
+      "Práctica segura en entorno controlado"
     ],
     doguiUse:
-      "Integrarlo como laboratorio guiado para desarrolladores y equipos tecnicos que necesitan aprender con ejercicios reales."
+      "Integrarlo como laboratorio guiado para desarrolladores y equipos técnicos que necesitan aprender con ejercicios reales."
   },
   {
     id: "juice-shop-ctf",
     name: "Juice Shop CTF Extension",
     product: "Dogui CTF Empresarial",
     role: "Eventos CTF",
-    status: "Competencias tecnicas",
+    status: "Competencias técnicas",
     icon: "flag",
     repo: "https://github.com/juice-shop/juice-shop-ctf",
     site: "https://owasp-juice.shop/",
@@ -436,10 +436,10 @@ const integrationTools = [
       "Eventos CTF empresariales",
       "Retos importables",
       "Marcadores y competencia por equipos",
-      "Extension para programas avanzados"
+      "Extensión para programas avanzados"
     ],
     doguiUse:
-      "Usarlo para vender torneos internos de ciberseguridad, semanas de awareness o capacitacion avanzada para desarrollo."
+      "Usarlo para vender torneos internos de ciberseguridad, semanas de awareness o capacitación avanzada para desarrollo."
   }
 ];
 
@@ -462,20 +462,20 @@ const productRoute = [
   {
     name: "Dogui CTF Empresarial",
     base: "Juice Shop CTF Extension",
-    description: "Eventos tipo CTF para equipos tecnicos con retos y tableros."
+    description: "Eventos tipo CTF para equipos técnicos con retos y tableros."
   }
 ];
 
 const starterCourses = [
   "Fundamentos de ciberseguridad para empleados",
   "Phishing y correos sospechosos",
-  "Contrasenas y MFA",
+  "Contraseñas y MFA",
   "Uso seguro de WhatsApp, correo y nube",
-  "Ingenieria social",
-  "Proteccion de informacion confidencial",
+  "Ingeniería social",
+  "Protección de información confidencial",
   "Seguridad en home office",
   "Manejo de incidentes: que hacer si das clic",
-  "Buenas practicas para directivos",
+  "Buenas prácticas para directivos",
   "Curso express para nuevos ingresos"
 ];
 
@@ -507,7 +507,7 @@ const defaultState = {
   score: null,
   passed: false,
   campaignId: "invoice",
-  simulation: { opened: 46, clicked: 22, reported: 18, submitted: 5, riskArea: "Finanzas y Administracion" }
+  simulation: { opened: 46, clicked: 22, reported: 18, submitted: 5, riskArea: "Finanzas y Administración" }
 };
 
 const courseContent = window.DOGUI_COURSE_CONTENT || {};
@@ -849,7 +849,7 @@ function renderCourses() {
       <article class="empty-catalog">
         <i data-lucide="search-x" aria-hidden="true"></i>
         <strong>No encontramos cursos con ese filtro.</strong>
-        <span>Cambia el texto de busqueda o selecciona otra area.</span>
+        <span>Cambia el texto de busqueda o selecciona otra área.</span>
       </article>
     `;
     renderIcons();
@@ -936,19 +936,19 @@ function renderLearning() {
         <button class="lesson-nav-item${active ? " active" : ""}${done ? " done" : ""}" type="button" data-lesson-index="${index}" ${locked ? "disabled" : ""}>
           <span>${done ? "OK" : locked ? "..." : String(index + 1).padStart(2, "0")}</span>
           <strong>${escapeHtml(item.title)}</strong>
-          <small>${escapeHtml(item.duration || "Leccion")}</small>
+          <small>${escapeHtml(item.duration || "Lección")}</small>
         </button>
       `;
     })
     .join("");
 
-  elements.lessonCounter.textContent = `Leccion ${state.activeLessonIndex + 1} de ${lessons.length}`;
+  elements.lessonCounter.textContent = `Lección ${state.activeLessonIndex + 1} de ${lessons.length}`;
   elements.lessonDuration.textContent = lesson.duration || course.duration;
   elements.lessonStatus.textContent = isCompleted ? "Completada" : "Pendiente";
   elements.lessonStatus.classList.toggle("complete", isCompleted);
   elements.lessonTitle.textContent = lesson.title;
   elements.lessonBody.textContent = lesson.body;
-  elements.lessonScenario.textContent = lesson.scenario || "Aplica este tema a una situacion real de tu empresa.";
+  elements.lessonScenario.textContent = lesson.scenario || "Aplica este tema a una situación real de tu empresa.";
   elements.lessonActions.innerHTML = (lesson.actions || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
   elements.lessonTakeaways.innerHTML = (lesson.takeaways || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
   elements.prevLessonBtn.disabled = state.activeLessonIndex === 0;
@@ -961,9 +961,9 @@ function renderLearning() {
 
   elements.completeLessonBtn.disabled = isCompleted || !watched;
   elements.completeLessonBtn.innerHTML = isCompleted
-    ? `<i data-lucide="check" aria-hidden="true"></i> Leccion completada`
+    ? `<i data-lucide="check" aria-hidden="true"></i> Lección completada`
     : watched
-      ? `<i data-lucide="check-circle" aria-hidden="true"></i> Completar leccion`
+      ? `<i data-lucide="check-circle" aria-hidden="true"></i> Completar lección`
       : `<i data-lucide="lock" aria-hidden="true"></i> Termina el video para continuar`;
 
   renderIcons();
@@ -1003,8 +1003,8 @@ function renderVideoBlock(video, lessonKey, watched) {
   elements.videoGate.classList.toggle("watched", watched);
   elements.videoGateTitle.textContent = watched ? "Video completado" : "Video obligatorio";
   elements.videoGateText.textContent = watched
-    ? "Ya puedes completar esta leccion."
-    : "Mira el video completo para desbloquear \"Completar leccion\". No puedes adelantarlo ni saltarlo.";
+    ? "Ya puedes completar esta lección."
+    : "Mira el video completo para desbloquear \"Completar lección\". No puedes adelantarlo ni saltarlo.";
   const gateIconWrap = elements.videoGate.querySelector(".icon");
   if (gateIconWrap) {
     gateIconWrap.innerHTML = `<i data-lucide="${watched ? "check-circle" : "lock"}" aria-hidden="true"></i>`;
@@ -1211,7 +1211,7 @@ function renderScore() {
   if (!isCourseComplete(state.courseId)) {
     scoreBox.innerHTML = `
       <strong>Curso en progreso</strong>
-      <span>Completa todas las lecciones del aula para desbloquear la evaluacion.</span>
+      <span>Completa todas las lecciones del aula para desbloquear la evaluación.</span>
     `;
     renderCertificate();
     return;
@@ -1219,8 +1219,8 @@ function renderScore() {
 
   if (state.score === null) {
     scoreBox.innerHTML = `
-      <strong>Sin calificacion</strong>
-      <span>Curso completado. Responde la evaluacion para liberar el reconocimiento.</span>
+      <strong>Sin calificación</strong>
+      <span>Curso completado. Responde la evaluación para liberar el reconocimiento.</span>
     `;
     renderCertificate();
     return;
@@ -1241,13 +1241,13 @@ function renderCertificate() {
   elements.certEmployee.textContent = state.employee || "Empleado";
   elements.certCourse.textContent = course.title;
   elements.certCompany.textContent = state.company || "Empresa";
-  elements.certScore.textContent = state.score === null ? "Calificacion pendiente" : `Calificacion ${state.score}%`;
+  elements.certScore.textContent = state.score === null ? "Calificación pendiente" : `Calificación ${state.score}%`;
   elements.certFolio.textContent = folio;
 
   elements.downloadCertificateBtn.disabled = !canIssue;
   elements.certificateMessage.textContent = canIssue
     ? `Reconocimiento listo para ${state.employee || "el empleado"}.`
-    : "El reconocimiento se activa al completar el curso y aprobar con 80% o mas.";
+    : "El reconocimiento se activa al completar el curso y aprobar con 80% o más.";
 }
 
 function renderCampaignSelect() {
@@ -1275,13 +1275,13 @@ function renderReport() {
   const plan = plans[state.selectedPlan];
   const simulationText =
     state.selectedPlan === "enterprise"
-      ? `La simulacion activa presenta una tasa de clic del ${state.simulation.clicked}% y un reporte del ${state.simulation.reported}%.`
+      ? `La simulación activa presenta una tasa de clic del ${state.simulation.clicked}% y un reporte del ${state.simulation.reported}%.`
       : "Las simulaciones avanzadas se activan en el plan Enterprise.";
 
   elements.reportSummary.innerHTML = `
     <div class="summary-card">
       <strong>${escapeHtml(state.company)}</strong><br />
-      Durante el mes se capacito al ${trainedPct}% del personal. La aprobacion actual es de ${approvalPct}% y el curso activo es ${escapeHtml(course.title)} con ${courseProgress}% de avance.
+      Durante el mes se capacito al ${trainedPct}% del personal. La aprobación actual es de ${approvalPct}% y el curso activo es ${escapeHtml(course.title)} con ${courseProgress}% de avance.
       ${escapeHtml(simulationText)}
     </div>
     <div class="summary-card">
@@ -1425,7 +1425,7 @@ function gradeQuiz() {
   if (!answered) {
     elements.scoreBox.classList.remove("pass", "fail");
     elements.scoreBox.innerHTML = `
-      <strong>Evaluacion incompleta</strong>
+      <strong>Evaluación incompleta</strong>
       <span>Responde las ${activeQuestions.length} preguntas antes de calificar.</span>
     `;
     return;
@@ -1532,7 +1532,7 @@ function renderCourseBuilder() {
           `
         )
         .join("")
-    : '<p class="empty-state">Cuando guardes cursos propios apareceran aqui y en el catalogo.</p>';
+    : '<p class="empty-state">Cuando guardes cursos propios apareceran aquí y en el catálogo.</p>';
 
   renderIcons();
 }
@@ -1541,7 +1541,7 @@ function addDraftLesson() {
   const title = elements.customLessonTitle.value.trim();
   const body = elements.customLessonBody.value.trim();
   if (!title || !body) {
-    setCustomCourseStatus("Escribe titulo y contenido para la leccion.");
+    setCustomCourseStatus("Escribe titulo y contenido para la lección.");
     return;
   }
 
@@ -1551,12 +1551,12 @@ function addDraftLesson() {
     body,
     scenario: "Caso creado por DOGUI para practicar este tema dentro de la empresa.",
     actions: ["Analiza el riesgo", "Aplica el proceso interno", "Reporta dudas o incidentes"],
-    takeaways: ["La practica reduce errores", "El criterio del empleado es parte del control"]
+    takeaways: ["La práctica reduce errores", "El criterio del empleado es parte del control"]
   });
 
   elements.customLessonTitle.value = "";
   elements.customLessonBody.value = "";
-  setCustomCourseStatus("Leccion agregada.");
+  setCustomCourseStatus("Lección agregada.");
   saveState();
   renderCourseBuilder();
 }
@@ -1602,7 +1602,7 @@ function saveCustomCourse() {
   }
 
   if (!draft.lessons.length || !draft.quiz.length) {
-    setCustomCourseStatus("Agrega al menos una leccion y una pregunta.");
+    setCustomCourseStatus("Agrega al menos una lección y una pregunta.");
     return;
   }
 
@@ -1712,13 +1712,13 @@ function saveConnectionConfig() {
   saveState();
   renderConnection();
   renderOverview();
-  setConnectionStatus(isRemoteEnabled() ? "Conexion guardada. Puedes probar o sincronizar." : "Modo local guardado.");
+  setConnectionStatus(isRemoteEnabled() ? "Conexión guardada. Puedes probar o sincronizar." : "Modo local guardado.");
 }
 
 async function testConnection() {
   saveConnectionConfig();
   if (!isRemoteEnabled()) return;
-  setConnectionStatus("Probando conexion...");
+  setConnectionStatus("Probando conexión...");
   try {
     const response = await fetch(getCoursesEndpoint(), {
       method: "GET",
@@ -1727,7 +1727,7 @@ async function testConnection() {
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
-    setConnectionStatus("Conexion correcta. El API respondio.");
+    setConnectionStatus("Conexión correcta. El API respondio.");
   } catch (error) {
     setConnectionStatus(`No se pudo conectar: ${error.message}. Revisa URL, CORS, token o endpoint.`);
   }
@@ -2037,10 +2037,10 @@ function getCourseContent(courseId) {
     lessons: (course?.topics || []).map((topic) => ({
       title: topic,
       duration: "8 min",
-      body: `Aprende a aplicar buenas practicas sobre ${topic.toLowerCase()} en el trabajo diario.`,
-      scenario: "Analiza una situacion real y decide como actuar de forma segura.",
+      body: `Aprende a aplicar buenas prácticas sobre ${topic.toLowerCase()} en el trabajo diario.`,
+      scenario: "Analiza una situación real y decide como actuar de forma segura.",
       actions: ["Valida el contexto", "Reporta dudas", "Sigue el proceso interno"],
-      takeaways: ["La prevencion reduce incidentes", "El reporte oportuno ayuda a todos"]
+      takeaways: ["La prevención reduce incidentes", "El reporte oportuno ayuda a todos"]
     })),
     quiz: questions
   };
@@ -2147,17 +2147,17 @@ function downloadCertificatePdf() {
   if (!state.passed || !isCourseComplete(course.id)) return;
   const lines = [
     { text: "DOGUI Awareness", x: 72, y: 690, size: 24, font: "F2" },
-    { text: "Reconocimiento de participacion", x: 72, y: 645, size: 28, font: "F2" },
+    { text: "Reconocimiento de participación", x: 72, y: 645, size: 28, font: "F2" },
     { text: "Se otorga a:", x: 72, y: 590, size: 14, font: "F1" },
     { text: state.employee, x: 72, y: 555, size: 24, font: "F2" },
     { text: "Por completar satisfactoriamente el curso:", x: 72, y: 505, size: 14, font: "F1" },
     { text: course.title, x: 72, y: 475, size: 18, font: "F2" },
     { text: `Empresa: ${state.company}`, x: 72, y: 420, size: 13, font: "F1" },
     { text: `Plan: ${plans[state.selectedPlan].name}`, x: 72, y: 398, size: 13, font: "F1" },
-    { text: `Calificacion: ${state.score}%`, x: 72, y: 376, size: 13, font: "F1" },
+    { text: `Calificación: ${state.score}%`, x: 72, y: 376, size: 13, font: "F1" },
     { text: `Folio: ${getFolio()}`, x: 72, y: 354, size: 13, font: "F1" },
     { text: `Fecha: ${new Date().toLocaleDateString("es-MX")}`, x: 72, y: 332, size: 13, font: "F1" },
-    { text: "DOGUI Awareness | Concientizacion en ciberseguridad", x: 72, y: 120, size: 12, font: "F2" }
+    { text: "DOGUI Awareness | Concientización en ciberseguridad", x: 72, y: 120, size: 12, font: "F2" }
   ];
   downloadPdf("dogui-awareness-reconocimiento.pdf", buildPdf(lines, "certificate"));
 }
@@ -2174,7 +2174,7 @@ function downloadReportPdf() {
     { text: `Plan activo: ${plans[state.selectedPlan].name}`, x: 72, y: 586, size: 13, font: "F1" },
     { text: `Empleados registrados: ${state.employees}`, x: 72, y: 552, size: 13, font: "F1" },
     { text: `Personal capacitado: ${trainedPct}%`, x: 72, y: 530, size: 13, font: "F1" },
-    { text: `Aprobacion: ${approvalPct}%`, x: 72, y: 508, size: 13, font: "F1" },
+    { text: `Aprobación: ${approvalPct}%`, x: 72, y: 508, size: 13, font: "F1" },
     { text: `Curso activo: ${course.title}`, x: 72, y: 474, size: 13, font: "F1" },
     { text: `Avance del curso activo: ${courseProgress}%`, x: 72, y: 452, size: 13, font: "F1" },
     { text: `Area con mayor riesgo: ${state.simulation.riskArea}`, x: 72, y: 430, size: 13, font: "F1" },
@@ -2242,7 +2242,7 @@ function buildPdf(lines, variant) {
     ...lines.map((line) => pdfText(line.text, line.x, line.y, line.size, line.font)),
     `0.03 0.45 0.40 rg 448 104 70 70 re f\n`,
     `1 1 1 rg 456 112 14 14 re f 484 112 14 14 re f 502 130 10 10 re f 456 148 18 18 re f 486 152 18 18 re f\n`,
-    pdfText("Validacion", 444, 88, 10, "F2")
+    pdfText("Validación", 444, 88, 10, "F2")
   ].join("");
 
   const objects = [
@@ -2466,7 +2466,7 @@ function normalizeLessons(lessons, withFallback) {
     ? lessons
         .filter((lesson) => lesson && (lesson.title || lesson.body))
         .map((lesson, index) => ({
-          title: String(lesson.title || `Leccion ${index + 1}`),
+          title: String(lesson.title || `Lección ${index + 1}`),
           duration: String(lesson.duration || "8 min"),
           body: String(lesson.body || "Contenido pendiente por completar."),
           scenario: String(lesson.scenario || "Caso pendiente."),
@@ -2478,7 +2478,7 @@ function normalizeLessons(lessons, withFallback) {
   if (normalized.length || !withFallback) return normalized;
   return [
     {
-      title: "Leccion inicial",
+      title: "Lección inicial",
       duration: "8 min",
       body: "Contenido pendiente por completar.",
       scenario: "Caso pendiente.",
@@ -2493,9 +2493,9 @@ function normalizeQuiz(quiz, withFallback) {
     ? quiz
         .filter((question) => question && question.text)
         .map((question) => {
-          const options = normalizeStringList(question.options, ["Opcion A", "Opcion B", "Opcion C"]).slice(0, 3);
+          const options = normalizeStringList(question.options, ["Opción A", "Opción B", "Opción C"]).slice(0, 3);
           while (options.length < 3) {
-            options.push(`Opcion ${String.fromCharCode(65 + options.length)}`);
+            options.push(`Opción ${String.fromCharCode(65 + options.length)}`);
           }
           return {
             text: String(question.text),
@@ -2509,7 +2509,7 @@ function normalizeQuiz(quiz, withFallback) {
   return [
     {
       text: "Pregunta pendiente por configurar",
-      options: ["Opcion A", "Opcion B", "Opcion C"],
+      options: ["Opción A", "Opción B", "Opción C"],
       correct: 0
     }
   ];
